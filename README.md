@@ -1,1 +1,1 @@
-# Argumentation Mining Tool 
+# Argumentation Mining
