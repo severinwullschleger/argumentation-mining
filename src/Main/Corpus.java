@@ -3,7 +3,8 @@ package Main;
 import java.util.List;
 
 /**
- * Created by LuckyP on 02.12.17.
+ * Corpus represents a textfile
+ * Each corpus (e.g. micro_b001.txt) has a list of <sentence>sentences</sentence>
  */
 public class Corpus {
 
