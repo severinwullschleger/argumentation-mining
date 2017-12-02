@@ -41,3 +41,12 @@ atlassian-ide-plugin.xml
 #DS_Store
 *.DS_Store
 
+.idea/vcs.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/kotlinc.xml
+.idea/misc.xml
+.idea/kotlinc.xml
+.idea/vcs.xml
+ArgumentationMiningTool.iml
+*.xml
+*.xml
