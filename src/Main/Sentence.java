@@ -10,15 +10,15 @@ public class Sentence {
 
     private String fileId;
     private String sentenceId;
-    private boolean isEnglish;
+    private Language language;;
     private File correspondentFile;
     private String sentence;
     private List<String> preprocessedWords;
 
-    public Sentence(String fileId, String sentenceId, boolean isEnglish, File correspondentFile, String sentence, List<String> preprocessedWords) {
+    public Sentence(String fileId, String sentenceId, Language language, File correspondentFile, String sentence, List<String> preprocessedWords) {
         this.fileId = fileId;
         this.sentenceId = sentenceId;
-        this.isEnglish = isEnglish;
+        this.language = language;
         this.correspondentFile = correspondentFile;
         this.sentence = sentence;
         this.preprocessedWords = preprocessedWords;
@@ -40,12 +40,12 @@ public class Sentence {
         this.sentenceId = sentenceId;
     }
 
-    public boolean isEnglish() {
-        return isEnglish;
+    public Language getLanguage() {
+        return language;
     }
 
-    public void setEnglish(boolean english) {
-        isEnglish = english;
+    public void setLanguage(Language language) {
+        this.language = language;
     }
 
     public File getCorrespondentFile() {
@@ -77,7 +77,7 @@ public class Sentence {
         return "\nSentence { \n" +
                 "\tsentenceId='" + sentenceId + "\n" +
                 "\tfileId='" + fileId + "\n" +
-                "\tisEnglish=" + isEnglish + "\n" +
+                "\tLanguage=" + language.toString() + "\n" +
                 "\tcorrespondentFile=" + correspondentFile + "\n" +
                 "\tsentence='" + sentence + "\n" +
                 "\tpreprocessedWords=" + preprocessedWords + "\n" +
