@@ -11,7 +11,12 @@ import java.util.List;
 public class Main {
 
     public static void main(String args[]) {
-        List<Sentence> sentenceList = FileReader.readFile(ConfigurationManager.getInstance().getTestFilePath());
-        System.out.println(sentenceList.toString());
+        final String DATASET_PATH = ConfigurationManager.getInstance().getENFilesPath();
+        FileReader.walkDatasetDirectory(DATASET_PATH).forEach((fileId, sentences) -> {
+            System.out.println("\n---------"+fileId +"---------\n");
+            for (Sentence sentence: sentences) {
+                System.out.println(sentence);
+            }
+        });
     }
 }
