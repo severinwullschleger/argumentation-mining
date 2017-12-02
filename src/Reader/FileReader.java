@@ -29,9 +29,10 @@ public abstract class FileReader {
 
                 stream.forEach(text -> {
                     String[] sentencesText = text.split("\\.");
-
+                    int sentenceCounter = 0;
                     for (String sentenceText : sentencesText) {
-                        Sentence sentence = createSentence(file, sentenceText);
+                        sentenceCounter++;
+                        Sentence sentence = createSentence(file, sentenceText, sentenceCounter);
                         sentences.add(sentence);
                     }
 
@@ -48,11 +49,13 @@ public abstract class FileReader {
         return sentences;
     }
 
-    private static Sentence createSentence(File file, String sentenceText) {
+    private static Sentence createSentence(File file, String sentenceText, int sentenceCounter) {
         String[] temp = file.getName().split("/");
-        String sentenceId = temp[temp.length - 1].split("_")[1].split("\\.")[0]; // e.g. b001
+        String fileId = temp[temp.length - 1].split("_")[1].split("\\.")[0]; // e.g. b001
+        String sentenceId = fileId + "_" + String.valueOf(sentenceCounter);
 
         // TODO: integrate Standford parser and add a list of preprocessed Words
-        return new Sentence(sentenceId, true, file, sentenceText, null);
+
+        return new Sentence(fileId, sentenceId, true, file, sentenceText, new ArrayList<>());
     }
 }

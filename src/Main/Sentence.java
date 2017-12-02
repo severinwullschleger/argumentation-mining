@@ -8,26 +8,36 @@ import java.util.List;
  */
 public class Sentence {
 
-    private String id;
+    private String fileId;
+    private String sentenceId;
     private boolean isEnglish;
     private File correspondentFile;
     private String sentence;
     private List<String> preprocessedWords;
 
-    public Sentence(String id, boolean isEnglish, File correspondentFile, String sentence, List<String> preprocessedWords) {
-        this.id = id;
+    public Sentence(String fileId, String sentenceId, boolean isEnglish, File correspondentFile, String sentence, List<String> preprocessedWords) {
+        this.fileId = fileId;
+        this.sentenceId = sentenceId;
         this.isEnglish = isEnglish;
         this.correspondentFile = correspondentFile;
         this.sentence = sentence;
         this.preprocessedWords = preprocessedWords;
     }
 
-    public String getId() {
-        return id;
+    public String getFileId() {
+        return fileId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setFileId(String fileId) {
+        this.fileId = fileId;
+    }
+
+    public String getSentenceId() {
+        return sentenceId;
+    }
+
+    public void setSentenceId(String sentenceId) {
+        this.sentenceId = sentenceId;
     }
 
     public boolean isEnglish() {
@@ -64,12 +74,13 @@ public class Sentence {
 
     @Override
     public String toString() {
-        return "Sentence{" +
-                "id='" + id + '\'' +
-                ", isEnglish=" + isEnglish +
-                ", correspondentFile=" + correspondentFile +
-                ", sentence='" + sentence + '\'' +
-                ", preprocessedWords=" + preprocessedWords +
-                '}';
+        return "\nSentence { \n" +
+                "\tsentenceId='" + sentenceId + "\n" +
+                "\tfileId='" + fileId + "\n" +
+                "\tisEnglish=" + isEnglish + "\n" +
+                "\tcorrespondentFile=" + correspondentFile + "\n" +
+                "\tsentence='" + sentence + "\n" +
+                "\tpreprocessedWords=" + preprocessedWords + "\n" +
+                "}";
     }
 }
