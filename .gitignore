@@ -50,3 +50,4 @@ atlassian-ide-plugin.xml
 ArgumentationMiningTool.iml
 *.xml
 *.xml
+*.class
