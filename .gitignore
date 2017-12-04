@@ -48,6 +48,6 @@ atlassian-ide-plugin.xml
 .idea/kotlinc.xml
 .idea/vcs.xml
 ArgumentationMiningTool.iml
-*.xml
-*.xml
 *.class
+.idea/compiler.xml
+.idea/modules.xml
