@@ -51,3 +51,7 @@ ArgumentationMiningTool.iml
 *.class
 .idea/compiler.xml
 .idea/modules.xml
+.idea/.name
+.idea/encodings.xml
+
+target
