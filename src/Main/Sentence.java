@@ -75,11 +75,11 @@ public class Sentence {
     @Override
     public String toString() {
         return "\nSentence { \n" +
-                "\tsentenceId='" + sentenceId + "\n" +
-                "\tfileId='" + fileId + "\n" +
+                "\tsentenceId='" + sentenceId + "'\n" +
+                "\tfileId='" + fileId + "'\n" +
                 "\tLanguage=" + language.toString() + "\n" +
                 "\tcorrespondentFile=" + correspondentFile + "\n" +
-                "\tsentence='" + sentence + "\n" +
+                "\tsentence='" + sentence + "'\n" +
                 "\tpreprocessedWords=" + preprocessedWords + "\n" +
                 "}";
     }
