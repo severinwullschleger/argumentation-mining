@@ -18,7 +18,9 @@ public class Main {
             Corpus currentCorpus = new Corpus(fileId, Language.ENGLISH);
             currentCorpus.addSentences(sentences);
             corpuses.add(currentCorpus);
-            System.out.println(currentCorpus);
+            //System.out.println(currentCorpus);
         });
+
+        System.out.println(corpuses);
     }
 }
