@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by LuckyP on 02.12.17.
  */
-public class Sentence {
+public class TextSentence {
 
     private String fileId;
     private String sentenceId;
@@ -15,7 +15,7 @@ public class Sentence {
     private String sentence;
     private List<String> preprocessedWords;
 
-    public Sentence(String fileId, String sentenceId, Language language, File correspondentFile, String sentence, List<String> preprocessedWords) {
+    public TextSentence(String fileId, String sentenceId, Language language, File correspondentFile, String sentence, List<String> preprocessedWords) {
         this.fileId = fileId;
         this.sentenceId = sentenceId;
         this.language = language;
