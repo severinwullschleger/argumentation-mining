@@ -1,6 +1,7 @@
 package StandfordParserManager;
 
-import edu.stanford.nlp.ling.Sentence;
+
+import edu.stanford.nlp.simple.Sentence;
 
 /**
  * Created by LucasPelloni on 14.12.17.
