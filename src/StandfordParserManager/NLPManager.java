@@ -2,6 +2,7 @@ package StandfordParserManager;
 
 
 import Main.TextSentence;
+import edu.stanford.nlp.simple.Document;
 import edu.stanford.nlp.simple.Sentence;
 
 import java.util.List;
@@ -12,8 +13,8 @@ import java.util.List;
 public class NLPManager {
 
 
-    public static Sentence splitSentence(List<TextSentence> textSentences) {
-
-        return null;
+    public static List<Sentence> splitSentence(String text) {
+        Document document = new Document(text);
+        return document.sentences();
     }
 }

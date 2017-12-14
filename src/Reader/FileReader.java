@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
+
+import StandfordParserManager.NLPManager;
 import edu.stanford.nlp.simple.*;
 
 /**
@@ -28,8 +30,8 @@ public abstract class FileReader {
             try (Stream<String> stream = Files.lines(Paths.get(FILE_PATH))) {
 
                 stream.forEach(text -> {
-                    Document document = new Document(text);
-                    List<Sentence> sentences = document.sentences();
+                    List<Sentence> sentences = NLPManager.splitSentence(text);
+                    
                     int sentenceCounter = 0;
                     for (Sentence sentence : sentences) {
                         sentenceCounter++;
