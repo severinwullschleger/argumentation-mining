@@ -1,5 +1,7 @@
 package Main;
 
+import edu.stanford.nlp.simple.Sentence;
+
 import java.io.File;
 import java.util.List;
 
@@ -12,10 +14,10 @@ public class TextSentence {
     private String sentenceId;
     private Language language;;
     private File correspondentFile;
-    private String sentence;
+    private Sentence sentence;
     private List<String> preprocessedWords;
 
-    public TextSentence(String fileId, String sentenceId, Language language, File correspondentFile, String sentence, List<String> preprocessedWords) {
+    public TextSentence(String fileId, String sentenceId, Language language, File correspondentFile, Sentence sentence, List<String> preprocessedWords) {
         this.fileId = fileId;
         this.sentenceId = sentenceId;
         this.language = language;
@@ -56,11 +58,11 @@ public class TextSentence {
         this.correspondentFile = correspondentFile;
     }
 
-    public String getSentence() {
+    public Sentence getSentence() {
         return sentence;
     }
 
-    public void setSentence(String sentence) {
+    public void setSentence(Sentence sentence) {
         this.sentence = sentence;
     }
 

@@ -31,11 +31,10 @@ public abstract class FileReader {
 
                 stream.forEach(text -> {
                     List<Sentence> sentences = NLPManager.splitSentence(text);
-                    
                     int sentenceCounter = 0;
                     for (Sentence sentence : sentences) {
                         sentenceCounter++;
-                        TextSentence textSentence = createSentence(file, sentence.text(), sentenceCounter);
+                        TextSentence textSentence = createSentence(file, sentence, sentenceCounter);
                         textSentences.add(textSentence);
                     }
                 });
@@ -72,12 +71,12 @@ public abstract class FileReader {
         return (fileName.contains(".txt") && fileName.contains("micro_"));
     }
 
-    private static TextSentence createSentence(File file, String sentenceText, int sentenceCounter) {
+    private static TextSentence createSentence(File file, Sentence sentence, int sentenceCounter) {
         String[] temp = file.getName().split("/");
         String fileId = temp[temp.length - 1].split("_")[1].split("\\.")[0]; // e.g. b001
         String sentenceId = fileId + "_" + String.valueOf(sentenceCounter);
 
         // TODO: integrate Standford parser and add a list of preprocessed Words
-        return new TextSentence(fileId, sentenceId, Language.ENGLISH, file, sentenceText, new ArrayList<>());
+        return new TextSentence(fileId, sentenceId, Language.ENGLISH, file, sentence, new ArrayList<>());
     }
 }
