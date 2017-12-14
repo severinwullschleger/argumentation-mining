@@ -86,18 +86,7 @@ public class ConfigurationManager {
         this.myFilename = pFilename;
     }
 
-
-    public String getTestFilePath() {
-        return this.properties.getProperty("test_file");
+    public String getFilePath(String config) {
+        return this.properties.getProperty(config);
     }
-
-    public String getENFilesPath() {
-        return this.properties.getProperty("en_files");
-    }
-
-    public String getDEFilesPath() {
-        return this.properties.getProperty("de_files");
-    }
-
-
 }

@@ -12,8 +12,10 @@ import java.util.List;
  */
 public class Main {
 
+    final static String language_config = "en_files";       //  en_files  de_files  test_file
+
     public static void main(String args[]) {
-        final String DATASET_PATH = ConfigurationManager.getInstance().getENFilesPath();
+        final String DATASET_PATH = ConfigurationManager.getInstance().getFilePath(language_config);
         List<Corpus> corpuses = new ArrayList<>();
         FileReader.walkDatasetDirectory(DATASET_PATH).forEach((fileId, textSentences) -> {
             Corpus currentCorpus = new Corpus(fileId, Language.ENGLISH);
