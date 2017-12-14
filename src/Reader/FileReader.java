@@ -1,5 +1,6 @@
 package Reader;
 
+import ConfigurationManager.ConfigurationManager;
 import Main.Corpus;
 import Main.Language;
 import Main.TextSentence;
@@ -28,7 +29,6 @@ public abstract class FileReader {
         if (file.exists()) {
             //read file into stream, try-with-resources and convert it
             try (Stream<String> stream = Files.lines(Paths.get(FILE_PATH))) {
-
                 stream.forEach(text -> {
                     List<Sentence> sentences = NLPManager.splitSentence(text);
                     int sentenceCounter = 0;
@@ -77,6 +77,6 @@ public abstract class FileReader {
         String sentenceId = fileId + "_" + String.valueOf(sentenceCounter);
 
         // TODO: integrate Standford parser and add a list of preprocessed Words
-        return new TextSentence(fileId, sentenceId, Language.ENGLISH, file, sentence, new ArrayList<>());
+        return new TextSentence(fileId, sentenceId, ConfigurationManager.SENTENCES_LANGUAGE, file, sentence, new ArrayList<>());
     }
 }

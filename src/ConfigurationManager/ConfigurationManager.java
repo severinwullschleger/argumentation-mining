@@ -1,5 +1,7 @@
 package ConfigurationManager;
 
+import Main.Language;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringReader;
@@ -16,6 +18,7 @@ import java.util.UUID;
  */
 public class ConfigurationManager {
 
+    public static Language SENTENCES_LANGUAGE;
     private static final String STATIC_CONTENT = "---------STATIC+CONTENT";
     private static ConfigurationManager instance;
     private static String filename;
@@ -86,7 +89,14 @@ public class ConfigurationManager {
         this.myFilename = pFilename;
     }
 
-    public String getFilePath(String config) {
-        return this.properties.getProperty(config);
+    public String getFilePath() {
+        final String DATASET_PATH = this.properties.getProperty("files");
+        if (DATASET_PATH.contains("de")) {
+            SENTENCES_LANGUAGE = Language.DEUTSCH;
+        }
+        else {
+            SENTENCES_LANGUAGE = Language.ENGLISH;
+        }
+        return DATASET_PATH ;
     }
 }

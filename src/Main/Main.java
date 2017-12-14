@@ -12,13 +12,11 @@ import java.util.List;
  */
 public class Main {
 
-    final static String language_config = "en_files";       //  en_files  de_files  test_file
-
     public static void main(String args[]) {
-        final String DATASET_PATH = ConfigurationManager.getInstance().getFilePath(language_config);
+        final String DATASET_PATH = ConfigurationManager.getInstance().getFilePath();
         List<Corpus> corpuses = new ArrayList<>();
         FileReader.walkDatasetDirectory(DATASET_PATH).forEach((fileId, textSentences) -> {
-            Corpus currentCorpus = new Corpus(fileId, Language.ENGLISH);
+            Corpus currentCorpus = new Corpus(fileId, ConfigurationManager.SENTENCES_LANGUAGE);
             currentCorpus.addSentences(textSentences);
             corpuses.add(currentCorpus);
             //System.out.println(currentCorpus);
