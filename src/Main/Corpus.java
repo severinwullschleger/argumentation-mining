@@ -1,5 +1,6 @@
 package Main;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,6 +19,11 @@ public class Corpus {
         this.sentences = sentences;
         this.language = language;
         this.preprocessedCorpus = preprocessedCorpus;
+    }
+
+    public Corpus(String fileId, Language language) {
+            this.fileId = fileId;
+            this.language = language;
     }
 
     public String getFileId() {
@@ -50,5 +56,17 @@ public class Corpus {
 
     public void setPreprocessedCorpus(List<String> preprocessedCorpus) {
         this.preprocessedCorpus = preprocessedCorpus;
+    }
+
+    public void addSentences(List<Sentence> sentences) {
+        this.sentences = sentences;
+    }
+
+    public String toString() {
+        String rtn = "\n---------"+fileId +"---------\n";
+        for (Sentence sentence : sentences)
+            rtn += sentence.toString();
+
+        return rtn;
     }
 }
