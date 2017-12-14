@@ -2,7 +2,7 @@ package Reader;
 
 import Main.Corpus;
 import Main.Language;
-import Main.Sentence;
+import Main.TextSentence;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,8 +19,8 @@ import java.util.stream.Stream;
  */
 public abstract class FileReader {
 
-    public static List<Sentence> readFile(final String FILE_PATH) {
-        List<Sentence> sentences = new ArrayList<>();
+    public static List<TextSentence> readFile(final String FILE_PATH) {
+        List<TextSentence> sentences = new ArrayList<>();
         File file = new File(FILE_PATH);
         if (file.exists()) {
             //read file into stream, try-with-resources and convert it
@@ -31,8 +31,8 @@ public abstract class FileReader {
                     int sentenceCounter = 0;
                     for (String sentenceText : sentencesText) {
                         sentenceCounter++;
-                        Sentence sentence = createSentence(file, sentenceText, sentenceCounter);
-                        sentences.add(sentence);
+                        TextSentence textSentence = createSentence(file, sentenceText, sentenceCounter);
+                        sentences.add(textSentence);
                     }
                 });
 
@@ -45,8 +45,8 @@ public abstract class FileReader {
         return sentences;
     }
 
-    public static Map<String, List<Sentence>> walkDatasetDirectory(final String DATASET_PATH) {
-        Map<String, List<Sentence>> corpusMap = new HashMap<>();
+    public static Map<String, List<TextSentence>> walkDatasetDirectory(final String DATASET_PATH) {
+        Map<String, List<TextSentence>> corpusMap = new HashMap<>();
         File file = new File(DATASET_PATH);
         if (file.exists()) {
             File[] files = file.listFiles();
@@ -68,12 +68,12 @@ public abstract class FileReader {
         return (fileName.contains(".txt") && fileName.contains("micro_"));
     }
 
-    private static Sentence createSentence(File file, String sentenceText, int sentenceCounter) {
+    private static TextSentence createSentence(File file, String sentenceText, int sentenceCounter) {
         String[] temp = file.getName().split("/");
         String fileId = temp[temp.length - 1].split("_")[1].split("\\.")[0]; // e.g. b001
         String sentenceId = fileId + "_" + String.valueOf(sentenceCounter);
 
         // TODO: integrate Standford parser and add a list of preprocessed Words
-        return new Sentence(fileId, sentenceId, Language.ENGLISH, file, sentenceText, new ArrayList<>());
+        return new TextSentence(fileId, sentenceId, Language.ENGLISH, file, sentenceText, new ArrayList<>());
     }
 }

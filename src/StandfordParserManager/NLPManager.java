@@ -8,6 +8,6 @@ import edu.stanford.nlp.ling.Sentence;
 public class NLPManager {
 
     public static Sentence splitSentence() {
-        return null; 
+        return null;
     }
 }
