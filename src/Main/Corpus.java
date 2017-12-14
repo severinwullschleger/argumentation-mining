@@ -10,13 +10,13 @@ import java.util.List;
 public class Corpus {
 
     private String fileId;
-    private List<Sentence> sentences;
+    private List<TextSentence> textSentences;
     private Language language;
     private List<String> preprocessedCorpus;
 
-    public Corpus(String fileId, List<Sentence> sentences, Language language, List<String> preprocessedCorpus) {
+    public Corpus(String fileId, List<TextSentence> sentences, Language language, List<String> preprocessedCorpus) {
         this.fileId = fileId;
-        this.sentences = sentences;
+        this.textSentences = sentences;
         this.language = language;
         this.preprocessedCorpus = preprocessedCorpus;
     }
@@ -34,12 +34,12 @@ public class Corpus {
         this.fileId = fileId;
     }
 
-    public List<Sentence> getSentences() {
-        return sentences;
+    public List<TextSentence> getSentences() {
+        return textSentences;
     }
 
-    public void setSentences(List<Sentence> sentences) {
-        this.sentences = sentences;
+    public void setSentences(List<TextSentence> sentences) {
+        this.textSentences = sentences;
     }
 
     public Language getLanguage() {
@@ -58,14 +58,14 @@ public class Corpus {
         this.preprocessedCorpus = preprocessedCorpus;
     }
 
-    public void addSentences(List<Sentence> sentences) {
-        this.sentences = sentences;
+    public void addSentences(List<TextSentence> sentences) {
+        this.textSentences = sentences;
     }
 
     public String toString() {
         String rtn = "\n---------"+fileId +"---------\n";
-        for (Sentence sentence : sentences)
-            rtn += sentence.toString();
+        for (TextSentence textSentence : textSentences)
+            rtn += textSentence.toString();
 
         return rtn;
     }
