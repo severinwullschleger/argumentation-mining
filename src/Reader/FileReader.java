@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
+import edu.stanford.nlp.simple.*;
 
 /**
  * Created by LucasPelloni on 02.12.17.
@@ -20,19 +21,20 @@ import java.util.stream.Stream;
 public abstract class FileReader {
 
     public static List<TextSentence> readFile(final String FILE_PATH) {
-        List<TextSentence> sentences = new ArrayList<>();
+        List<TextSentence> textSentences = new ArrayList<>();
         File file = new File(FILE_PATH);
         if (file.exists()) {
             //read file into stream, try-with-resources and convert it
             try (Stream<String> stream = Files.lines(Paths.get(FILE_PATH))) {
 
                 stream.forEach(text -> {
-                    String[] sentencesText = text.split("\\.");
+                    Document document = new Document(text);
+                    List<Sentence> sentences = document.sentences();
                     int sentenceCounter = 0;
-                    for (String sentenceText : sentencesText) {
+                    for (Sentence sentence : sentences) {
                         sentenceCounter++;
-                        TextSentence textSentence = createSentence(file, sentenceText, sentenceCounter);
-                        sentences.add(textSentence);
+                        TextSentence textSentence = createSentence(file, sentence.text(), sentenceCounter);
+                        textSentences.add(textSentence);
                     }
                 });
 
@@ -42,7 +44,7 @@ public abstract class FileReader {
         } else {
             System.err.println("Please select a file valid");
         }
-        return sentences;
+        return textSentences;
     }
 
     public static Map<String, List<TextSentence>> walkDatasetDirectory(final String DATASET_PATH) {

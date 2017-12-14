@@ -22,8 +22,8 @@ public class Corpus {
     }
 
     public Corpus(String fileId, Language language) {
-            this.fileId = fileId;
-            this.language = language;
+        this.fileId = fileId;
+        this.language = language;
     }
 
     public String getFileId() {
@@ -63,7 +63,7 @@ public class Corpus {
     }
 
     public String toString() {
-        String rtn = "\n---------"+fileId +"---------\n";
+        String rtn = "\n---------" + fileId + "---------\n";
         for (TextSentence textSentence : textSentences)
             rtn += textSentence.toString();
 

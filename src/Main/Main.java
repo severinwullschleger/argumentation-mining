@@ -2,6 +2,7 @@ package Main;
 
 import ConfigurationManager.ConfigurationManager;
 import Reader.FileReader;
+import StandfordParserManager.NLPManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,4 +24,6 @@ public class Main {
 
         System.out.println(corpuses);
     }
+
+
 }
