@@ -15,15 +15,14 @@ public class TextSentence {
     private Language language;;
     private File correspondentFile;
     private Sentence sentence;
-    private List<String> preprocessedWords;
+    private Sentence tokenizedSentence;
 
-    public TextSentence(String fileId, String sentenceId, Language language, File correspondentFile, Sentence sentence, List<String> preprocessedWords) {
+    public TextSentence(String fileId, String sentenceId, Language language, File correspondentFile, Sentence sentence) {
         this.fileId = fileId;
         this.sentenceId = sentenceId;
         this.language = language;
         this.correspondentFile = correspondentFile;
         this.sentence = sentence;
-        this.preprocessedWords = preprocessedWords;
     }
 
     public String getFileId() {
@@ -66,14 +65,6 @@ public class TextSentence {
         this.sentence = sentence;
     }
 
-    public List<String> getPreprocessedWords() {
-        return preprocessedWords;
-    }
-
-    public void setPreprocessedWords(List<String> preprocessedWords) {
-        this.preprocessedWords = preprocessedWords;
-    }
-
     @Override
     public String toString() {
         return "\nSentence { \n" +
@@ -82,7 +73,6 @@ public class TextSentence {
                 "\tLanguage=" + language.toString() + "\n" +
                 "\tcorrespondentFile=" + correspondentFile + "\n" +
                 "\tsentence='" + sentence + "'\n" +
-                "\tpreprocessedWords=" + preprocessedWords + "\n" +
                 "}";
     }
 }

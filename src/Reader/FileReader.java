@@ -77,6 +77,6 @@ public abstract class FileReader {
         String sentenceId = fileId + "_" + String.valueOf(sentenceCounter);
 
         // TODO: integrate Standford parser and add a list of preprocessed Words
-        return new TextSentence(fileId, sentenceId, Language.ENGLISH, file, sentence, new ArrayList<>());
+        return new TextSentence(fileId, sentenceId, Language.ENGLISH, file, sentence);
     }
 }
