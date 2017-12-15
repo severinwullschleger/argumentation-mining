@@ -61,8 +61,6 @@ public abstract class FileReader {
                     }
                 }
             }
-
-
         }
         return corpusMap;
     }

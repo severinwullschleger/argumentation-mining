@@ -12,10 +12,10 @@ public class TextSentence {
 
     private String fileId;
     private String sentenceId;
-    private Language language;;
+    private String argumentType;            // "pro" or "opp"
+    private Language language;
     private File correspondentFile;
     private Sentence sentence;
-    private Sentence tokenizedSentence;
 
     public TextSentence(String fileId, String sentenceId, Language language, File correspondentFile, Sentence sentence) {
         this.fileId = fileId;
@@ -23,6 +23,10 @@ public class TextSentence {
         this.language = language;
         this.correspondentFile = correspondentFile;
         this.sentence = sentence;
+    }
+
+    public TextSentence() {
+
     }
 
     public String getFileId() {
@@ -68,11 +72,16 @@ public class TextSentence {
     @Override
     public String toString() {
         return "\nSentence { \n" +
-                "\tsentenceId='" + sentenceId + "'\n" +
-                "\tfileId='" + fileId + "'\n" +
-                "\tLanguage=" + language.toString() + "\n" +
-                "\tcorrespondentFile=" + correspondentFile + "\n" +
-                "\tsentence='" + sentence + "'\n" +
+                "\tsentenceId = '" + sentenceId + "'\n" +
+                "\tfileId = '" + fileId + "'\n" +
+                "\tLanguage = " + language + "\n" +
+                "\tcorrespondentFile = " + correspondentFile + "\n" +
+                "\tsentence = '" + sentence + "'\n" +
+                "\targumentType = '" + argumentType + "'\n" +
                 "}";
+    }
+
+    public void setArgumentType(String argumentType) {
+        this.argumentType = argumentType;
     }
 }
