@@ -17,6 +17,10 @@ public class TextSentence {
     private File correspondentFile;
     private Sentence sentence;
 
+    public TextSentence() {
+
+    }
+
     public TextSentence(String fileId, String sentenceId, Language language, File correspondentFile, Sentence sentence) {
         this.fileId = fileId;
         this.sentenceId = sentenceId;
@@ -25,48 +29,28 @@ public class TextSentence {
         this.sentence = sentence;
     }
 
-    public TextSentence() {
-
-    }
-
-    public String getFileId() {
-        return fileId;
-    }
-
     public void setFileId(String fileId) {
         this.fileId = fileId;
-    }
-
-    public String getSentenceId() {
-        return sentenceId;
     }
 
     public void setSentenceId(String sentenceId) {
         this.sentenceId = sentenceId;
     }
 
-    public Language getLanguage() {
-        return language;
-    }
-
     public void setLanguage(Language language) {
         this.language = language;
-    }
-
-    public File getCorrespondentFile() {
-        return correspondentFile;
     }
 
     public void setCorrespondentFile(File correspondentFile) {
         this.correspondentFile = correspondentFile;
     }
 
-    public Sentence getSentence() {
-        return sentence;
-    }
-
     public void setSentence(Sentence sentence) {
         this.sentence = sentence;
+    }
+
+    public void setArgumentType(String argumentType) {
+        this.argumentType = argumentType;
     }
 
     @Override
@@ -79,9 +63,5 @@ public class TextSentence {
                 "\tsentence = '" + sentence + "'\n" +
                 "\targumentType = '" + argumentType + "'\n" +
                 "}";
-    }
-
-    public void setArgumentType(String argumentType) {
-        this.argumentType = argumentType;
     }
 }

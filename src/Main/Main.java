@@ -13,6 +13,12 @@ import java.util.List;
  */
 public class Main {
 
+    public static void main(String args[]) {
+        final String DATASET_PATH = ConfigurationManager.getInstance().getFilePath();
+        List<Corpus> corpuses = XMLParser.walkXMLFiles(DATASET_PATH);
+        System.out.println(corpuses);
+    }
+
 //    public static void main(String args[]) {
 //        final String DATASET_PATH = ConfigurationManager.getInstance().getFilePath();
 //        List<Corpus> corpuses = new ArrayList<>();
@@ -24,10 +30,4 @@ public class Main {
 //        });
 //        System.out.println(corpuses);
 //    }
-
-    public static void main(String args[]) {
-        final String DATASET_PATH = ConfigurationManager.getInstance().getFilePath();
-        List<Corpus> corpuses = XMLParser.walkXMLFiles(DATASET_PATH);
-        System.out.println(corpuses);
-    }
 }
