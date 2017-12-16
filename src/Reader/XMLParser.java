@@ -5,6 +5,9 @@ import Main.Corpus;
 import Main.Enums.ArgumentType;
 import Main.Enums.EnumsManager;
 import Main.Enums.Stance;
+import Main.SegmentLabels.role.Opponent;
+import Main.SegmentLabels.role.Proponent;
+import Main.SegmentLabels.role.UndefinedSentence;
 import Main.TextSentence;
 import edu.stanford.nlp.simple.Sentence;
 import org.w3c.dom.Document;
@@ -59,18 +62,32 @@ public abstract class XMLParser {
             NodeList nListA = doc.getElementsByTagName("adu");
             for (int temp = 0; temp < nListE.getLength(); temp++) {
                 Node nNodeE = nListE.item(temp);
-                TextSentence sentence = new TextSentence();
-                sentence.setFileId(corpus.getFileId());
-                sentence.setSentenceId(nNodeE.getAttributes().getNamedItem("id").getTextContent());
-                sentence.setSentence(new Sentence(nNodeE.getTextContent()));
-                sentence.setLanguage(ConfigurationManager.SENTENCES_LANGUAGE);
-                sentence.setCorrespondentFile(inputFile);
 
                 Node nNodeA = nListA.item(temp);
                 String argumentTypeAttribute = nNodeA.getAttributes().getNamedItem("type").getTextContent();
-                sentence.setArgumentType(convertToArgumentTypeEnum(argumentTypeAttribute));
+                ArgumentType sentenceType = convertToArgumentTypeEnum(argumentTypeAttribute);
+                TextSentence textSentence;
 
-                textSentences.add(sentence);
+                switch (sentenceType) {
+                    case OPP:
+                        textSentence = new Opponent();
+                        break;
+                    case PRO:
+                        textSentence = new Proponent();
+                        break;
+                    default:
+                        textSentence = new UndefinedSentence();
+                }
+
+                textSentence.setArgumentType(sentenceType);
+                textSentence.setFileId(corpus.getFileId());
+                textSentence.setSentenceId(nNodeE.getAttributes().getNamedItem("id").getTextContent());
+                textSentence.setSentence(new Sentence(nNodeE.getTextContent()));
+                textSentence.setLanguage(ConfigurationManager.SENTENCES_LANGUAGE);
+                textSentence.setCorrespondentFile(inputFile);
+
+
+                textSentences.add(textSentence);
             }
             corpus.setSentences(textSentences);
 

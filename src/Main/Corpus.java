@@ -2,6 +2,8 @@ package Main;
 
 import Main.Enums.Language;
 import Main.Enums.Stance;
+import Main.SegmentLabels.role.Opponent;
+import Main.SegmentLabels.role.Proponent;
 
 import java.io.File;
 import java.util.List;
@@ -18,6 +20,8 @@ public class Corpus {
     private List<TextSentence> textSentences;
     private Language language;
     private File correspondentFile;
+    private List<Opponent> opponents;
+    private List<Proponent> proponents;
 
     public Corpus() {
 
@@ -69,6 +73,22 @@ public class Corpus {
 
     public void setStance(Stance stance) {
         this.stance = stance;
+    }
+
+    public List<Opponent> getOpponents() {
+        return opponents;
+    }
+
+    public void setOpponents(List<Opponent> opponents) {
+        this.opponents = opponents;
+    }
+
+    public List<Proponent> getProponents() {
+        return proponents;
+    }
+
+    public void setProponents(List<Proponent> proponents) {
+        this.proponents = proponents;
     }
 
     public void setCorrespondentFile(File correspondentFile) {

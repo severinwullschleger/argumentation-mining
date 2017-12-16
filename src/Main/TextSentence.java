@@ -2,9 +2,13 @@ package Main;
 
 import Main.Enums.ArgumentType;
 import Main.Enums.Language;
+
+import Main.SegmentLabels.role.Opponent;
+import Main.SegmentLabels.role.Proponent;
 import edu.stanford.nlp.simple.Sentence;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Created by LuckyP on 02.12.17.
@@ -52,6 +56,30 @@ public class TextSentence {
 
     public void setArgumentType(ArgumentType argumentType) {
         this.argumentType = argumentType;
+    }
+
+    public String getFileId() {
+        return fileId;
+    }
+
+    public String getSentenceId() {
+        return sentenceId;
+    }
+
+    public ArgumentType getArgumentType() {
+        return argumentType;
+    }
+
+    public Language getLanguage() {
+        return language;
+    }
+
+    public File getCorrespondentFile() {
+        return correspondentFile;
+    }
+
+    public Sentence getSentence() {
+        return sentence;
     }
 
     @Override
