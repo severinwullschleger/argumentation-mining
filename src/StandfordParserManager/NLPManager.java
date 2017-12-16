@@ -12,7 +12,6 @@ import java.util.List;
  */
 public class NLPManager {
 
-
     public static List<Sentence> splitSentence(String text) {
         Document document = new Document(text);
         return document.sentences();
