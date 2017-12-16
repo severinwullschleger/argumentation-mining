@@ -6,6 +6,7 @@ import Main.SegmentLabels.role.Opponent;
 import Main.SegmentLabels.role.Proponent;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,10 +21,10 @@ public class Corpus {
     private List<TextSentence> textSentences;
     private Language language;
     private File correspondentFile;
-    private List<Opponent> opponents;
-    private List<Proponent> proponents;
+
 
     public Corpus() {
+        this.textSentences = new ArrayList<>();
 
     }
 
@@ -55,16 +56,16 @@ public class Corpus {
     }
 
     public String toString() {
-        String rtn = "\n---------" + fileId + "---------"
+        StringBuilder rtn = new StringBuilder("\n---------" + fileId + "---------"
                 + "\ntopicId = " + topicId
                 + "\nstance = " + stance
                 + "\nlanguage = " + language
-                + "\nfile = " + correspondentFile;
+                + "\nfile = " + correspondentFile);
 
         for (TextSentence textSentence : textSentences)
-            rtn += textSentence.toString();
+            rtn.append(textSentence.toString());
 
-        return rtn;
+        return rtn.toString();
     }
 
     public void setTopicId(String topicId) {
@@ -75,23 +76,43 @@ public class Corpus {
         this.stance = stance;
     }
 
-    public List<Opponent> getOpponents() {
-        return opponents;
+    public List<TextSentence> getTextSentences() {
+        return textSentences;
     }
 
-    public void setOpponents(List<Opponent> opponents) {
-        this.opponents = opponents;
-    }
-
-    public List<Proponent> getProponents() {
-        return proponents;
-    }
-
-    public void setProponents(List<Proponent> proponents) {
-        this.proponents = proponents;
+    public void setTextSentences(List<TextSentence> textSentences) {
+        this.textSentences = textSentences;
     }
 
     public void setCorrespondentFile(File correspondentFile) {
         this.correspondentFile = correspondentFile;
     }
+
+    public List<TextSentence> getOpponents() {
+        List<TextSentence> opponents = new ArrayList<>();
+        if (this.textSentences != null) {
+            for (TextSentence textSentence : this.textSentences) {
+                if (textSentence instanceof Opponent) {
+                    opponents.add(textSentence);
+                }
+            }
+            return opponents;
+        }
+        return null;
+    }
+
+    public List<TextSentence> getProponents() {
+        List<TextSentence> proponents = new ArrayList<>();
+        if (this.textSentences != null) {
+            for (TextSentence textSentence : this.textSentences) {
+                if (textSentence instanceof Proponent) {
+                    proponents.add(textSentence);
+                }
+            }
+            return proponents;
+        }
+        return null;
+    }
+
+
 }

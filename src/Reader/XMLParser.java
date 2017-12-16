@@ -85,17 +85,34 @@ public abstract class XMLParser {
                 textSentence.setSentence(new Sentence(nNodeE.getTextContent()));
                 textSentence.setLanguage(ConfigurationManager.SENTENCES_LANGUAGE);
                 textSentence.setCorrespondentFile(inputFile);
+                corpus.getTextSentences().add(textSentence);
 
 
                 textSentences.add(textSentence);
             }
             corpus.setSentences(textSentences);
 
+            printOpponentAndProponents(corpus);
+
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
 
         return corpus;
+    }
+
+    private static void printOpponentAndProponents(Corpus corpus) {
+        System.out.println(corpus.getFileId() + "  has the following proponents: ");
+        for (TextSentence proponent : corpus.getProponents()) {
+            System.out.print(proponent.getSentenceId() + " , ");
+        }
+        System.out.println("\n");
+
+        System.out.println(corpus.getFileId() + "  has the following opponents: ");
+        for (TextSentence opponent : corpus.getOpponents()) {
+            System.out.print(opponent.getSentenceId() + " , ");
+        }
+        System.out.println("\n");
     }
 
     private static Stance convertToStanceEnum(String attribute) {

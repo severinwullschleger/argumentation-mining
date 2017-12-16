@@ -17,6 +17,10 @@ public class Main {
         final String DATASET_PATH = ConfigurationManager.getInstance().getFilePath();
         List<Corpus> corpuses = XMLParser.walkXMLFiles(DATASET_PATH);
         System.out.println(corpuses);
+
+
+
+
     }
 
 //    public static void main(String args[]) {
