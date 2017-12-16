@@ -17,10 +17,10 @@ public class EnumsManager {
     }
 
     public static List<String> getArgumentTypesToString() {
-        List<String> stances = new ArrayList<>();
+        List<String> types = new ArrayList<>();
         for (ArgumentType argumentType : ArgumentType.values()) {
-            stances.add(argumentType.getArgumentTypeToString().toUpperCase());
+            types.add(argumentType.getArgumentTypeToString().toUpperCase());
         }
-        return stances;
+        return types;
     }
 }
