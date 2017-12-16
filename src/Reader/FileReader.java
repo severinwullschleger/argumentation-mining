@@ -1,8 +1,6 @@
 package Reader;
 
 import ConfigurationManager.ConfigurationManager;
-import Main.Corpus;
-import Main.Language;
 import Main.TextSentence;
 
 import java.io.File;

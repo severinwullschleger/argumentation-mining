@@ -1,6 +1,6 @@
 package ConfigurationManager;
 
-import Main.Language;
+import Main.Enums.Language;
 
 import java.io.FileInputStream;
 import java.io.IOException;

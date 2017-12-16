@@ -1,5 +1,8 @@
 package Main;
 
+import Main.Enums.Language;
+import Main.Enums.Stance;
+
 import java.io.File;
 import java.util.List;
 
@@ -11,7 +14,7 @@ public class Corpus {
 
     private String fileId;
     private String topicId;         // e.g waste_separation
-    private String stance;          // "pro" or "opp"
+    private Stance stance;          // "pro" or "opp"
     private List<TextSentence> textSentences;
     private Language language;
     private File correspondentFile;
@@ -64,7 +67,7 @@ public class Corpus {
         this.topicId = topicId;
     }
 
-    public void setStance(String stance) {
+    public void setStance(Stance stance) {
         this.stance = stance;
     }
 

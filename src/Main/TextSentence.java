@@ -1,9 +1,10 @@
 package Main;
 
+import Main.Enums.ArgumentType;
+import Main.Enums.Language;
 import edu.stanford.nlp.simple.Sentence;
 
 import java.io.File;
-import java.util.List;
 
 /**
  * Created by LuckyP on 02.12.17.
@@ -12,7 +13,7 @@ public class TextSentence {
 
     private String fileId;
     private String sentenceId;
-    private String argumentType;            // "pro" or "opp"
+    private ArgumentType argumentType;            // "pro" or "opp"
     private Language language;
     private File correspondentFile;
     private Sentence sentence;
@@ -49,7 +50,7 @@ public class TextSentence {
         this.sentence = sentence;
     }
 
-    public void setArgumentType(String argumentType) {
+    public void setArgumentType(ArgumentType argumentType) {
         this.argumentType = argumentType;
     }
 

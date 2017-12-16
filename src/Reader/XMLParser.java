@@ -2,6 +2,9 @@ package Reader;
 
 import ConfigurationManager.ConfigurationManager;
 import Main.Corpus;
+import Main.Enums.ArgumentType;
+import Main.Enums.EnumsManager;
+import Main.Enums.Stance;
 import Main.TextSentence;
 import edu.stanford.nlp.simple.Sentence;
 import org.w3c.dom.Document;
@@ -19,7 +22,7 @@ import java.util.List;
 
 public abstract class XMLParser {
 
-    public static List<Corpus> walkXMLFiles (String DATASET_PATH) {
+    public static List<Corpus> walkXMLFiles(String DATASET_PATH) {
         List<Corpus> corpuses = new ArrayList<>();
         File file = new File(DATASET_PATH);
         if (file.exists()) {
@@ -45,7 +48,8 @@ public abstract class XMLParser {
 
             corpus.setFileId(doc.getDocumentElement().getAttribute("id"));
             corpus.setTopicId(doc.getDocumentElement().getAttribute("topic_id"));
-            corpus.setStance(doc.getDocumentElement().getAttribute("stance"));
+            String stanceAttribute = doc.getDocumentElement().getAttribute("stance");
+            corpus.setStance(convertToStanceEnum(stanceAttribute));
             corpus.setLanguage(ConfigurationManager.SENTENCES_LANGUAGE);
             corpus.setCorrespondentFile(inputFile);
 
@@ -63,7 +67,8 @@ public abstract class XMLParser {
                 sentence.setCorrespondentFile(inputFile);
 
                 Node nNodeA = nListA.item(temp);
-                sentence.setArgumentType(nNodeA.getAttributes().getNamedItem("type").getTextContent());
+                String argumentTypeAttribute = nNodeA.getAttributes().getNamedItem("type").getTextContent();
+                sentence.setArgumentType(convertToArgumentTypeEnum(argumentTypeAttribute));
 
                 textSentences.add(sentence);
             }
@@ -74,5 +79,21 @@ public abstract class XMLParser {
         }
 
         return corpus;
+    }
+
+    private static Stance convertToStanceEnum(String attribute) {
+        List<String> stancesStrings = EnumsManager.getStancesToString();
+        if (!stancesStrings.contains(attribute.toUpperCase())) {
+            return Stance.UNDEFINED;
+        }
+        return Stance.valueOf(attribute.toUpperCase());
+    }
+
+    private static ArgumentType convertToArgumentTypeEnum(String attribute) {
+        List<String> typesStrings = EnumsManager.getArgumentTypesToString();
+        if (!typesStrings.contains(attribute.toUpperCase())) {
+            return ArgumentType.UNDEFINED;
+        }
+        return ArgumentType.valueOf(attribute.toUpperCase());
     }
 }
