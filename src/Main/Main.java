@@ -1,11 +1,10 @@
 package Main;
 
 import ConfigurationManager.ConfigurationManager;
-import Reader.FileReader;
+import Reader.FileWriter;
 import Reader.XMLParser;
-import StandfordParserManager.NLPManager;
 
-import java.util.ArrayList;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -18,10 +17,16 @@ public class Main {
         List<Corpus> corpuses = XMLParser.walkXMLFiles(DATASET_PATH);
         System.out.println(corpuses);
 
+        FileWriter.writeToProConFolder(corpuses, DATASET_PATH);
 
-
-
+        //create arff file from directories
+        String[] arguments = { "-dir"
+                , Paths.get(DATASET_PATH + "/result_classes/").toAbsolutePath().toString()  };
+        weka.core.converters.TextDirectoryLoader.main(arguments);
+        //TODO: write to arff file
     }
+}
+
 
 //    public static void main(String args[]) {
 //        final String DATASET_PATH = ConfigurationManager.getInstance().getFilePath();
@@ -34,4 +39,3 @@ public class Main {
 //        });
 //        System.out.println(corpuses);
 //    }
-}

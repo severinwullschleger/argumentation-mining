@@ -5,7 +5,9 @@ import Main.Enums.Stance;
 import Main.SegmentLabels.role.Opponent;
 import Main.SegmentLabels.role.Proponent;
 
-import java.io.File;
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -115,4 +117,24 @@ public class Corpus {
     }
 
 
+    public Stance getStance() {
+        return stance;
+    }
+
+    public void writeToFile(String path) {
+
+        try {
+            String fileName = fileId + ".txt";
+            File file = new File (path+fileName);
+
+            PrintWriter out = new PrintWriter(file);
+            for (TextSentence sent : textSentences )
+                out.println(sent.getSentence().text());
+
+            out.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 }
