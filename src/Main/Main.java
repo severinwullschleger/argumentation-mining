@@ -3,6 +3,7 @@ package Main;
 import ConfigurationManager.ConfigurationManager;
 import Reader.FileWriter;
 import Reader.XMLParser;
+import Weka.WekaRunner;
 
 import java.nio.file.Paths;
 import java.util.List;
@@ -15,17 +16,19 @@ public class Main {
     public static void main(String args[]) {
         final String DATASET_PATH = ConfigurationManager.getInstance().getFilePath();
         List<Corpus> corpuses = XMLParser.walkXMLFiles(DATASET_PATH);
-        System.out.println(corpuses);
 
-        FileWriter.writeToProConFolder(corpuses, DATASET_PATH);
-
-        //create arff file from directories
-        String[] arguments = { "-dir"
-                , Paths.get(DATASET_PATH + "/result_classes/").toAbsolutePath().toString()  };
-        weka.core.converters.TextDirectoryLoader.main(arguments);
-        //TODO: write to arff file
+        WekaRunner wekaRun = new WekaRunner();
+        wekaRun.runStanceClassifier(corpuses);
     }
 }
+
+//        FileWriter.writeToProConFolder(corpuses, DATASET_PATH);
+
+//        //create arff file from directories
+//        String[] arguments = { "-dir"
+//                , Paths.get(DATASET_PATH + "/result_classes/").toAbsolutePath().toString()  };
+//        weka.core.converters.TextDirectoryLoader.main(arguments);
+//        //copy paste from terminal and save as arff file.
 
 
 //    public static void main(String args[]) {

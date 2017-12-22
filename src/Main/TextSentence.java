@@ -8,6 +8,7 @@ import Main.SegmentLabels.role.Proponent;
 import edu.stanford.nlp.simple.Sentence;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -92,5 +93,9 @@ public class TextSentence {
                 "\tsentence = '" + sentence + "'\n" +
                 "\targumentType = '" + argumentType + "'\n" +
                 "}";
+    }
+
+    public List<String> getLemmas() {
+        return sentence.lemmas();
     }
 }

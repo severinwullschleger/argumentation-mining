@@ -9,6 +9,7 @@ import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -136,5 +137,26 @@ public class Corpus {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public HashMap<String, List<String>> getAllLemmasPerTextSentence() {
+        HashMap lemmasPerSentence = new HashMap<String, List<String>>();
+        for (TextSentence textSentence : textSentences)
+            lemmasPerSentence.put(textSentence.getSentenceId(), textSentence.getLemmas());
+        return lemmasPerSentence;
+    }
+
+    public boolean isStanceTagged() {
+        if (stance.equals(Stance.CON) || stance.equals(Stance.PRO))
+            return true;
+        else
+            return false;
+    }
+
+    public ArrayList<String> getAllLemmas() {
+        ArrayList lemmas = new ArrayList<>();
+        for (TextSentence textSentence : textSentences)
+            lemmas.addAll(textSentence.getLemmas());
+        return lemmas;
     }
 }
