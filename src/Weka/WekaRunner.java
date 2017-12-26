@@ -96,42 +96,10 @@ public class WekaRunner {
         ArrayList<Corpus> testCorpuses = splitData(stanceTaggedCorpuses, 10, true);
 
         // Create an empty training set
-        Instances trainingSet = new Instances("TrainingSet", vector, trainingCorpuses.size()+1);
-        // Set class index
-        trainingSet.setClassIndex(0);
-
-        for (Corpus corpus : trainingCorpuses) {
-            // Create the instance
-            Instance corpusInstance = new DenseInstance(vector.size());
-            corpusInstance.setValue(vector.get(0),corpus.getStance().getStanceToString());
-            for (String lemma : corpus.getAllLemmas()) {
-                corpusInstance.setValue((Attribute)lemmaUnigramAttributes.get(lemma), 1.0);
-            }
-            // add the instance to training set
-            trainingSet.add(corpusInstance);
-        }
-
+        Instances trainingSet = createInstanceSet("trainingSet", 0, lemmaUnigramAttributes, vector, trainingCorpuses);
         System.out.println(trainingSet);
-
-
-        // Create an empty testing set
-        Instances testingSet = new Instances("TestingSet", vector, testCorpuses.size()+1);
-        // Set class index
-        testingSet.setClassIndex(0);
-
-        for (Corpus corpus : testCorpuses) {
-            // Create the instance
-            Instance corpusInstance = new DenseInstance(vector.size());
-            corpusInstance.setValue(vector.get(0),corpus.getStance().getStanceToString());
-            for (String lemma : corpus.getAllLemmas()) {
-                corpusInstance.setValue((Attribute)lemmaUnigramAttributes.get(lemma), 1.0);
-            }
-            // add the instance to testing set
-            testingSet.add(corpusInstance);
-        }
-
+        Instances testingSet = createInstanceSet("testingSet", 0, lemmaUnigramAttributes, vector, testCorpuses);
         System.out.println(testingSet);
-
 
         try {
             // Create a naïve bayes classifier
@@ -186,5 +154,30 @@ public class WekaRunner {
         for (String lemma : lemmas)
             if (!attributes.containsKey(lemma))
                 attributes.put(lemma, new Attribute(lemma));
+    }
+
+    private Instances createInstanceSet(String setName, int classIndex, HashMap lemmaUnigramAttributes, ArrayList<Attribute> vector, ArrayList<Corpus> corpuses) {
+        // Create an empty training set
+        Instances set = new Instances(setName, vector, corpuses.size()+1);
+        // Set class index
+        set.setClassIndex(classIndex);
+
+        for (Corpus corpus : corpuses) {
+            // Create the instance
+            Instance corpusInstance = new DenseInstance(vector.size());
+            // add the stance to the first attribute
+            corpusInstance.setValue(vector.get(0),corpus.getStance().getStanceToString());
+            // add default value to attributes
+            for (int i = 1; i < corpusInstance.numAttributes(); i++) {
+                corpusInstance.setValue(vector.get(i), 0.0);
+            }
+            // change 0 to 1 if for the lemmas that are in the corpus
+            for (String lemma : corpus.getAllLemmas()) {
+                corpusInstance.setValue((Attribute)lemmaUnigramAttributes.get(lemma), 1.0);
+            }
+            // add the instance to training set
+            set.add(corpusInstance);
+        }
+        return set;
     }
 }
