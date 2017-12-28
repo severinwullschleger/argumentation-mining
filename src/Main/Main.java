@@ -2,7 +2,8 @@ package Main;
 
 import ConfigurationManager.ConfigurationManager;
 import InputOutput.XMLParser;
-import Weka.WekaRunner;
+import Weka.StanceClassifier;
+import Weka.WekaExample;
 
 import java.util.List;
 
@@ -15,8 +16,8 @@ public class Main {
         final String DATASET_PATH = ConfigurationManager.getInstance().getFilePath();
         List<Corpus> corpuses = XMLParser.walkXMLFiles(DATASET_PATH);
 
-        WekaRunner wekaRun = new WekaRunner();
-        wekaRun.runStanceClassifier(corpuses);
+        StanceClassifier stanceClassifer = new StanceClassifier();
+        stanceClassifer.run(corpuses);
     }
 }
 
