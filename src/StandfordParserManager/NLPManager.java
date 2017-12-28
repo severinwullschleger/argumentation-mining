@@ -17,8 +17,4 @@ public class NLPManager {
         Document document = new Document(text);
         return document.sentences();
     }
-
-    public static List<String> lemmatizeSentence (Sentence sentence) {
-        return sentence.lemmas();
-    }
 }

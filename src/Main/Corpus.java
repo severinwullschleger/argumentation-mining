@@ -2,8 +2,8 @@ package Main;
 
 import Main.Enums.Language;
 import Main.Enums.Stance;
-import Main.SegmentLabels.role.Opponent;
-import Main.SegmentLabels.role.Proponent;
+import Main.Model.role.Opponent;
+import Main.Model.role.Proponent;
 
 import java.io.*;
 import java.util.ArrayList;

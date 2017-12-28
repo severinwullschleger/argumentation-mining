@@ -1,6 +1,7 @@
-package Reader;
+package InputOutput;
 
 import ConfigurationManager.ConfigurationManager;
+import Main.Model.role.UndefinedSentence;
 import Main.TextSentence;
 
 import java.io.File;
@@ -73,7 +74,7 @@ public abstract class FileReader {
         String sentenceId = fileId + "_" + String.valueOf(sentenceCounter);
 
         // TODO: integrate Standford parser and add a list of preprocessed Words
-        return new TextSentence(fileId, sentenceId, ConfigurationManager.SENTENCES_LANGUAGE, file, sentence);
+        return new UndefinedSentence(fileId, sentenceId, ConfigurationManager.SENTENCES_LANGUAGE, file, sentence);
 
     }
 }

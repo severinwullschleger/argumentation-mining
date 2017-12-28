@@ -12,16 +12,17 @@ import java.util.List;
 /**
  * Created by LuckyP on 02.12.17.
  */
-public class TextSentence {
+public abstract class TextSentence implements ISource, ITarget{
 
     private Corpus corpus;
     private String fileId;
     private String sentenceId;
     private int sentenceIndex;
-    private ArgumentType argumentType;            // "pro" or "opp"
     private Language language;
     private File correspondentFile;
     private Sentence sentence;
+
+    private Relation relation;
 
     public TextSentence() {
 
@@ -55,10 +56,6 @@ public class TextSentence {
         this.sentence = sentence;
     }
 
-    public void setArgumentType(ArgumentType argumentType) {
-        this.argumentType = argumentType;
-    }
-
     public void setCorpus(Corpus corpus) {
         this.corpus = corpus;
     }
@@ -73,10 +70,6 @@ public class TextSentence {
 
     public String getSentenceId() {
         return sentenceId;
-    }
-
-    public ArgumentType getArgumentType() {
-        return argumentType;
     }
 
     public Language getLanguage() {
@@ -99,7 +92,6 @@ public class TextSentence {
                 "\tLanguage = " + language + "\n" +
                 "\tcorrespondentFile = " + correspondentFile + "\n" +
                 "\tsentence = '" + sentence + "'\n" +
-                "\targumentType = '" + argumentType + "'\n" +
                 "}";
     }
 

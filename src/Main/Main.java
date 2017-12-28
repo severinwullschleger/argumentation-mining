@@ -1,11 +1,9 @@
 package Main;
 
 import ConfigurationManager.ConfigurationManager;
-import Reader.FileWriter;
-import Reader.XMLParser;
+import InputOutput.XMLParser;
 import Weka.WekaRunner;
 
-import java.nio.file.Paths;
 import java.util.List;
 
 /**

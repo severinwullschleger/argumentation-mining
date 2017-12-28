@@ -1,4 +1,4 @@
-package Reader;
+package InputOutput;
 
 
 import Main.Corpus;

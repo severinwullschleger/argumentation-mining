@@ -1,13 +1,12 @@
-package Reader;
+package InputOutput;
 
 import ConfigurationManager.ConfigurationManager;
 import Main.Corpus;
 import Main.Enums.ArgumentType;
 import Main.Enums.EnumsManager;
-import Main.Enums.Stance;
-import Main.SegmentLabels.role.Opponent;
-import Main.SegmentLabels.role.Proponent;
-import Main.SegmentLabels.role.UndefinedSentence;
+import Main.Model.role.Opponent;
+import Main.Model.role.Proponent;
+import Main.Model.role.UndefinedSentence;
 import Main.TextSentence;
 import edu.stanford.nlp.simple.Sentence;
 import org.w3c.dom.Document;
