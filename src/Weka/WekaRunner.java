@@ -74,31 +74,72 @@ public class WekaRunner {
 
     public void runStanceClassifier(List<Corpus> corpuses) {
 
+        // only corpuses which are tagged with stances
         List<Corpus> stanceTaggedCorpuses = new ArrayList<>();
         for (Corpus corpus : corpuses)
             if (corpus.isStanceTagged())
                 stanceTaggedCorpuses.add(corpus);
 
+        // add Stance attribute
         ArrayList<String> stanceClassValues = new ArrayList<>(2);
         stanceClassValues.add("pro");
         stanceClassValues.add("con");
         Attribute stanceClassAttribute = new Attribute("stance", stanceClassValues);
 
-        HashMap lemmaUnigramAttributes = new HashMap<String, Attribute>();
-        addAllLemmasAsAttributes(stanceTaggedCorpuses, lemmaUnigramAttributes);
+        // define different attribute sets
+            HashMap lemmaUnigramAttributes = getAllLemmaUnigramsAsAttributes(stanceTaggedCorpuses);
+            HashMap lemmaBigramAttributes = getAllLemmaBigramsAsAttributes(stanceTaggedCorpuses);
 
-        // Declare the feature vector -> changed to ArrayList (FastVector depreciated
-        ArrayList<Attribute> vector = new ArrayList<>();
-        vector.add(stanceClassAttribute);
-        vector.addAll(lemmaUnigramAttributes.values());
 
-        ArrayList<Corpus> trainingCorpuses = splitData(stanceTaggedCorpuses, 10, false);
-        ArrayList<Corpus> testCorpuses = splitData(stanceTaggedCorpuses, 10, true);
+        // Declare the feature vector (changed to ArrayList; FastVector depreciated)
+        ArrayList<Attribute> attributeVector = new ArrayList<>();
+        // add ClassAttribute
+        attributeVector.add(stanceClassAttribute);
+            // add different attribute sets
+            attributeVector.addAll(lemmaUnigramAttributes.values());
+            attributeVector.addAll(lemmaBigramAttributes.values());
 
-        // Create an empty training set
-        Instances trainingSet = createInstanceSet("trainingSet", 0, lemmaUnigramAttributes, vector, trainingCorpuses);
+        ArrayList<Corpus> trainingCorpuses = splitCorpuses(stanceTaggedCorpuses, 10, false);
+        ArrayList<Corpus> testingCorpuses = splitCorpuses(stanceTaggedCorpuses, 10, true);
+
+        // Create training set
+        Instances trainingSet = new Instances("trainingSet", attributeVector, trainingCorpuses.size()+1);
+        trainingSet.setClass(stanceClassAttribute);
+        // Create testing set
+        Instances testingSet = new Instances("testingSet", attributeVector, testingCorpuses.size()+1);
+        testingSet.setClass(stanceClassAttribute);
+
+        // create and add instances to TRAINING set
+        trainingSet.addAll(createDefaultInstances(trainingCorpuses, attributeVector));
+        // set class value
+        for (int i = 0; i < trainingCorpuses.size(); i++) {
+            setStringValue(trainingSet.get(i), trainingCorpuses.get(i).getStance().getStanceToString(), stanceClassAttribute);
+        }
+        // add 1 for lemma unigrams
+        for (int i = 0; i < trainingCorpuses.size(); i++) {
+            setStringValuesInCorpusInstance(trainingSet.get(i), trainingCorpuses.get(i).getLemmaUnigrams(),lemmaUnigramAttributes);
+        }
+        // add 1s for lemma bigrams
+        for (int i = 0; i < trainingCorpuses.size(); i++) {
+            setStringValuesInCorpusInstance(trainingSet.get(i), trainingCorpuses.get(i).getLemmaBigrams(),lemmaBigramAttributes);
+        }
+
+        // create and add instances to TESTING set
+        testingSet.addAll(createDefaultInstances(testingCorpuses, attributeVector));
+        // set class value
+        for (int i = 0; i < testingCorpuses.size(); i++) {
+            setStringValue(testingSet.get(i), testingCorpuses.get(i).getStance().getStanceToString(), stanceClassAttribute);
+        }
+        // add 1 for lemma unigrams
+        for (int i = 0; i < testingCorpuses.size(); i++) {
+            setStringValuesInCorpusInstance(testingSet.get(i), testingCorpuses.get(i).getLemmaUnigrams(),lemmaUnigramAttributes);
+        }
+        // add 1s for lemma bigrams
+        for (int i = 0; i < testingCorpuses.size(); i++) {
+            setStringValuesInCorpusInstance(testingSet.get(i), testingCorpuses.get(i).getLemmaBigrams(),lemmaBigramAttributes);
+        }
+
         System.out.println(trainingSet);
-        Instances testingSet = createInstanceSet("testingSet", 0, lemmaUnigramAttributes, vector, testCorpuses);
         System.out.println(testingSet);
 
         try {
@@ -119,7 +160,8 @@ public class WekaRunner {
         }
     }
 
-    private ArrayList<Corpus> splitData(List<Corpus> corpuses, int takeEveryXCorpus, Boolean isTestData) {
+
+    private ArrayList<Corpus> splitCorpuses(List<Corpus> corpuses, int takeEveryXCorpus, Boolean isTestData) {
         ArrayList<Corpus> partData = new ArrayList<>();
         for (int index = 0; index < corpuses.size(); index++) {
             if (isTestData) {
@@ -135,49 +177,68 @@ public class WekaRunner {
     }
 
 
-    private void addAllLemmasAsAttributes(List<Corpus> corpuses, HashMap attributes) {
+    private HashMap getAllLemmaUnigramsAsAttributes(List<Corpus> corpuses) {
+        HashMap attributes = new HashMap<String, Attribute>();
         for (Corpus corpus : corpuses) {
-            HashMap lemmasPerSentence = corpus.getAllLemmasPerTextSentence();
-            addAllLemmasFromCorpusAttributes(attributes, lemmasPerSentence);
+            HashMap lemmaUnigramsPerSentence = corpus.getAllLemmaUnigramsPerTextSentence();
+            addStringsFromCorpusAsAttributes(attributes, lemmaUnigramsPerSentence);
         }
+        return attributes;
     }
 
-    private void addAllLemmasFromCorpusAttributes(HashMap attributes, HashMap lemmaPerSentence) {
+    private HashMap getAllLemmaBigramsAsAttributes(List<Corpus> corpuses) {
+        HashMap attributes = new HashMap<String, Attribute>();
+        for (Corpus corpus : corpuses) {
+            HashMap lemmaBigramsPerSentence = corpus.getAllLemmaBigramsPerTextSentence();
+            addStringsFromCorpusAsAttributes(attributes, lemmaBigramsPerSentence);
+        }
+        return attributes;
+    }
+
+    private void addStringsFromCorpusAsAttributes(HashMap attributes, HashMap lemmaPerSentence) {
         Set<String> sentenceIds = lemmaPerSentence.keySet();
         for (String sentenceId : sentenceIds) {
-            List<String> lemmas = (List<String>) lemmaPerSentence.get(sentenceId);
-            addAllLemmasFromSentenceAsAttributes(attributes, lemmas);
+            List<String> strings = (List<String>) lemmaPerSentence.get(sentenceId);
+            addStringsFromSentenceAsAttributes(attributes, strings);
         }
     }
 
-    private void addAllLemmasFromSentenceAsAttributes(HashMap attributes, List<String> lemmas) {
-        for (String lemma : lemmas)
-            if (!attributes.containsKey(lemma))
-                attributes.put(lemma, new Attribute(lemma));
+    private void addStringsFromSentenceAsAttributes(HashMap attributes, List<String> strings) {
+        for (String s : strings)
+            if (!attributes.containsKey(s))
+                attributes.put(s, new Attribute(s));
     }
 
-    private Instances createInstanceSet(String setName, int classIndex, HashMap lemmaUnigramAttributes, ArrayList<Attribute> vector, ArrayList<Corpus> corpuses) {
-        // Create an empty training set
-        Instances set = new Instances(setName, vector, corpuses.size()+1);
-        // Set class index
-        set.setClassIndex(classIndex);
-
+    private List<Instance> createDefaultInstances(ArrayList<Corpus> corpuses, ArrayList<Attribute> vector) {
+        List<Instance> set = new ArrayList<Instance>();
         for (Corpus corpus : corpuses) {
-            // Create the instance
-            Instance corpusInstance = new DenseInstance(vector.size());
-            // add the stance to the first attribute
-            corpusInstance.setValue(vector.get(0),corpus.getStance().getStanceToString());
-            // add default value to attributes
-            for (int i = 1; i < corpusInstance.numAttributes(); i++) {
-                corpusInstance.setValue(vector.get(i), 0.0);
-            }
-            // change 0 to 1 if for the lemmas that are in the corpus
-            for (String lemma : corpus.getAllLemmas()) {
-                corpusInstance.setValue((Attribute)lemmaUnigramAttributes.get(lemma), 1.0);
-            }
-            // add the instance to training set
+            Instance corpusInstance = createDefaultInstance(vector);
             set.add(corpusInstance);
         }
         return set;
+    }
+
+    private Instance createDefaultInstance(ArrayList<Attribute> vector) {
+        // Create the instance
+        Instance corpusInstance = new DenseInstance(vector.size());
+        // add default values to attributes
+        for (int i = 1; i < corpusInstance.numAttributes(); i++) {
+            corpusInstance.setValue(vector.get(i), 0.0);
+        }
+        return corpusInstance;
+    }
+
+    private Instance setStringValue(Instance corpusInstance, String value, Attribute attribute) {
+        // change 0 to 1
+        corpusInstance.setValue(attribute, value);
+        return corpusInstance;
+    }
+
+    private Instance setStringValuesInCorpusInstance(Instance corpusInstance, List<String> corpusValues, HashMap attributes) {
+        // change 0 to 1
+        for (String s : corpusValues) {
+            corpusInstance.setValue((Attribute)attributes.get(s), 1.0);
+        }
+        return corpusInstance;
     }
 }

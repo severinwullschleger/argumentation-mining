@@ -6,8 +6,6 @@ import Main.SegmentLabels.role.Opponent;
 import Main.SegmentLabels.role.Proponent;
 
 import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -139,13 +137,6 @@ public class Corpus {
         }
     }
 
-    public HashMap<String, List<String>> getAllLemmasPerTextSentence() {
-        HashMap lemmasPerSentence = new HashMap<String, List<String>>();
-        for (TextSentence textSentence : textSentences)
-            lemmasPerSentence.put(textSentence.getSentenceId(), textSentence.getLemmas());
-        return lemmasPerSentence;
-    }
-
     public boolean isStanceTagged() {
         if (stance.equals(Stance.CON) || stance.equals(Stance.PRO))
             return true;
@@ -153,10 +144,47 @@ public class Corpus {
             return false;
     }
 
-    public ArrayList<String> getAllLemmas() {
-        ArrayList lemmas = new ArrayList<>();
+    public List<String> getLemmaUnigrams() {
+        ArrayList unigrams = new ArrayList<>();
         for (TextSentence textSentence : textSentences)
-            lemmas.addAll(textSentence.getLemmas());
+            unigrams.addAll(textSentence.getLemmaUnigrams());
+        return unigrams;
+    }
+
+    public List<String> getLemmaBigrams() {
+        ArrayList bigrams = new ArrayList<>();
+        for (TextSentence textSentence : textSentences)
+            bigrams.addAll(textSentence.getLemmaBigrams());
+        return bigrams;
+    }
+
+    public List<String> getLemmaUnigramsFromSentence(int i) {
+        ArrayList lemmas = new ArrayList<>();
+        if (i >= 0 && i < textSentences.size())
+            lemmas.addAll(textSentences.get(i).getLemmaUnigrams());
         return lemmas;
     }
+
+    public List<String> getLemmaBigramsFromSentence(int i) {
+        ArrayList lemmas = new ArrayList<>();
+        if (i >= 0 && i < textSentences.size())
+            lemmas.addAll(textSentences.get(i).getLemmaBigrams());
+        return lemmas;
+    }
+
+    public HashMap<String, List<String>> getAllLemmaUnigramsPerTextSentence() {
+        HashMap unigramsPerSentence = new HashMap<String, List<String>>();
+        for (TextSentence textSentence : textSentences)
+            unigramsPerSentence.put(textSentence.getSentenceId(), textSentence.getLemmaUnigrams());
+        return unigramsPerSentence;
+    }
+
+    public HashMap<String, List<String>> getAllLemmaBigramsPerTextSentence() {
+        HashMap bigramsPerSentence = new HashMap<String, List<String>>();
+        for (TextSentence textSentence : textSentences)
+            bigramsPerSentence.put(textSentence.getSentenceId(), textSentence.getLemmaBigrams());
+        return bigramsPerSentence;
+    }
+
+
 }

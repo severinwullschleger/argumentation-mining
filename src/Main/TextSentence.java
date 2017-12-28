@@ -3,12 +3,10 @@ package Main;
 import Main.Enums.ArgumentType;
 import Main.Enums.Language;
 
-import Main.SegmentLabels.role.Opponent;
-import Main.SegmentLabels.role.Proponent;
 import edu.stanford.nlp.simple.Sentence;
 
 import java.io.File;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,8 +14,10 @@ import java.util.List;
  */
 public class TextSentence {
 
+    private Corpus corpus;
     private String fileId;
     private String sentenceId;
+    private int sentenceIndex;
     private ArgumentType argumentType;            // "pro" or "opp"
     private Language language;
     private File correspondentFile;
@@ -59,6 +59,14 @@ public class TextSentence {
         this.argumentType = argumentType;
     }
 
+    public void setCorpus(Corpus corpus) {
+        this.corpus = corpus;
+    }
+
+    public void setSentenceIndex(int sentenceIndex) {
+        this.sentenceIndex = sentenceIndex;
+    }
+
     public String getFileId() {
         return fileId;
     }
@@ -95,7 +103,23 @@ public class TextSentence {
                 "}";
     }
 
-    public List<String> getLemmas() {
+    public List<String> getLemmaUnigrams() {
         return sentence.lemmas();
+    }
+
+    public List<String> getLemmasFromPrecedingSentence() {
+        return corpus.getLemmaUnigramsFromSentence(sentenceIndex-1);
+    }
+
+    public List<String> getLemmasFromSubsequentSentence() {
+        return corpus.getLemmaUnigramsFromSentence(sentenceIndex+1);
+    }
+
+    public List<String> getLemmaBigrams() {
+        List<String> bigrams = new ArrayList<>();
+        List<String> unigrams = sentence.lemmas();
+        for (int i = 0; i < unigrams.size()-1; i++)
+            bigrams.add(unigrams.get(i) + " " + unigrams.get(i+1));
+        return bigrams;
     }
 }

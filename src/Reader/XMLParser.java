@@ -85,6 +85,8 @@ public abstract class XMLParser {
                 textSentence.setSentence(new Sentence(nNodeE.getTextContent()));
                 textSentence.setLanguage(ConfigurationManager.SENTENCES_LANGUAGE);
                 textSentence.setCorrespondentFile(inputFile);
+                textSentence.setCorpus(corpus);
+                textSentence.setSentenceIndex(corpus.getTextSentences().size());
                 corpus.getTextSentences().add(textSentence);
 
 
