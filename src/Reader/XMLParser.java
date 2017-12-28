@@ -42,32 +42,33 @@ public abstract class XMLParser {
     }
 
     private static Corpus parseXML(File inputFile) {
-        Corpus corpus = new Corpus();
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(inputFile);
             doc.getDocumentElement().normalize();
 
+            Corpus corpus = new Corpus();
             corpus.setFileId(doc.getDocumentElement().getAttribute("id"));
             corpus.setTopicId(doc.getDocumentElement().getAttribute("topic_id"));
             String stanceAttribute = doc.getDocumentElement().getAttribute("stance");
-            corpus.setStance(convertToStanceEnum(stanceAttribute));
+            corpus.setStance(EnumsManager.convertToStanceEnum(stanceAttribute));
             corpus.setLanguage(ConfigurationManager.SENTENCES_LANGUAGE);
             corpus.setCorrespondentFile(inputFile);
 
+            // add corresponding segments (Teilsaetze)
             ArrayList<TextSentence> textSentences = new ArrayList<>();
 
             NodeList nListE = doc.getElementsByTagName("edu");
             NodeList nListA = doc.getElementsByTagName("adu");
             for (int temp = 0; temp < nListE.getLength(); temp++) {
                 Node nNodeE = nListE.item(temp);
-
                 Node nNodeA = nListA.item(temp);
-                String argumentTypeAttribute = nNodeA.getAttributes().getNamedItem("type").getTextContent();
-                ArgumentType sentenceType = convertToArgumentTypeEnum(argumentTypeAttribute);
-                TextSentence textSentence;
 
+                String argumentTypeAttribute = nNodeA.getAttributes().getNamedItem("type").getTextContent();
+                ArgumentType sentenceType = EnumsManager.convertToRoleEnum(argumentTypeAttribute);
+
+                TextSentence textSentence;
                 switch (sentenceType) {
                     case OPP:
                         textSentence = new Opponent();
@@ -79,7 +80,6 @@ public abstract class XMLParser {
                         textSentence = new UndefinedSentence();
                 }
 
-                textSentence.setArgumentType(sentenceType);
                 textSentence.setFileId(corpus.getFileId());
                 textSentence.setSentenceId(nNodeE.getAttributes().getNamedItem("id").getTextContent());
                 textSentence.setSentence(new Sentence(nNodeE.getTextContent()));
@@ -89,47 +89,14 @@ public abstract class XMLParser {
                 textSentence.setSentenceIndex(corpus.getTextSentences().size());
                 corpus.getTextSentences().add(textSentence);
 
-
                 textSentences.add(textSentence);
             }
             corpus.setSentences(textSentences);
-
-            printOpponentAndProponents(corpus);
+            return corpus;
 
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
+            return null;
         }
-
-        return corpus;
-    }
-
-    private static void printOpponentAndProponents(Corpus corpus) {
-        System.out.println(corpus.getFileId() + "  has the following proponents: ");
-        for (TextSentence proponent : corpus.getProponents()) {
-            System.out.print(proponent.getSentenceId() + " , ");
-        }
-        System.out.println("\n");
-
-        System.out.println(corpus.getFileId() + "  has the following opponents: ");
-        for (TextSentence opponent : corpus.getOpponents()) {
-            System.out.print(opponent.getSentenceId() + " , ");
-        }
-        System.out.println("\n");
-    }
-
-    private static Stance convertToStanceEnum(String attribute) {
-        List<String> stancesStrings = EnumsManager.getStancesToString();
-        if (!stancesStrings.contains(attribute.toUpperCase())) {
-            return Stance.UNDEFINED;
-        }
-        return Stance.valueOf(attribute.toUpperCase());
-    }
-
-    private static ArgumentType convertToArgumentTypeEnum(String attribute) {
-        List<String> typesStrings = EnumsManager.getArgumentTypesToString();
-        if (!typesStrings.contains(attribute.toUpperCase())) {
-            return ArgumentType.UNDEFINED;
-        }
-        return ArgumentType.valueOf(attribute.toUpperCase());
     }
 }

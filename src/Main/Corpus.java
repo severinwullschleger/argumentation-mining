@@ -187,4 +187,19 @@ public class Corpus {
     }
 
 
+    public void printOpponentAndProponents() {
+        System.out.println(getFileId() + "  has the following proponents: ");
+        for (TextSentence proponent : getProponents()) {
+            System.out.print(proponent.getSentenceId() + " , ");
+        }
+        System.out.println("\n");
+
+        System.out.println(getFileId() + "  has the following opponents: ");
+        for (TextSentence opponent : getOpponents()) {
+            System.out.print(opponent.getSentenceId() + " , ");
+        }
+        System.out.println("\n");
+    }
+
+
 }

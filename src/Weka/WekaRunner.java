@@ -99,8 +99,8 @@ public class WekaRunner {
             attributeVector.addAll(lemmaUnigramAttributes.values());
             attributeVector.addAll(lemmaBigramAttributes.values());
 
-        ArrayList<Corpus> trainingCorpuses = splitCorpuses(stanceTaggedCorpuses, 10, false);
-        ArrayList<Corpus> testingCorpuses = splitCorpuses(stanceTaggedCorpuses, 10, true);
+        ArrayList<Corpus> trainingCorpuses = splitCorpuses(stanceTaggedCorpuses, 13, false);
+        ArrayList<Corpus> testingCorpuses = splitCorpuses(stanceTaggedCorpuses, 13, true);
 
         // Create training set
         Instances trainingSet = new Instances("trainingSet", attributeVector, trainingCorpuses.size()+1);
