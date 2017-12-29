@@ -13,7 +13,7 @@ public class Main {
 
     public static void main(String args[]) {
         final String DATASET_PATH = ConfigurationManager.getInstance().getFilePath();
-        List<Main.MicroText> microTexts = XMLParser.walkXMLFiles(DATASET_PATH);
+        List<MicroText> microTexts = XMLParser.walkXMLFiles(DATASET_PATH);
 
         StanceClassifier stanceClassifer = new StanceClassifier();
         stanceClassifer.run(microTexts);

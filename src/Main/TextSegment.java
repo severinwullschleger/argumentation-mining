@@ -13,7 +13,7 @@ import java.util.List;
  */
 public abstract class TextSegment implements ISource, ITarget{
 
-    private Main.MicroText microText;
+    private MicroText microText;
     private String fileId;
     private String sentenceId;
     private int sentenceIndex;
@@ -55,7 +55,7 @@ public abstract class TextSegment implements ISource, ITarget{
         this.sentence = sentence;
     }
 
-    public void setMicroText(Main.MicroText microText) {
+    public void setMicroText(MicroText microText) {
         this.microText = microText;
     }
 

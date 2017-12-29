@@ -19,7 +19,7 @@ public class MicroText {
     private String fileId;
     private String topicId;         // e.g waste_separation
     private Stance stance;          // "pro" or "opp"
-    private List<Main.TextSegment> textSegments;
+    private List<TextSegment> textSegments;
     private Language language;
     private File correspondentFile;
 
@@ -29,7 +29,7 @@ public class MicroText {
 
     }
 
-    public MicroText(String fileId, List<Main.TextSegment> sentences, Language language, List<String> preprocessedCorpus) {
+    public MicroText(String fileId, List<TextSegment> sentences, Language language, List<String> preprocessedCorpus) {
         this.fileId = fileId;
         this.textSegments = sentences;
         this.language = language;
@@ -48,7 +48,7 @@ public class MicroText {
         this.fileId = fileId;
     }
 
-    public void setSentences(List<Main.TextSegment> sentences) {
+    public void setSentences(List<TextSegment> sentences) {
         this.textSegments = sentences;
     }
 
@@ -63,7 +63,7 @@ public class MicroText {
                 + "\nlanguage = " + language
                 + "\nfile = " + correspondentFile);
 
-        for (Main.TextSegment textSegment : textSegments)
+        for (TextSegment textSegment : textSegments)
             rtn.append(textSegment.toString());
 
         return rtn.toString();
@@ -77,11 +77,11 @@ public class MicroText {
         this.stance = stance;
     }
 
-    public List<Main.TextSegment> getTextSegments() {
+    public List<TextSegment> getTextSegments() {
         return textSegments;
     }
 
-    public void setTextSegments(List<Main.TextSegment> textSegments) {
+    public void setTextSegments(List<TextSegment> textSegments) {
         this.textSegments = textSegments;
     }
 
@@ -89,10 +89,10 @@ public class MicroText {
         this.correspondentFile = correspondentFile;
     }
 
-    public List<Main.TextSegment> getOpponents() {
-        List<Main.TextSegment> opponents = new ArrayList<>();
+    public List<TextSegment> getOpponents() {
+        List<TextSegment> opponents = new ArrayList<>();
         if (this.textSegments != null) {
-            for (Main.TextSegment textSegment : this.textSegments) {
+            for (TextSegment textSegment : this.textSegments) {
                 if (textSegment instanceof Opponent) {
                     opponents.add(textSegment);
                 }
@@ -102,10 +102,10 @@ public class MicroText {
         return null;
     }
 
-    public List<Main.TextSegment> getProponents() {
-        List<Main.TextSegment> proponents = new ArrayList<>();
+    public List<TextSegment> getProponents() {
+        List<TextSegment> proponents = new ArrayList<>();
         if (this.textSegments != null) {
-            for (Main.TextSegment textSegment : this.textSegments) {
+            for (TextSegment textSegment : this.textSegments) {
                 if (textSegment instanceof Proponent) {
                     proponents.add(textSegment);
                 }
@@ -127,7 +127,7 @@ public class MicroText {
             File file = new File (path+fileName);
 
             PrintWriter out = new PrintWriter(file);
-            for (Main.TextSegment sent : textSegments)
+            for (TextSegment sent : textSegments)
                 out.println(sent.getSentence().text());
 
             out.close();
@@ -146,14 +146,14 @@ public class MicroText {
 
     public List<String> getLemmaUnigrams() {
         ArrayList unigrams = new ArrayList<>();
-        for (Main.TextSegment textSegment : textSegments)
+        for (TextSegment textSegment : textSegments)
             unigrams.addAll(textSegment.getLemmaUnigrams());
         return unigrams;
     }
 
     public List<String> getLemmaBigrams() {
         ArrayList bigrams = new ArrayList<>();
-        for (Main.TextSegment textSegment : textSegments)
+        for (TextSegment textSegment : textSegments)
             bigrams.addAll(textSegment.getLemmaBigrams());
         return bigrams;
     }
@@ -174,14 +174,14 @@ public class MicroText {
 
     public HashMap<String, List<String>> getAllLemmaUnigramsPerTextSentence() {
         HashMap unigramsPerSentence = new HashMap<String, List<String>>();
-        for (Main.TextSegment textSegment : textSegments)
+        for (TextSegment textSegment : textSegments)
             unigramsPerSentence.put(textSegment.getSentenceId(), textSegment.getLemmaUnigrams());
         return unigramsPerSentence;
     }
 
     public HashMap<String, List<String>> getAllLemmaBigramsPerTextSentence() {
         HashMap bigramsPerSentence = new HashMap<String, List<String>>();
-        for (Main.TextSegment textSegment : textSegments)
+        for (TextSegment textSegment : textSegments)
             bigramsPerSentence.put(textSegment.getSentenceId(), textSegment.getLemmaBigrams());
         return bigramsPerSentence;
     }
@@ -189,13 +189,13 @@ public class MicroText {
 
     public void printOpponentAndProponents() {
         System.out.println(getFileId() + "  has the following proponents: ");
-        for (Main.TextSegment proponent : getProponents()) {
+        for (TextSegment proponent : getProponents()) {
             System.out.print(proponent.getSentenceId() + " , ");
         }
         System.out.println("\n");
 
         System.out.println(getFileId() + "  has the following opponents: ");
-        for (Main.TextSegment opponent : getOpponents()) {
+        for (TextSegment opponent : getOpponents()) {
             System.out.print(opponent.getSentenceId() + " , ");
         }
         System.out.println("\n");

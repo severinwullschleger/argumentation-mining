@@ -40,8 +40,8 @@ public class StanceClassifier extends Weka.Classifier{
         attributeVector.addAll(lemmaUnigramAttributes.values());
         attributeVector.addAll(lemmaBigramAttributes.values());
 
-        ArrayList<MicroText> trainingMicroTexts = splitCorpuses(stanceTaggedMicroTexts, 13, false);
-        ArrayList<MicroText> testingMicroTexts = splitCorpuses(stanceTaggedMicroTexts, 13, true);
+        ArrayList<MicroText> trainingMicroTexts = splitCorpuses(stanceTaggedMicroTexts, 10, false);
+        ArrayList<MicroText> testingMicroTexts = splitCorpuses(stanceTaggedMicroTexts, 10, true);
 
         // Create training set
         Instances trainingSet = new Instances("trainingSet", attributeVector, trainingMicroTexts.size()+1);
@@ -56,7 +56,7 @@ public class StanceClassifier extends Weka.Classifier{
         for (int i = 0; i < trainingMicroTexts.size(); i++) {
             setStringValue(trainingSet.get(i), trainingMicroTexts.get(i).getStance().getStanceToString(), stanceClassAttribute);
         }
-        // add 1 for lemma unigrams
+        // add 1s for lemma unigrams
         for (int i = 0; i < trainingMicroTexts.size(); i++) {
             setStringValuesInCorpusInstance(trainingSet.get(i), trainingMicroTexts.get(i).getLemmaUnigrams(),lemmaUnigramAttributes);
         }
