@@ -14,28 +14,28 @@ import java.util.List;
  * Corpus represents a textfile
  * Each corpus (e.g. micro_b001.txt) has a list of <sentence>sentences</sentence>
  */
-public class Corpus {
+public class MicroText {
 
     private String fileId;
     private String topicId;         // e.g waste_separation
     private Stance stance;          // "pro" or "opp"
-    private List<TextSentence> textSentences;
+    private List<Main.TextSegment> textSegments;
     private Language language;
     private File correspondentFile;
 
 
-    public Corpus() {
-        this.textSentences = new ArrayList<>();
+    public MicroText() {
+        this.textSegments = new ArrayList<>();
 
     }
 
-    public Corpus(String fileId, List<TextSentence> sentences, Language language, List<String> preprocessedCorpus) {
+    public MicroText(String fileId, List<Main.TextSegment> sentences, Language language, List<String> preprocessedCorpus) {
         this.fileId = fileId;
-        this.textSentences = sentences;
+        this.textSegments = sentences;
         this.language = language;
     }
 
-    public Corpus(String fileId, Language language) {
+    public MicroText(String fileId, Language language) {
         this.fileId = fileId;
         this.language = language;
     }
@@ -48,8 +48,8 @@ public class Corpus {
         this.fileId = fileId;
     }
 
-    public void setSentences(List<TextSentence> sentences) {
-        this.textSentences = sentences;
+    public void setSentences(List<Main.TextSegment> sentences) {
+        this.textSegments = sentences;
     }
 
     public void setLanguage(Language language) {
@@ -63,8 +63,8 @@ public class Corpus {
                 + "\nlanguage = " + language
                 + "\nfile = " + correspondentFile);
 
-        for (TextSentence textSentence : textSentences)
-            rtn.append(textSentence.toString());
+        for (Main.TextSegment textSegment : textSegments)
+            rtn.append(textSegment.toString());
 
         return rtn.toString();
     }
@@ -77,24 +77,24 @@ public class Corpus {
         this.stance = stance;
     }
 
-    public List<TextSentence> getTextSentences() {
-        return textSentences;
+    public List<Main.TextSegment> getTextSegments() {
+        return textSegments;
     }
 
-    public void setTextSentences(List<TextSentence> textSentences) {
-        this.textSentences = textSentences;
+    public void setTextSegments(List<Main.TextSegment> textSegments) {
+        this.textSegments = textSegments;
     }
 
     public void setCorrespondentFile(File correspondentFile) {
         this.correspondentFile = correspondentFile;
     }
 
-    public List<TextSentence> getOpponents() {
-        List<TextSentence> opponents = new ArrayList<>();
-        if (this.textSentences != null) {
-            for (TextSentence textSentence : this.textSentences) {
-                if (textSentence instanceof Opponent) {
-                    opponents.add(textSentence);
+    public List<Main.TextSegment> getOpponents() {
+        List<Main.TextSegment> opponents = new ArrayList<>();
+        if (this.textSegments != null) {
+            for (Main.TextSegment textSegment : this.textSegments) {
+                if (textSegment instanceof Opponent) {
+                    opponents.add(textSegment);
                 }
             }
             return opponents;
@@ -102,12 +102,12 @@ public class Corpus {
         return null;
     }
 
-    public List<TextSentence> getProponents() {
-        List<TextSentence> proponents = new ArrayList<>();
-        if (this.textSentences != null) {
-            for (TextSentence textSentence : this.textSentences) {
-                if (textSentence instanceof Proponent) {
-                    proponents.add(textSentence);
+    public List<Main.TextSegment> getProponents() {
+        List<Main.TextSegment> proponents = new ArrayList<>();
+        if (this.textSegments != null) {
+            for (Main.TextSegment textSegment : this.textSegments) {
+                if (textSegment instanceof Proponent) {
+                    proponents.add(textSegment);
                 }
             }
             return proponents;
@@ -127,7 +127,7 @@ public class Corpus {
             File file = new File (path+fileName);
 
             PrintWriter out = new PrintWriter(file);
-            for (TextSentence sent : textSentences )
+            for (Main.TextSegment sent : textSegments)
                 out.println(sent.getSentence().text());
 
             out.close();
@@ -146,56 +146,56 @@ public class Corpus {
 
     public List<String> getLemmaUnigrams() {
         ArrayList unigrams = new ArrayList<>();
-        for (TextSentence textSentence : textSentences)
-            unigrams.addAll(textSentence.getLemmaUnigrams());
+        for (Main.TextSegment textSegment : textSegments)
+            unigrams.addAll(textSegment.getLemmaUnigrams());
         return unigrams;
     }
 
     public List<String> getLemmaBigrams() {
         ArrayList bigrams = new ArrayList<>();
-        for (TextSentence textSentence : textSentences)
-            bigrams.addAll(textSentence.getLemmaBigrams());
+        for (Main.TextSegment textSegment : textSegments)
+            bigrams.addAll(textSegment.getLemmaBigrams());
         return bigrams;
     }
 
     public List<String> getLemmaUnigramsFromSentence(int i) {
         ArrayList lemmas = new ArrayList<>();
-        if (i >= 0 && i < textSentences.size())
-            lemmas.addAll(textSentences.get(i).getLemmaUnigrams());
+        if (i >= 0 && i < textSegments.size())
+            lemmas.addAll(textSegments.get(i).getLemmaUnigrams());
         return lemmas;
     }
 
     public List<String> getLemmaBigramsFromSentence(int i) {
         ArrayList lemmas = new ArrayList<>();
-        if (i >= 0 && i < textSentences.size())
-            lemmas.addAll(textSentences.get(i).getLemmaBigrams());
+        if (i >= 0 && i < textSegments.size())
+            lemmas.addAll(textSegments.get(i).getLemmaBigrams());
         return lemmas;
     }
 
     public HashMap<String, List<String>> getAllLemmaUnigramsPerTextSentence() {
         HashMap unigramsPerSentence = new HashMap<String, List<String>>();
-        for (TextSentence textSentence : textSentences)
-            unigramsPerSentence.put(textSentence.getSentenceId(), textSentence.getLemmaUnigrams());
+        for (Main.TextSegment textSegment : textSegments)
+            unigramsPerSentence.put(textSegment.getSentenceId(), textSegment.getLemmaUnigrams());
         return unigramsPerSentence;
     }
 
     public HashMap<String, List<String>> getAllLemmaBigramsPerTextSentence() {
         HashMap bigramsPerSentence = new HashMap<String, List<String>>();
-        for (TextSentence textSentence : textSentences)
-            bigramsPerSentence.put(textSentence.getSentenceId(), textSentence.getLemmaBigrams());
+        for (Main.TextSegment textSegment : textSegments)
+            bigramsPerSentence.put(textSegment.getSentenceId(), textSegment.getLemmaBigrams());
         return bigramsPerSentence;
     }
 
 
     public void printOpponentAndProponents() {
         System.out.println(getFileId() + "  has the following proponents: ");
-        for (TextSentence proponent : getProponents()) {
+        for (Main.TextSegment proponent : getProponents()) {
             System.out.print(proponent.getSentenceId() + " , ");
         }
         System.out.println("\n");
 
         System.out.println(getFileId() + "  has the following opponents: ");
-        for (TextSentence opponent : getOpponents()) {
+        for (Main.TextSegment opponent : getOpponents()) {
             System.out.print(opponent.getSentenceId() + " , ");
         }
         System.out.println("\n");

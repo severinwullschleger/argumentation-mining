@@ -1,10 +1,8 @@
 package StandfordParserManager;
 
 
-import Main.TextSentence;
 import edu.stanford.nlp.simple.Document;
 import edu.stanford.nlp.simple.Sentence;
-import edu.stanford.nlp.simple.Token;
 
 import java.util.List;
 

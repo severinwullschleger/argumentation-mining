@@ -1,7 +1,7 @@
 package InputOutput;
 
 
-import Main.Corpus;
+import Main.MicroText;
 import Main.Enums.Stance;
 
 import java.io.File;
@@ -13,7 +13,7 @@ public abstract class FileWriter {
     public static void writeFile() {}
 
 
-    public static void writeToProConFolder(List<Corpus> corpuses, String path) {
+    public static void writeToProConFolder(List<MicroText> microTexts, String path) {
 
         String proPath = Paths.get(path).toAbsolutePath().toString() + "/result_classes/pro/";
         makeSureDirectoryExists(proPath);
@@ -21,11 +21,11 @@ public abstract class FileWriter {
         String conPath = Paths.get(path).toAbsolutePath().toString() + "/result_classes/con_/";
         makeSureDirectoryExists(conPath);
 
-        for (Corpus corpus : corpuses) {
-            if (corpus.getStance().equals(Stance.PRO))
-                corpus.writeToFile(proPath);
-            else if (corpus.getStance().equals(Stance.CON))
-                corpus.writeToFile(conPath);
+        for (MicroText microText : microTexts) {
+            if (microText.getStance().equals(Stance.PRO))
+                microText.writeToFile(proPath);
+            else if (microText.getStance().equals(Stance.CON))
+                microText.writeToFile(conPath);
         }
     }
 

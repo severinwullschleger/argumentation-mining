@@ -1,11 +1,11 @@
 package Main.Model.role;
 
-import Main.TextSentence;
+import Main.TextSegment;
 
 /**
  * Created by LuckyP on 16.12.17.
  */
-public class Proponent extends TextSentence {
+public class Proponent extends TextSegment {
     public Proponent() {
 
     }

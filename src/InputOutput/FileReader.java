@@ -2,7 +2,7 @@ package InputOutput;
 
 import ConfigurationManager.ConfigurationManager;
 import Main.Model.role.UndefinedSentence;
-import Main.TextSentence;
+import Main.TextSegment;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,8 +22,8 @@ import edu.stanford.nlp.simple.*;
  */
 public abstract class FileReader {
 
-    public static List<TextSentence> readFile(final String FILE_PATH) {
-        List<TextSentence> textSentences = new ArrayList<>();
+    public static List<TextSegment> readFile(final String FILE_PATH) {
+        List<TextSegment> textSegments = new ArrayList<>();
         File file = new File(FILE_PATH);
         if (file.exists()) {
             //read file into stream, try-with-resources and convert it
@@ -33,8 +33,8 @@ public abstract class FileReader {
                     int sentenceCounter = 0;
                     for (Sentence sentence : sentences) {
                         sentenceCounter++;
-                        TextSentence textSentence = createSentence(file, sentence, sentenceCounter);
-                        textSentences.add(textSentence);
+                        TextSegment textSegment = createSentence(file, sentence, sentenceCounter);
+                        textSegments.add(textSegment);
                     }
                 });
 
@@ -44,11 +44,11 @@ public abstract class FileReader {
         } else {
             System.err.println("Please select a file valid");
         }
-        return textSentences;
+        return textSegments;
     }
 
-    public static Map<String, List<TextSentence>> walkDatasetDirectory(final String DATASET_PATH) {
-        Map<String, List<TextSentence>> corpusMap = new HashMap<>();
+    public static Map<String, List<TextSegment>> walkDatasetDirectory(final String DATASET_PATH) {
+        Map<String, List<TextSegment>> corpusMap = new HashMap<>();
         File file = new File(DATASET_PATH);
         if (file.exists()) {
             File[] files = file.listFiles();
@@ -68,7 +68,7 @@ public abstract class FileReader {
         return (fileName.contains(".txt") && fileName.contains("micro_"));
     }
 
-    private static TextSentence createSentence(File file, Sentence sentence, int sentenceCounter) {
+    private static TextSegment createSentence(File file, Sentence sentence, int sentenceCounter) {
         String[] temp = file.getName().split("/");
         String fileId = temp[temp.length - 1].split("_")[1].split("\\.")[0]; // e.g. b001
         String sentenceId = fileId + "_" + String.valueOf(sentenceCounter);

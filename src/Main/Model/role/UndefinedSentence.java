@@ -1,7 +1,7 @@
 package Main.Model.role;
 
 import Main.Enums.Language;
-import Main.TextSentence;
+import Main.TextSegment;
 import edu.stanford.nlp.simple.Sentence;
 
 import java.io.File;
@@ -9,7 +9,7 @@ import java.io.File;
 /**
  * Created by LuckyP on 16.12.17.
  */
-public class UndefinedSentence extends TextSentence {
+public class UndefinedSentence extends TextSegment {
 
     public UndefinedSentence() {
     }

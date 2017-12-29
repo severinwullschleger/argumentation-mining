@@ -1,28 +1,25 @@
 package Weka;
 
-import Main.Corpus;
+import Main.MicroText;
 import weka.classifiers.Classifier;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.evaluation.Evaluation;
 import weka.core.Attribute;
-import weka.core.DenseInstance;
-import weka.core.Instance;
 import weka.core.Instances;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 public class StanceClassifier extends Weka.Classifier{
 
-    public void run(List<Corpus> corpuses) {
+    public void run(List<MicroText> microTexts) {
 
         // only corpuses which are tagged with stances
-        List<Corpus> stanceTaggedCorpuses = new ArrayList<>();
-        for (Corpus corpus : corpuses)
-            if (corpus.isStanceTagged())
-                stanceTaggedCorpuses.add(corpus);
+        List<MicroText> stanceTaggedMicroTexts = new ArrayList<>();
+        for (MicroText microText : microTexts)
+            if (microText.isStanceTagged())
+                stanceTaggedMicroTexts.add(microText);
 
         // add Stance attribute
         ArrayList<String> stanceClassValues = new ArrayList<>(2);
@@ -31,8 +28,8 @@ public class StanceClassifier extends Weka.Classifier{
         Attribute stanceClassAttribute = new Attribute("stance", stanceClassValues);
 
         // define different attribute sets
-        HashMap lemmaUnigramAttributes = getAllLemmaUnigramsAsAttributes(stanceTaggedCorpuses);
-        HashMap lemmaBigramAttributes = getAllLemmaBigramsAsAttributes(stanceTaggedCorpuses);
+        HashMap lemmaUnigramAttributes = getAllLemmaUnigramsAsAttributes(stanceTaggedMicroTexts);
+        HashMap lemmaBigramAttributes = getAllLemmaBigramsAsAttributes(stanceTaggedMicroTexts);
 
 
         // Declare the feature vector (changed to ArrayList; FastVector depreciated)
@@ -43,44 +40,44 @@ public class StanceClassifier extends Weka.Classifier{
         attributeVector.addAll(lemmaUnigramAttributes.values());
         attributeVector.addAll(lemmaBigramAttributes.values());
 
-        ArrayList<Corpus> trainingCorpuses = splitCorpuses(stanceTaggedCorpuses, 13, false);
-        ArrayList<Corpus> testingCorpuses = splitCorpuses(stanceTaggedCorpuses, 13, true);
+        ArrayList<MicroText> trainingMicroTexts = splitCorpuses(stanceTaggedMicroTexts, 13, false);
+        ArrayList<MicroText> testingMicroTexts = splitCorpuses(stanceTaggedMicroTexts, 13, true);
 
         // Create training set
-        Instances trainingSet = new Instances("trainingSet", attributeVector, trainingCorpuses.size()+1);
+        Instances trainingSet = new Instances("trainingSet", attributeVector, trainingMicroTexts.size()+1);
         trainingSet.setClass(stanceClassAttribute);
         // Create testing set
-        Instances testingSet = new Instances("testingSet", attributeVector, testingCorpuses.size()+1);
+        Instances testingSet = new Instances("testingSet", attributeVector, testingMicroTexts.size()+1);
         testingSet.setClass(stanceClassAttribute);
 
         // create and add instances to TRAINING set
-        trainingSet.addAll(createDefaultInstances(trainingCorpuses, attributeVector));
+        trainingSet.addAll(createDefaultInstances(trainingMicroTexts, attributeVector));
         // set class value
-        for (int i = 0; i < trainingCorpuses.size(); i++) {
-            setStringValue(trainingSet.get(i), trainingCorpuses.get(i).getStance().getStanceToString(), stanceClassAttribute);
+        for (int i = 0; i < trainingMicroTexts.size(); i++) {
+            setStringValue(trainingSet.get(i), trainingMicroTexts.get(i).getStance().getStanceToString(), stanceClassAttribute);
         }
         // add 1 for lemma unigrams
-        for (int i = 0; i < trainingCorpuses.size(); i++) {
-            setStringValuesInCorpusInstance(trainingSet.get(i), trainingCorpuses.get(i).getLemmaUnigrams(),lemmaUnigramAttributes);
+        for (int i = 0; i < trainingMicroTexts.size(); i++) {
+            setStringValuesInCorpusInstance(trainingSet.get(i), trainingMicroTexts.get(i).getLemmaUnigrams(),lemmaUnigramAttributes);
         }
         // add 1s for lemma bigrams
-        for (int i = 0; i < trainingCorpuses.size(); i++) {
-            setStringValuesInCorpusInstance(trainingSet.get(i), trainingCorpuses.get(i).getLemmaBigrams(),lemmaBigramAttributes);
+        for (int i = 0; i < trainingMicroTexts.size(); i++) {
+            setStringValuesInCorpusInstance(trainingSet.get(i), trainingMicroTexts.get(i).getLemmaBigrams(),lemmaBigramAttributes);
         }
 
         // create and add instances to TESTING set
-        testingSet.addAll(createDefaultInstances(testingCorpuses, attributeVector));
+        testingSet.addAll(createDefaultInstances(testingMicroTexts, attributeVector));
         // set class value
-        for (int i = 0; i < testingCorpuses.size(); i++) {
-            setStringValue(testingSet.get(i), testingCorpuses.get(i).getStance().getStanceToString(), stanceClassAttribute);
+        for (int i = 0; i < testingMicroTexts.size(); i++) {
+            setStringValue(testingSet.get(i), testingMicroTexts.get(i).getStance().getStanceToString(), stanceClassAttribute);
         }
         // add 1 for lemma unigrams
-        for (int i = 0; i < testingCorpuses.size(); i++) {
-            setStringValuesInCorpusInstance(testingSet.get(i), testingCorpuses.get(i).getLemmaUnigrams(),lemmaUnigramAttributes);
+        for (int i = 0; i < testingMicroTexts.size(); i++) {
+            setStringValuesInCorpusInstance(testingSet.get(i), testingMicroTexts.get(i).getLemmaUnigrams(),lemmaUnigramAttributes);
         }
         // add 1s for lemma bigrams
-        for (int i = 0; i < testingCorpuses.size(); i++) {
-            setStringValuesInCorpusInstance(testingSet.get(i), testingCorpuses.get(i).getLemmaBigrams(),lemmaBigramAttributes);
+        for (int i = 0; i < testingMicroTexts.size(); i++) {
+            setStringValuesInCorpusInstance(testingSet.get(i), testingMicroTexts.get(i).getLemmaBigrams(),lemmaBigramAttributes);
         }
 
         System.out.println(trainingSet);

@@ -1,6 +1,6 @@
 package Weka;
 
-import Main.Corpus;
+import Main.MicroText;
 import weka.core.Attribute;
 import weka.core.DenseInstance;
 import weka.core.Instance;
@@ -11,35 +11,35 @@ import java.util.List;
 import java.util.Set;
 
 public abstract class Classifier {
-    protected ArrayList<Corpus> splitCorpuses(List<Corpus> corpuses, int takeEveryXCorpus, Boolean isTestData) {
-        ArrayList<Corpus> partData = new ArrayList<>();
-        for (int index = 0; index < corpuses.size(); index++) {
+    protected ArrayList<MicroText> splitCorpuses(List<MicroText> microTexts, int takeEveryXCorpus, Boolean isTestData) {
+        ArrayList<MicroText> partData = new ArrayList<>();
+        for (int index = 0; index < microTexts.size(); index++) {
             if (isTestData) {
                 if (index % takeEveryXCorpus == 0)
-                    partData.add(corpuses.get(index));
+                    partData.add(microTexts.get(index));
             }
             else {
                 if (index % takeEveryXCorpus != 0)
-                    partData.add(corpuses.get(index));
+                    partData.add(microTexts.get(index));
             }
         }
         return partData;
     }
 
 
-    protected HashMap getAllLemmaUnigramsAsAttributes(List<Corpus> corpuses) {
+    protected HashMap getAllLemmaUnigramsAsAttributes(List<MicroText> microTexts) {
         HashMap attributes = new HashMap<String, Attribute>();
-        for (Corpus corpus : corpuses) {
-            HashMap lemmaUnigramsPerSentence = corpus.getAllLemmaUnigramsPerTextSentence();
+        for (MicroText microText : microTexts) {
+            HashMap lemmaUnigramsPerSentence = microText.getAllLemmaUnigramsPerTextSentence();
             addStringsFromCorpusAsAttributes(attributes, lemmaUnigramsPerSentence);
         }
         return attributes;
     }
 
-    protected HashMap getAllLemmaBigramsAsAttributes(List<Corpus> corpuses) {
+    protected HashMap getAllLemmaBigramsAsAttributes(List<MicroText> microTexts) {
         HashMap attributes = new HashMap<String, Attribute>();
-        for (Corpus corpus : corpuses) {
-            HashMap lemmaBigramsPerSentence = corpus.getAllLemmaBigramsPerTextSentence();
+        for (MicroText microText : microTexts) {
+            HashMap lemmaBigramsPerSentence = microText.getAllLemmaBigramsPerTextSentence();
             addStringsFromCorpusAsAttributes(attributes, lemmaBigramsPerSentence);
         }
         return attributes;
@@ -59,9 +59,9 @@ public abstract class Classifier {
                 attributes.put(s, new Attribute(s));
     }
 
-    protected List<Instance> createDefaultInstances(ArrayList<Corpus> corpuses, ArrayList<Attribute> vector) {
+    protected List<Instance> createDefaultInstances(ArrayList<MicroText> microTexts, ArrayList<Attribute> vector) {
         List<Instance> set = new ArrayList<Instance>();
-        for (Corpus corpus : corpuses) {
+        for (MicroText microText : microTexts) {
             Instance corpusInstance = createDefaultInstance(vector);
             set.add(corpusInstance);
         }

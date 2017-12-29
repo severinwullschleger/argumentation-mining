@@ -1,12 +1,12 @@
 package Main.Model.role;
 
 
-import Main.TextSentence;
+import Main.TextSegment;
 
 /**
  * Created by LuckyP on 16.12.17.
  */
-public class Opponent extends TextSentence {
+public class Opponent extends TextSegment {
 
     public Opponent() {
     }

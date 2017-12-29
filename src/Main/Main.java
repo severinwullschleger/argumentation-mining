@@ -3,7 +3,6 @@ package Main;
 import ConfigurationManager.ConfigurationManager;
 import InputOutput.XMLParser;
 import Weka.StanceClassifier;
-import Weka.WekaExample;
 
 import java.util.List;
 
@@ -14,10 +13,10 @@ public class Main {
 
     public static void main(String args[]) {
         final String DATASET_PATH = ConfigurationManager.getInstance().getFilePath();
-        List<Corpus> corpuses = XMLParser.walkXMLFiles(DATASET_PATH);
+        List<Main.MicroText> microTexts = XMLParser.walkXMLFiles(DATASET_PATH);
 
         StanceClassifier stanceClassifer = new StanceClassifier();
-        stanceClassifer.run(corpuses);
+        stanceClassifer.run(microTexts);
     }
 }
 

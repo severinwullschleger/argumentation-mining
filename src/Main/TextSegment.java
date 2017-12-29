@@ -1,6 +1,5 @@
 package Main;
 
-import Main.Enums.ArgumentType;
 import Main.Enums.Language;
 
 import edu.stanford.nlp.simple.Sentence;
@@ -12,9 +11,9 @@ import java.util.List;
 /**
  * Created by LuckyP on 02.12.17.
  */
-public abstract class TextSentence implements ISource, ITarget{
+public abstract class TextSegment implements ISource, ITarget{
 
-    private Corpus corpus;
+    private Main.MicroText microText;
     private String fileId;
     private String sentenceId;
     private int sentenceIndex;
@@ -24,11 +23,11 @@ public abstract class TextSentence implements ISource, ITarget{
 
     private Relation relation;
 
-    public TextSentence() {
+    public TextSegment() {
 
     }
 
-    public TextSentence(String fileId, String sentenceId, Language language, File correspondentFile, Sentence sentence) {
+    public TextSegment(String fileId, String sentenceId, Language language, File correspondentFile, Sentence sentence) {
         this.fileId = fileId;
         this.sentenceId = sentenceId;
         this.language = language;
@@ -56,8 +55,8 @@ public abstract class TextSentence implements ISource, ITarget{
         this.sentence = sentence;
     }
 
-    public void setCorpus(Corpus corpus) {
-        this.corpus = corpus;
+    public void setMicroText(Main.MicroText microText) {
+        this.microText = microText;
     }
 
     public void setSentenceIndex(int sentenceIndex) {
@@ -100,11 +99,11 @@ public abstract class TextSentence implements ISource, ITarget{
     }
 
     public List<String> getLemmasFromPrecedingSentence() {
-        return corpus.getLemmaUnigramsFromSentence(sentenceIndex-1);
+        return microText.getLemmaUnigramsFromSentence(sentenceIndex-1);
     }
 
     public List<String> getLemmasFromSubsequentSentence() {
-        return corpus.getLemmaUnigramsFromSentence(sentenceIndex+1);
+        return microText.getLemmaUnigramsFromSentence(sentenceIndex+1);
     }
 
     public List<String> getLemmaBigrams() {

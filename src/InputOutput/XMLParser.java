@@ -1,13 +1,13 @@
 package InputOutput;
 
 import ConfigurationManager.ConfigurationManager;
-import Main.Corpus;
+import Main.MicroText;
 import Main.Enums.ArgumentType;
 import Main.Enums.EnumsManager;
 import Main.Model.role.Opponent;
 import Main.Model.role.Proponent;
 import Main.Model.role.UndefinedSentence;
-import Main.TextSentence;
+import Main.TextSegment;
 import edu.stanford.nlp.simple.Sentence;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -24,39 +24,39 @@ import java.util.List;
 
 public abstract class XMLParser {
 
-    public static List<Corpus> walkXMLFiles(String DATASET_PATH) {
-        List<Corpus> corpuses = new ArrayList<>();
+    public static List<MicroText> walkXMLFiles(String DATASET_PATH) {
+        List<MicroText> microTexts = new ArrayList<>();
         File file = new File(DATASET_PATH);
         if (file.exists()) {
             File[] files = file.listFiles();
             if (files != null) {
                 for (File f : files) {
                     if (f.exists() && f.getName().contains(".xml")) {
-                        corpuses.add(parseXML(f));
+                        microTexts.add(parseXML(f));
                     }
                 }
             }
         }
-        return corpuses;
+        return microTexts;
     }
 
-    private static Corpus parseXML(File inputFile) {
+    private static MicroText parseXML(File inputFile) {
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(inputFile);
             doc.getDocumentElement().normalize();
 
-            Corpus corpus = new Corpus();
-            corpus.setFileId(doc.getDocumentElement().getAttribute("id"));
-            corpus.setTopicId(doc.getDocumentElement().getAttribute("topic_id"));
+            MicroText microText = new MicroText();
+            microText.setFileId(doc.getDocumentElement().getAttribute("id"));
+            microText.setTopicId(doc.getDocumentElement().getAttribute("topic_id"));
             String stanceAttribute = doc.getDocumentElement().getAttribute("stance");
-            corpus.setStance(EnumsManager.convertToStanceEnum(stanceAttribute));
-            corpus.setLanguage(ConfigurationManager.SENTENCES_LANGUAGE);
-            corpus.setCorrespondentFile(inputFile);
+            microText.setStance(EnumsManager.convertToStanceEnum(stanceAttribute));
+            microText.setLanguage(ConfigurationManager.SENTENCES_LANGUAGE);
+            microText.setCorrespondentFile(inputFile);
 
             // add corresponding segments (Teilsaetze)
-            ArrayList<TextSentence> textSentences = new ArrayList<>();
+            ArrayList<TextSegment> textSegments = new ArrayList<>();
 
             NodeList nListE = doc.getElementsByTagName("edu");
             NodeList nListA = doc.getElementsByTagName("adu");
@@ -67,31 +67,31 @@ public abstract class XMLParser {
                 String argumentTypeAttribute = nNodeA.getAttributes().getNamedItem("type").getTextContent();
                 ArgumentType sentenceType = EnumsManager.convertToRoleEnum(argumentTypeAttribute);
 
-                TextSentence textSentence;
+                TextSegment textSegment;
                 switch (sentenceType) {
                     case OPP:
-                        textSentence = new Opponent();
+                        textSegment = new Opponent();
                         break;
                     case PRO:
-                        textSentence = new Proponent();
+                        textSegment = new Proponent();
                         break;
                     default:
-                        textSentence = new UndefinedSentence();
+                        textSegment = new UndefinedSentence();
                 }
 
-                textSentence.setFileId(corpus.getFileId());
-                textSentence.setSentenceId(nNodeE.getAttributes().getNamedItem("id").getTextContent());
-                textSentence.setSentence(new Sentence(nNodeE.getTextContent()));
-                textSentence.setLanguage(ConfigurationManager.SENTENCES_LANGUAGE);
-                textSentence.setCorrespondentFile(inputFile);
-                textSentence.setCorpus(corpus);
-                textSentence.setSentenceIndex(corpus.getTextSentences().size());
-                corpus.getTextSentences().add(textSentence);
+                textSegment.setFileId(microText.getFileId());
+                textSegment.setSentenceId(nNodeE.getAttributes().getNamedItem("id").getTextContent());
+                textSegment.setSentence(new Sentence(nNodeE.getTextContent()));
+                textSegment.setLanguage(ConfigurationManager.SENTENCES_LANGUAGE);
+                textSegment.setCorrespondentFile(inputFile);
+                textSegment.setMicroText(microText);
+                textSegment.setSentenceIndex(microText.getTextSegments().size());
+                microText.getTextSegments().add(textSegment);
 
-                textSentences.add(textSentence);
+                textSegments.add(textSegment);
             }
-            corpus.setSentences(textSentences);
-            return corpus;
+            microText.setSentences(textSegments);
+            return microText;
 
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();

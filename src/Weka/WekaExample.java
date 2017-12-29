@@ -1,15 +1,8 @@
 package Weka;
 
-import Main.Corpus;
 import weka.classifiers.Classifier;
 import weka.classifiers.bayes.NaiveBayes;
-import weka.classifiers.evaluation.Evaluation;
 import weka.core.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
 
 public class WekaExample {
 
