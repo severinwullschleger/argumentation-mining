@@ -19,12 +19,23 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class XMLParser {
+public class XMLParser {
+    private static XMLParser instance = null;
+    //Singleton constructor
+    protected XMLParser() {}
 
-    public static List<MicroText> walkXMLFiles(String DATASET_PATH) {
+    public static XMLParser getInstance() {
+        if(instance == null) {
+            instance = new XMLParser();
+        }
+        return instance;
+    }
+
+    public  List<MicroText> walkXMLFiles(String DATASET_PATH) {
         List<MicroText> microTexts = new ArrayList<>();
         File file = new File(DATASET_PATH);
         if (file.exists()) {
@@ -40,7 +51,7 @@ public abstract class XMLParser {
         return microTexts;
     }
 
-    private static MicroText parseXML(File inputFile) {
+    private  MicroText parseXML(File inputFile) {
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -56,46 +67,74 @@ public abstract class XMLParser {
             microText.setCorrespondentFile(inputFile);
 
             // add corresponding segments (Teilsaetze)
-            ArrayList<TextSegment> textSegments = new ArrayList<>();
+            microText = addTextSegmentsToMicroText(microText, doc, inputFile);
+            microText = addIsClaimerToMicroText(microText, doc);
 
-            NodeList nListE = doc.getElementsByTagName("edu");
-            NodeList nListA = doc.getElementsByTagName("adu");
-            for (int temp = 0; temp < nListE.getLength(); temp++) {
-                Node nNodeE = nListE.item(temp);
-                Node nNodeA = nListA.item(temp);
-
-                String argumentTypeAttribute = nNodeA.getAttributes().getNamedItem("type").getTextContent();
-                ArgumentType sentenceType = EnumsManager.convertToRoleEnum(argumentTypeAttribute);
-
-                TextSegment textSegment;
-                switch (sentenceType) {
-                    case OPP:
-                        textSegment = new Opponent();
-                        break;
-                    case PRO:
-                        textSegment = new Proponent();
-                        break;
-                    default:
-                        textSegment = new UndefinedSentence();
-                }
-
-                textSegment.setFileId(microText.getFileId());
-                textSegment.setSentenceId(nNodeE.getAttributes().getNamedItem("id").getTextContent());
-                textSegment.setSentence(new Sentence(nNodeE.getTextContent()));
-                textSegment.setLanguage(ConfigurationManager.SENTENCES_LANGUAGE);
-                textSegment.setCorrespondentFile(inputFile);
-                textSegment.setMicroText(microText);
-                textSegment.setSentenceIndex(microText.getTextSegments().size());
-                microText.getTextSegments().add(textSegment);
-
-                textSegments.add(textSegment);
-            }
-            microText.setSentences(textSegments);
             return microText;
 
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private MicroText addTextSegmentsToMicroText(MicroText microText, Document doc, File inputFile) {
+        ArrayList<TextSegment> textSegments = new ArrayList<>();
+
+        NodeList nListE = doc.getElementsByTagName("edu");
+        NodeList nListA = doc.getElementsByTagName("adu");
+        for (int temp = 0; temp < nListE.getLength(); temp++) {
+            Node nNodeE = nListE.item(temp);
+            Node nNodeA = nListA.item(temp);
+
+            String argumentTypeAttribute = nNodeA.getAttributes().getNamedItem("type").getTextContent();
+            ArgumentType sentenceType = EnumsManager.convertToRoleEnum(argumentTypeAttribute);
+
+            TextSegment textSegment;
+            switch (sentenceType) {
+                case OPP:
+                    textSegment = new Opponent();
+                    break;
+                case PRO:
+                    textSegment = new Proponent();
+                    break;
+                default:
+                    textSegment = new UndefinedSentence();
+            }
+
+            textSegment.setFileId(microText.getFileId());
+            textSegment.setSentenceId(nNodeE.getAttributes().getNamedItem("id").getTextContent());
+            textSegment.setSentence(new Sentence(nNodeE.getTextContent()));
+            textSegment.setLanguage(ConfigurationManager.SENTENCES_LANGUAGE);
+            textSegment.setCorrespondentFile(inputFile);
+            textSegment.setMicroText(microText);
+            textSegment.setSentenceIndex(microText.getTextSegments().size());
+            microText.getTextSegments().add(textSegment);
+
+            textSegments.add(textSegment);
+        }
+        microText.setSentences(textSegments);
+
+        return microText;
+    }
+    private MicroText addIsClaimerToMicroText(MicroText microText, Document doc) {
+        NodeList nListEdge = doc.getElementsByTagName("edge");
+        for (int temp = 0; temp < nListEdge.getLength(); temp++) {
+            Node nNodeEdge = nListEdge.item(temp);
+
+            //extract source node
+            String src = nNodeEdge.getAttributes().getNamedItem("src").getNodeValue();
+            if(src.startsWith("a")) {
+                try {
+                    int sourcePosition = Integer.parseInt(src.substring(1));
+                    microText.getTextSegments().get(sourcePosition-1).setClaim(false);
+                } catch (Error e) {
+                    System.err.println("XMLParser, String to Integer Parse Problem: " + e);
+                }
+            }
+
+
+        }
+        return microText;
     }
 }

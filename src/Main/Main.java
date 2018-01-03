@@ -12,8 +12,10 @@ import java.util.List;
 public class Main {
 
     public static void main(String args[]) {
+        XMLParser xmlParser = XMLParser.getInstance();
+
         final String DATASET_PATH = ConfigurationManager.getInstance().getFilePath();
-        List<MicroText> microTexts = XMLParser.walkXMLFiles(DATASET_PATH);
+        List<MicroText> microTexts = xmlParser.walkXMLFiles(DATASET_PATH);
 
         StanceClassifier stanceClassifer = new StanceClassifier();
         stanceClassifer.run(microTexts);

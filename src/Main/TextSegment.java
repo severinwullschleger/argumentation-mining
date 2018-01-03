@@ -20,11 +20,13 @@ public abstract class TextSegment implements ISource, ITarget{
     private Language language;
     private File correspondentFile;
     private Sentence sentence;
+    private Boolean isClaim;
 
     private Relation relation;
 
     public TextSegment() {
-
+        //will be set to false by XMLParser, if it is not a Claim-text-element
+        isClaim = true;
     }
 
     public TextSegment(String fileId, String sentenceId, Language language, File correspondentFile, Sentence sentence) {
@@ -83,6 +85,14 @@ public abstract class TextSegment implements ISource, ITarget{
         return sentence;
     }
 
+    public Boolean getClaim() {
+        return isClaim;
+    }
+
+    public void setClaim(Boolean claim) {
+        isClaim = claim;
+    }
+
     @Override
     public String toString() {
         return "\nSentence { \n" +
@@ -91,6 +101,7 @@ public abstract class TextSegment implements ISource, ITarget{
                 "\tLanguage = " + language + "\n" +
                 "\tcorrespondentFile = " + correspondentFile + "\n" +
                 "\tsentence = '" + sentence + "'\n" +
+                "\tisClaim = '" + isClaim + "'\n" +
                 "}";
     }
 
