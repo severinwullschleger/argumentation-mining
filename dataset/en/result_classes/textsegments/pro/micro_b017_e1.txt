@@ -1,0 +1,1 @@
+Rent prices should be limited by a cap when there's a change of tenant.
