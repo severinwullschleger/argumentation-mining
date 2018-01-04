@@ -5,6 +5,8 @@ import Main.Enums.Language;
 import edu.stanford.nlp.simple.Sentence;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +38,8 @@ public abstract class TextSegment implements ISource, ITarget{
         this.correspondentFile = correspondentFile;
         this.sentence = sentence;
     }
+
+    public abstract void writeToProOppFolder(String path);
 
     public void setFileId(String fileId) {
         this.fileId = fileId;
@@ -124,4 +128,22 @@ public abstract class TextSegment implements ISource, ITarget{
             bigrams.add(unigrams.get(i) + " " + unigrams.get(i+1));
         return bigrams;
     }
+
+    public void writeToFile(String path) {
+
+        try {
+            String fileName = fileId + "_" + sentenceId + ".txt";
+            File file = new File (path+fileName);
+
+            PrintWriter out = new PrintWriter(file);
+            out.println(getSentence().text());
+
+            out.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
