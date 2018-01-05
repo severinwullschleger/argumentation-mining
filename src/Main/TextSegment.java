@@ -139,7 +139,7 @@ public abstract class TextSegment implements ISource, ITarget{
         else if (segmentSentiment.equals("NEGATIVE")) {
             return 1;
         }
-         else if (segmentSentiment.equals("NEUTRAL")) {
+        else if (segmentSentiment.equals("NEUTRAL")) {
             return 2;
         }
         else if (segmentSentiment.equals("POSITIVE")) {
@@ -151,6 +151,7 @@ public abstract class TextSegment implements ISource, ITarget{
         else return -1;
 
     }
+
 
     public void writeToFile(String path) {
 

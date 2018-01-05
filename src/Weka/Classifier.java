@@ -1,11 +1,11 @@
 package Weka;
 
 import Main.MicroText;
+//import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
 import weka.core.Attribute;
 import weka.core.DenseInstance;
 import weka.core.Instance;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -32,7 +32,6 @@ public abstract class Classifier {
             HashMap lemmaUnigramsPerSentence = microText.getAllLemmaUnigramsPerTextSentence();
             addStringsFromCorpusAsAttributes(attributes, lemmaUnigramsPerSentence);
         }
-
         return attributes;
     }
 
@@ -45,27 +44,38 @@ public abstract class Classifier {
         return attributes;
     }
 
-    protected HashMap getAllSentimentScoresAsAttributes (List<MicroText> microTexts) {
-        HashMap attributes = new HashMap<MicroText, List<Integer>>();
+    protected List getAllSentimentValuesAsAttributes(List<MicroText> microTexts) {
+        HashMap attributesAsStrings = new HashMap<MicroText, List<String>>();
         int longestSentimentScoreListSize = 0;
         for (MicroText microText : microTexts) {
-             List<Integer> microTextSentimentScores = microText.getSentimentScores();
+             List<Integer> microTextSentimentScores = microText.getSentimentValues();
              if (microTextSentimentScores.size() > longestSentimentScoreListSize) {
                  longestSentimentScoreListSize = microTextSentimentScores.size();
              }
-             attributes.put(microText, microTextSentimentScores);
+             attributesAsStrings.put(microText, microTextSentimentScores);
         }
+        List<Attribute> attributes = new ArrayList<Attribute>();
         for (MicroText microText : microTexts) {
-            List<Integer> sentScoresFilled = microText.getSentimentScores();
-            int timesToAdd = longestSentimentScoreListSize - sentScoresFilled.size();
+            List<Integer> sentValuesFilled = microText.getSentimentValues();
+            int timesToAdd = longestSentimentScoreListSize - sentValuesFilled.size();
             if (timesToAdd > 0) {
                 for (int i = 0; i < timesToAdd; i++) {
-                    sentScoresFilled.add(-1);
+                    sentValuesFilled.add(-1);
                 }
             }
-            attributes.put(microText, sentScoresFilled);
+            List<Attribute> sentimentAttributes = new ArrayList<Attribute>();
+            for (int i = 0; i < sentValuesFilled.size(); i++) {
+                int sentimentValue = sentValuesFilled.get(i);
+                Attribute attribute = new Attribute("sentLabel_".concat(microText.getFileId()).concat("_").concat(String.valueOf(i + 1)));
+                attribute.setWeight((double)sentimentValue);
+                sentimentAttributes.add(attribute);
+                System.out.println(attribute);
+            }
+           for (Attribute attribute : sentimentAttributes) {
+                attributes.add(attribute);
+           }
+
         }
-        System.out.println(attributes);
         return attributes;
     }
 
@@ -82,6 +92,7 @@ public abstract class Classifier {
             if (!attributes.containsKey(s))
                 attributes.put(s, new Attribute(s));
     }
+
 
     protected List<Instance> createDefaultInstances(ArrayList<MicroText> microTexts, ArrayList<Attribute> vector) {
         List<Instance> set = new ArrayList<Instance>();
@@ -115,4 +126,6 @@ public abstract class Classifier {
         }
         return corpusInstance;
     }
+
+
 }

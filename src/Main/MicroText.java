@@ -186,7 +186,7 @@ public class MicroText {
         return bigramsPerSentence;
     }
 
-    public List<Integer> getSentimentScores(){
+    public List<Integer> getSentimentValues(){
         List<Integer> sentimentScores = new ArrayList<>();
         for (TextSegment textSegment : textSegments) {
             sentimentScores.add(textSegment.getSentimentScore());
