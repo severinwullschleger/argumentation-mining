@@ -31,6 +31,7 @@ public class StanceClassifier extends Weka.Classifier{
         HashMap lemmaUnigramAttributes = getAllLemmaUnigramsAsAttributes(stanceTaggedMicroTexts);
         HashMap lemmaBigramAttributes = getAllLemmaBigramsAsAttributes(stanceTaggedMicroTexts);
 
+        HashMap sentimentScoresAttributes = getAllSentimentScoresAsAttributes(stanceTaggedMicroTexts);
 
         // Declare the feature vector (changed to ArrayList; FastVector depreciated)
         ArrayList<Attribute> attributeVector = new ArrayList<>();

@@ -3,6 +3,7 @@ package Main;
 import Main.Enums.Language;
 
 import edu.stanford.nlp.simple.Sentence;
+import edu.stanford.nlp.simple.SentimentClass;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,6 +24,7 @@ public abstract class TextSegment implements ISource, ITarget{
     private File correspondentFile;
     private Sentence sentence;
     private Boolean isClaim;
+    private int SentenceScore;
 
     private Relation relation;
 
@@ -127,6 +129,27 @@ public abstract class TextSegment implements ISource, ITarget{
         for (int i = 0; i < unigrams.size()-1; i++)
             bigrams.add(unigrams.get(i) + " " + unigrams.get(i+1));
         return bigrams;
+    }
+
+    public int getSentimentScore() {
+        String segmentSentiment = sentence.sentiment().toString();
+        if (segmentSentiment.equals("VERY_NEGATIVE")) {
+            return 0;
+        }
+        else if (segmentSentiment.equals("NEGATIVE")) {
+            return 1;
+        }
+         else if (segmentSentiment.equals("NEUTRAL")) {
+            return 2;
+        }
+        else if (segmentSentiment.equals("POSITIVE")) {
+            return 3;
+        }
+        else if (segmentSentiment.equals("VERY_POSITIVE")) {
+            return 4;
+        }
+        else return -1;
+
     }
 
     public void writeToFile(String path) {

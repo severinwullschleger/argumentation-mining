@@ -5,10 +5,9 @@ import weka.core.Attribute;
 import weka.core.DenseInstance;
 import weka.core.Instance;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 
 public abstract class Classifier {
     protected ArrayList<MicroText> splitCorpuses(List<MicroText> microTexts, int takeEveryXCorpus, Boolean isTestData) {
@@ -33,6 +32,7 @@ public abstract class Classifier {
             HashMap lemmaUnigramsPerSentence = microText.getAllLemmaUnigramsPerTextSentence();
             addStringsFromCorpusAsAttributes(attributes, lemmaUnigramsPerSentence);
         }
+
         return attributes;
     }
 
@@ -42,6 +42,30 @@ public abstract class Classifier {
             HashMap lemmaBigramsPerSentence = microText.getAllLemmaBigramsPerTextSentence();
             addStringsFromCorpusAsAttributes(attributes, lemmaBigramsPerSentence);
         }
+        return attributes;
+    }
+
+    protected HashMap getAllSentimentScoresAsAttributes (List<MicroText> microTexts) {
+        HashMap attributes = new HashMap<MicroText, List<Integer>>();
+        int longestSentimentScoreListSize = 0;
+        for (MicroText microText : microTexts) {
+             List<Integer> microTextSentimentScores = microText.getSentimentScores();
+             if (microTextSentimentScores.size() > longestSentimentScoreListSize) {
+                 longestSentimentScoreListSize = microTextSentimentScores.size();
+             }
+             attributes.put(microText, microTextSentimentScores);
+        }
+        for (MicroText microText : microTexts) {
+            List<Integer> sentScoresFilled = microText.getSentimentScores();
+            int timesToAdd = longestSentimentScoreListSize - sentScoresFilled.size();
+            if (timesToAdd > 0) {
+                for (int i = 0; i < timesToAdd; i++) {
+                    sentScoresFilled.add(-1);
+                }
+            }
+            attributes.put(microText, sentScoresFilled);
+        }
+        System.out.println(attributes);
         return attributes;
     }
 

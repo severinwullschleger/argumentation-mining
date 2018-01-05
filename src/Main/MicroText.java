@@ -186,6 +186,14 @@ public class MicroText {
         return bigramsPerSentence;
     }
 
+    public List<Integer> getSentimentScores(){
+        List<Integer> sentimentScores = new ArrayList<>();
+        for (TextSegment textSegment : textSegments) {
+            sentimentScores.add(textSegment.getSentimentScore());
+        }
+        return sentimentScores;
+    }
+
 
     public void printOpponentAndProponents() {
         System.out.println(getFileId() + "  has the following proponents: ");
