@@ -3,7 +3,6 @@ package Main;
 import Main.Enums.Language;
 
 import edu.stanford.nlp.simple.Sentence;
-import edu.stanford.nlp.simple.SentimentClass;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,8 +17,8 @@ public abstract class TextSegment implements ISource, ITarget{
 
     private MicroText microText;
     private String fileId;
-    private String sentenceId;
-    private int sentenceIndex;
+    private String segmentId;
+    private int segmentPositionIndex;
     private Language language;
     private File correspondentFile;
     private Sentence sentence;
@@ -33,9 +32,9 @@ public abstract class TextSegment implements ISource, ITarget{
         isClaim = true;
     }
 
-    public TextSegment(String fileId, String sentenceId, Language language, File correspondentFile, Sentence sentence) {
+    public TextSegment(String fileId, String segmentId, Language language, File correspondentFile, Sentence sentence) {
         this.fileId = fileId;
-        this.sentenceId = sentenceId;
+        this.segmentId = segmentId;
         this.language = language;
         this.correspondentFile = correspondentFile;
         this.sentence = sentence;
@@ -47,8 +46,8 @@ public abstract class TextSegment implements ISource, ITarget{
         this.fileId = fileId;
     }
 
-    public void setSentenceId(String sentenceId) {
-        this.sentenceId = sentenceId;
+    public void setTextSegmentId(String sentenceId) {
+        this.segmentId = sentenceId;
     }
 
     public void setLanguage(Language language) {
@@ -67,16 +66,16 @@ public abstract class TextSegment implements ISource, ITarget{
         this.microText = microText;
     }
 
-    public void setSentenceIndex(int sentenceIndex) {
-        this.sentenceIndex = sentenceIndex;
+    public void setSegmentPositionIndex(int sentenceIndex) {
+        this.segmentPositionIndex = sentenceIndex;
     }
 
     public String getFileId() {
         return fileId;
     }
 
-    public String getSentenceId() {
-        return sentenceId;
+    public String getSegmentId() {
+        return segmentId;
     }
 
     public Language getLanguage() {
@@ -102,7 +101,7 @@ public abstract class TextSegment implements ISource, ITarget{
     @Override
     public String toString() {
         return "\nSentence { \n" +
-                "\tsentenceId = '" + sentenceId + "'\n" +
+                "\tsegmentId = '" + segmentId + "'\n" +
                 "\tfileId = '" + fileId + "'\n" +
                 "\tLanguage = " + language + "\n" +
                 "\tcorrespondentFile = " + correspondentFile + "\n" +
@@ -116,11 +115,11 @@ public abstract class TextSegment implements ISource, ITarget{
     }
 
     public List<String> getLemmasFromPrecedingSentence() {
-        return microText.getLemmaUnigramsFromSentence(sentenceIndex-1);
+        return microText.getLemmaUnigramsFromSentence(segmentPositionIndex -1);
     }
 
     public List<String> getLemmasFromSubsequentSentence() {
-        return microText.getLemmaUnigramsFromSentence(sentenceIndex+1);
+        return microText.getLemmaUnigramsFromSentence(segmentPositionIndex +1);
     }
 
     public List<String> getLemmaBigrams() {
@@ -156,7 +155,7 @@ public abstract class TextSegment implements ISource, ITarget{
     public void writeToFile(String path) {
 
         try {
-            String fileName = fileId + "_" + sentenceId + ".txt";
+            String fileName = fileId + "_" + segmentId + ".txt";
             File file = new File (path+fileName);
 
             PrintWriter out = new PrintWriter(file);
@@ -170,4 +169,24 @@ public abstract class TextSegment implements ISource, ITarget{
     }
 
 
+    public boolean hasId(String segmentId) {
+        return this.segmentId.equals(segmentId);
+    }
+
+    public boolean hasRelationId(String relationId) {
+        return relation.getRelationId().equals(relationId);
+    }
+
+    public Relation getRelation() {
+        return relation;
+    }
+
+    public void setRelation(Relation relation) {
+        this.relation = relation;
+    }
+
+    public void connectWithTarget() {
+        ITarget target = microText.getTargetById(relation.getTargetId());
+        relation.setTarget(target);
+    }
 }
