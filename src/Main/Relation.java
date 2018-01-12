@@ -1,24 +1,23 @@
 package Main;
 
+import Main.Model.role.NullTextSegment;
+
 public abstract class Relation implements ITarget{
 
-    private String relationId;
-    private String sourceId;
-    private TextSegment sourceSegment;
-    private String targetId;
-    private ITarget target;
+    private String relationId = "";
+    private String sourceId = "";
+    protected TextSegment sourceSegment;
+    private String targetId = "";
+    protected ITarget target;
 
-    public Relation(){}
+    public Relation(){
+
+    }
 
     public Relation(String relationId, String src, String trg) {
         this.relationId = relationId;
         this.sourceId = src;
         this.targetId = trg;
-    }
-
-    public Relation(TextSegment sourceSegment, ITarget target) {
-        this.sourceSegment = sourceSegment;
-        this.target = target;
     }
 
     public TextSegment getSourceSegment() {

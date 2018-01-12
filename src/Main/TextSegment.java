@@ -2,6 +2,7 @@ package Main;
 
 import Main.Enums.Language;
 
+import Main.Model.typegen.NullRelation;
 import edu.stanford.nlp.simple.Sentence;
 
 import java.io.File;
@@ -30,6 +31,7 @@ public abstract class TextSegment implements ISource, ITarget{
     public TextSegment() {
         //will be set to false by XMLParser, if it is not a Claim-text-element
         isClaim = true;
+        relation = new NullRelation();
     }
 
     public TextSegment(String fileId, String segmentId, Language language, File correspondentFile, Sentence sentence) {
