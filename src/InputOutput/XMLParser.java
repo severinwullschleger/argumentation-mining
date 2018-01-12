@@ -63,7 +63,7 @@ public class XMLParser {
             // add corresponding segments (Teilsaetze)
             microText = addTextSegmentsToMicroText(microText, doc, inputFile);
             microText = addIsClaimerToMicroText(microText, doc);
-//            microText = addRelationsToTextSegments(microText, doc);
+            microText = addRelationsToMicroText(microText, doc);
 
             return microText;
 
