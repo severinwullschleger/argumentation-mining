@@ -1,6 +1,7 @@
 package InputOutput;
 
 import Main.MicroText;
+import Main.Model.role.Opponent;
 import Main.TextSegment;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -45,12 +46,17 @@ public class XMLWriter {
             id.setValue(microText.getFileId());
             Attr stance = doc.createAttribute("stance");
             stance.setValue(microText.getStance().toString().toLowerCase());
+            Attr topicId = doc.createAttribute("topic_id");
+            topicId.setValue(microText.getTopicId());
+
 
             rootElement.setAttributeNode(id);
             rootElement.setAttributeNode(stance);
+            rootElement.setAttributeNode(topicId);
             doc.appendChild(rootElement);
 
 
+            // EDU
             for (TextSegment textSegment : microText.getTextSegments()) {
                 Element edu = doc.createElement("edu");
                 rootElement.appendChild(edu);
@@ -58,22 +64,29 @@ public class XMLWriter {
                 Node cdata = doc.createCDATASection( textSegment.getSentence().text());
                 edu.appendChild(cdata);
 
-                // set attribute to staff element
                 Attr attr = doc.createAttribute("id");
                 attr.setValue(textSegment.getEdgeId());
                 edu.setAttributeNode(attr);
             }
 
+            // ADU
             for (TextSegment textSegment : microText.getTextSegments()) {
                 Element adu = doc.createElement("adu");
                 rootElement.appendChild(adu);
 
-
-                // set attribute to staff element
                 Attr attr = doc.createAttribute("id");
                 attr.setValue(textSegment.getSegmentId());
+                Attr type = doc.createAttribute("type");
+                String typeStr = textSegment instanceof Opponent ? "opp" : "pro";
+                type.setValue(typeStr);
+
                 adu.setAttributeNode(attr);
+                adu.setAttributeNode(type);
+
+                System.out.println(textSegment.getRelation().toString());
             }
+
+
 
 
             // write the content into xml file

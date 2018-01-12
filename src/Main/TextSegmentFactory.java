@@ -6,6 +6,7 @@ import Main.Model.role.Opponent;
 import Main.Model.role.Proponent;
 import Main.Model.role.UndefinedSentence;
 import org.w3c.dom.Node;
+import org.w3c.dom.Text;
 
 public class TextSegmentFactory {
 
@@ -21,4 +22,6 @@ public class TextSegmentFactory {
                 return new UndefinedSentence();
         }
     }
+
+
 }

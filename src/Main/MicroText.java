@@ -70,6 +70,10 @@ public class MicroText {
         this.topicId = topicId;
     }
 
+    public String getTopicId() {
+        return topicId;
+    }
+
     public void setStance(Stance stance) {
         this.stance = stance;
     }

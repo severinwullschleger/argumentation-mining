@@ -25,6 +25,7 @@ public abstract class TextSegment implements ISource, ITarget{
     private Boolean isClaim;
     private int SentenceScore;
     private String edgeId;
+    private String typeStr;
 
     private Relation relation;
 
@@ -105,6 +106,14 @@ public abstract class TextSegment implements ISource, ITarget{
 
     public void setEdgeId(String edgeId) {
         this.edgeId = edgeId;
+    }
+
+    public String getTypeStr() {
+        return typeStr;
+    }
+
+    public void setTypeStr(String typeStr) {
+        this.typeStr = typeStr;
     }
 
     @Override
