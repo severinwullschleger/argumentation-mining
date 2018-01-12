@@ -28,7 +28,7 @@ public class StanceClassifier extends Weka.Classifier{
         Attribute stanceClassAttribute = new Attribute("stance", stanceClassValues);
 
         // define different attribute sets
-        HashMap lemmaUnigramAttributes = getAllLemmaUnigramsAsAttributes(stanceTaggedMicroTexts);
+        HashMap lemmaUnigramAttributes = getAllLemmaUnigramsFromMicroTextAsAttributes(stanceTaggedMicroTexts);
         HashMap lemmaBigramAttributes = getAllLemmaBigramsAsAttributes(stanceTaggedMicroTexts);
 
 

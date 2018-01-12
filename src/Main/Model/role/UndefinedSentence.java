@@ -17,4 +17,9 @@ public class UndefinedSentence extends TextSegment {
     public UndefinedSentence(String fileId, String sentenceId, Language sentencesLanguage, File file, Sentence sentence) {
         super( fileId,  sentenceId,  sentencesLanguage,  file,  sentence);
     }
+
+    @Override
+    public String getTyp() {
+        return " ";
+    }
 }

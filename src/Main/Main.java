@@ -2,6 +2,7 @@ package Main;
 
 import ConfigurationManager.ConfigurationManager;
 import InputOutput.XMLParser;
+import Weka.ProponentOponentClassifier;
 import Weka.StanceClassifier;
 
 import java.util.List;
@@ -17,8 +18,10 @@ public class Main {
         final String DATASET_PATH = ConfigurationManager.getInstance().getFilePath();
         List<MicroText> microTexts = xmlParser.walkXMLFiles(DATASET_PATH);
 
-        StanceClassifier stanceClassifer = new StanceClassifier();
-        stanceClassifer.run(microTexts);
+//        StanceClassifier stanceClassifer = new StanceClassifier();
+//        stanceClassifer.run(microTexts);
+        ProponentOponentClassifier proponentOponentClassifier = new ProponentOponentClassifier();
+        proponentOponentClassifier.run(microTexts);
     }
 }
 

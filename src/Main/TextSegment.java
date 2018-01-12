@@ -109,11 +109,11 @@ public abstract class TextSegment implements ISource, ITarget{
         return sentence.lemmas();
     }
 
-    public List<String> getLemmasFromPrecedingSentence() {
+    public List<String> getLemmasFromPrecedingSegment() {
         return microText.getLemmaUnigramsFromSentence(sentenceIndex-1);
     }
 
-    public List<String> getLemmasFromSubsequentSentence() {
+    public List<String> getLemmasFromSubsequentSegment() {
         return microText.getLemmaUnigramsFromSentence(sentenceIndex+1);
     }
 
@@ -124,4 +124,6 @@ public abstract class TextSegment implements ISource, ITarget{
             bigrams.add(unigrams.get(i) + " " + unigrams.get(i+1));
         return bigrams;
     }
+
+    public abstract String getTyp();
 }

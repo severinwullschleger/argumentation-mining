@@ -1,14 +1,12 @@
 package Weka;
 
 import Main.MicroText;
+import Main.TextSegment;
 import weka.core.Attribute;
 import weka.core.DenseInstance;
 import weka.core.Instance;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public abstract class Classifier {
     protected ArrayList<MicroText> splitCorpuses(List<MicroText> microTexts, int takeEveryXCorpus, Boolean isTestData) {
@@ -26,12 +24,38 @@ public abstract class Classifier {
         return partData;
     }
 
+    protected ArrayList<TextSegment> splitCorpusTextSegment(List<TextSegment> textSegments, int takeEveryXCorpus, Boolean isTestData) {
+        ArrayList<TextSegment> partData = new ArrayList<>();
 
-    protected HashMap getAllLemmaUnigramsAsAttributes(List<MicroText> microTexts) {
+        for (int index = 0; index < textSegments.size(); index++) {
+            if (isTestData) {
+                if (index % takeEveryXCorpus == 0)
+                    partData.add(textSegments.get(index));
+            }
+            else {
+                if (index % takeEveryXCorpus != 0)
+                    partData.add(textSegments.get(index));
+            }
+        }
+        return partData;
+    }
+
+
+    protected HashMap getAllLemmaUnigramsFromMicroTextAsAttributes(List<MicroText> microTexts) {
         HashMap attributes = new HashMap<String, Attribute>();
         for (MicroText microText : microTexts) {
             HashMap lemmaUnigramsPerSentence = microText.getAllLemmaUnigramsPerTextSentence();
             addStringsFromCorpusAsAttributes(attributes, lemmaUnigramsPerSentence);
+        }
+        return attributes;
+    }
+
+    protected HashMap getAllLemmaUnigramsFromTextSegmentAsAttributes(List<TextSegment> textSegments) {
+        HashMap attributes = new HashMap<String, Attribute>();
+        for (TextSegment textSegment : textSegments) {
+            addStringsFromSentenceAsAttributes(attributes, textSegment.getLemmasFromPrecedingSegment());
+            addStringsFromSentenceAsAttributes(attributes, textSegment.getLemmaUnigrams());
+            addStringsFromSentenceAsAttributes(attributes, textSegment.getLemmasFromSubsequentSegment());
         }
         return attributes;
     }
@@ -45,7 +69,15 @@ public abstract class Classifier {
         return attributes;
     }
 
-    private void addStringsFromCorpusAsAttributes(HashMap attributes, HashMap lemmaPerSentence) {
+    protected HashMap getAllLemmaBigramsFromTextSegmentAsAttributes(List<TextSegment> textSegments) {
+        HashMap attributes = new HashMap<String, Attribute>();
+        for (TextSegment textSegment : textSegments) {
+            addStringsFromSentenceAsAttributes(attributes, textSegment.getLemmaBigrams());
+        }
+        return attributes;
+    }
+
+    protected void addStringsFromCorpusAsAttributes(HashMap attributes, HashMap lemmaPerSentence) {
         Set<String> sentenceIds = lemmaPerSentence.keySet();
         for (String sentenceId : sentenceIds) {
             List<String> strings = (List<String>) lemmaPerSentence.get(sentenceId);
@@ -62,6 +94,15 @@ public abstract class Classifier {
     protected List<Instance> createDefaultInstances(ArrayList<MicroText> microTexts, ArrayList<Attribute> vector) {
         List<Instance> set = new ArrayList<Instance>();
         for (MicroText microText : microTexts) {
+            Instance corpusInstance = createDefaultInstance(vector);
+            set.add(corpusInstance);
+        }
+        return set;
+    }
+
+    protected List<Instance> createDefaultInstancesTextSegment (ArrayList<TextSegment> textSegments, ArrayList<Attribute> vector) {
+        List<Instance> set = new ArrayList<Instance>();
+        for (TextSegment textSegment : textSegments) {
             Instance corpusInstance = createDefaultInstance(vector);
             set.add(corpusInstance);
         }
@@ -91,4 +132,5 @@ public abstract class Classifier {
         }
         return corpusInstance;
     }
+
 }

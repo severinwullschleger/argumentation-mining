@@ -10,4 +10,9 @@ public class Opponent extends TextSegment {
 
     public Opponent() {
     }
+
+    @Override
+    public String getTyp() {
+        return "Oponent";
+    }
 }

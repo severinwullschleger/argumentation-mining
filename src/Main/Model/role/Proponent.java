@@ -9,4 +9,9 @@ public class Proponent extends TextSegment {
     public Proponent() {
 
     }
+
+    @Override
+    public String getTyp() {
+        return "Proponent";
+    }
 }
