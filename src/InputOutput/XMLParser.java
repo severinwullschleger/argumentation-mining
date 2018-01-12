@@ -87,7 +87,10 @@ public class XMLParser {
             TextSegment textSegment = textSegmentFactory.createTextSegment(nNodeA);
 
             textSegment.setFileId(microText.getFileId());
+
+            textSegment.setEdgeId(nNodeE.getAttributes().getNamedItem("id").getTextContent());
             textSegment.setTextSegmentId(nNodeA.getAttributes().getNamedItem("id").getTextContent());
+
             textSegment.setSentence(new Sentence(nNodeE.getTextContent()));
             textSegment.setLanguage(ConfigurationManager.SENTENCES_LANGUAGE);
             textSegment.setCorrespondentFile(inputFile);

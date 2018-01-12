@@ -1,9 +1,8 @@
 package Main;
 
 import ConfigurationManager.ConfigurationManager;
-import InputOutput.FileWriter;
 import InputOutput.XMLParser;
-import Weka.StanceClassifier;
+import InputOutput.XMLWriter;
 
 import java.util.List;
 
@@ -14,13 +13,14 @@ public class Main {
 
     public static void main(String args[]) {
         final String DATASET_PATH = ConfigurationManager.getInstance().getFilePath();
-
         XMLParser xmlParser = XMLParser.getInstance();
         List<MicroText> microTexts = xmlParser.walkXMLFiles(DATASET_PATH);
+//        StanceClassifier stanceClassifer = new StanceClassifier();
+//        stanceClassifer.run(microTexts);
+//
+        XMLWriter xmlWriter = XMLWriter.getInstance();
 
-        StanceClassifier stanceClassifer = new StanceClassifier();
-        stanceClassifer.run(microTexts);
-
+        xmlWriter.writeXMLFile(microTexts.get(0));
 //        FileWriter.writeTextSegmentToProOppFolder(microTexts, DATASET_PATH);
     }
 }
