@@ -1,10 +1,10 @@
 package Main.Model.type;
 
 import Main.Model.typegen.Attack;
-import Main.TextSegment;
 
 public class UndefinedAttack extends Attack {
-    public UndefinedAttack(TextSegment sourceSegment, TextSegment targetSegment) {
-        super(sourceSegment, targetSegment);
+
+    public UndefinedAttack(String relationId, String src, String trg) {
+        super(relationId, src, trg);
     }
 }

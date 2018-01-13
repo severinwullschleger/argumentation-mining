@@ -2,11 +2,13 @@ package Weka;
 
 import Main.MicroText;
 import Main.TextSegment;
+//import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
 import weka.core.Attribute;
 import weka.core.DenseInstance;
 import weka.core.Instance;
 
 import java.util.*;
+import java.util.List;
 
 public abstract class Classifier {
     protected ArrayList<MicroText> splitCorpuses(List<MicroText> microTexts, int takeEveryXCorpus, Boolean isTestData) {
@@ -77,6 +79,40 @@ public abstract class Classifier {
         return attributes;
     }
 
+    protected List getAllSentimentValuesAsAttributes(List<MicroText> microTexts) {
+        HashMap attributesAsStrings = new HashMap<MicroText, List<String>>();
+        int longestSentimentScoreListSize = 0;
+        for (MicroText microText : microTexts) {
+             List<Integer> microTextSentimentScores = microText.getSentimentValues();
+             if (microTextSentimentScores.size() > longestSentimentScoreListSize) {
+                 longestSentimentScoreListSize = microTextSentimentScores.size();
+             }
+             attributesAsStrings.put(microText, microTextSentimentScores);
+        }
+        List<Attribute> attributes = new ArrayList<Attribute>();
+        for (MicroText microText : microTexts) {
+            List<Integer> sentValuesFilled = microText.getSentimentValues();
+            int timesToAdd = longestSentimentScoreListSize - sentValuesFilled.size();
+            if (timesToAdd > 0) {
+                for (int i = 0; i < timesToAdd; i++) {
+                    sentValuesFilled.add(-1);
+                }
+            }
+            List<Attribute> sentimentAttributes = new ArrayList<Attribute>();
+            for (int i = 0; i < sentValuesFilled.size(); i++) {
+                int sentimentValue = sentValuesFilled.get(i);
+                Attribute attribute = new Attribute("sentLabel_".concat(microText.getFileId()).concat("_").concat(String.valueOf(i + 1)));
+                attribute.setWeight((double)sentimentValue);
+                sentimentAttributes.add(attribute);
+                System.out.println(attribute);
+            }
+           for (Attribute attribute : sentimentAttributes) {
+                attributes.add(attribute);
+           }
+        }
+        return attributes;
+    }
+
     protected void addStringsFromCorpusAsAttributes(HashMap attributes, HashMap lemmaPerSentence) {
         Set<String> sentenceIds = lemmaPerSentence.keySet();
         for (String sentenceId : sentenceIds) {
@@ -91,8 +127,9 @@ public abstract class Classifier {
                 attributes.put(s, new Attribute(s));
     }
 
+
     protected List<Instance> createDefaultInstances(ArrayList<MicroText> microTexts, ArrayList<Attribute> vector) {
-        List<Instance> set = new ArrayList<Instance>();
+        List<Instance> set = new ArrayList<>();
         for (MicroText microText : microTexts) {
             Instance corpusInstance = createDefaultInstance(vector);
             set.add(corpusInstance);
@@ -101,8 +138,17 @@ public abstract class Classifier {
     }
 
     protected List<Instance> createDefaultInstancesTextSegment (ArrayList<TextSegment> textSegments, ArrayList<Attribute> vector) {
-        List<Instance> set = new ArrayList<Instance>();
+        List<Instance> set = new ArrayList<>();
         for (TextSegment textSegment : textSegments) {
+            Instance corpusInstance = createDefaultInstance(vector);
+            set.add(corpusInstance);
+        }
+        return set;
+    }
+
+    protected List<Instance> createDefaultInstances(int listSize, ArrayList<Attribute> vector) {
+        List<Instance> set = new ArrayList<>();
+        for (int i=0; i<listSize; i++) {
             Instance corpusInstance = createDefaultInstance(vector);
             set.add(corpusInstance);
         }
@@ -111,12 +157,12 @@ public abstract class Classifier {
 
     private Instance createDefaultInstance(ArrayList<Attribute> vector) {
         // Create the instance
-        Instance corpusInstance = new DenseInstance(vector.size());
+        Instance instance = new DenseInstance(vector.size());
         // add default values to attributes
-        for (int i = 1; i < corpusInstance.numAttributes(); i++) {
-            corpusInstance.setValue(vector.get(i), 0.0);
+        for (int i = 1; i < instance.numAttributes(); i++) {
+            instance.setValue(vector.get(i), 0.0);
         }
-        return corpusInstance;
+        return instance;
     }
 
     protected Instance setStringValue(Instance corpusInstance, String value, Attribute attribute) {
@@ -132,5 +178,4 @@ public abstract class Classifier {
         }
         return corpusInstance;
     }
-
 }

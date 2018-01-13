@@ -1,13 +1,8 @@
 package InputOutput;
 
 import ConfigurationManager.ConfigurationManager;
-import Main.MicroText;
-import Main.Enums.ArgumentType;
+import Main.*;
 import Main.Enums.EnumsManager;
-import Main.Model.role.Opponent;
-import Main.Model.role.Proponent;
-import Main.Model.role.UndefinedSentence;
-import Main.TextSegment;
 import edu.stanford.nlp.simple.Sentence;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -19,7 +14,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,6 +63,7 @@ public class XMLParser {
             // add corresponding segments (Teilsaetze)
             microText = addTextSegmentsToMicroText(microText, doc, inputFile);
             microText = addIsClaimerToMicroText(microText, doc);
+            microText = addRelationsToMicroText(microText, doc);
 
             return microText;
 
@@ -81,39 +76,27 @@ public class XMLParser {
     private MicroText addTextSegmentsToMicroText(MicroText microText, Document doc, File inputFile) {
         ArrayList<TextSegment> textSegments = new ArrayList<>();
 
+        TextSegmentFactory textSegmentFactory = new TextSegmentFactory();
+
         NodeList nListE = doc.getElementsByTagName("edu");
         NodeList nListA = doc.getElementsByTagName("adu");
         for (int temp = 0; temp < nListE.getLength(); temp++) {
             Node nNodeE = nListE.item(temp);
             Node nNodeA = nListA.item(temp);
 
-            String argumentTypeAttribute = nNodeA.getAttributes().getNamedItem("type").getTextContent();
-            ArgumentType sentenceType = EnumsManager.convertToRoleEnum(argumentTypeAttribute);
-
-            TextSegment textSegment;
-            switch (sentenceType) {
-                case OPP:
-                    textSegment = new Opponent();
-                    break;
-                case PRO:
-                    textSegment = new Proponent();
-                    break;
-                default:
-                    textSegment = new UndefinedSentence();
-            }
+            TextSegment textSegment = textSegmentFactory.createTextSegment(nNodeA);
 
             textSegment.setFileId(microText.getFileId());
-            textSegment.setSentenceId(nNodeE.getAttributes().getNamedItem("id").getTextContent());
+            textSegment.setTextSegmentId(nNodeA.getAttributes().getNamedItem("id").getTextContent());
             textSegment.setSentence(new Sentence(nNodeE.getTextContent()));
             textSegment.setLanguage(ConfigurationManager.SENTENCES_LANGUAGE);
             textSegment.setCorrespondentFile(inputFile);
             textSegment.setMicroText(microText);
-            textSegment.setSentenceIndex(microText.getTextSegments().size());
-            microText.getTextSegments().add(textSegment);
+            textSegment.setSegmentPositionIndex(microText.getTextSegments().size());
 
             textSegments.add(textSegment);
         }
-        microText.setSentences(textSegments);
+        microText.setTextSegments(textSegments);
 
         return microText;
     }
@@ -124,17 +107,22 @@ public class XMLParser {
 
             //extract source node
             String src = nNodeEdge.getAttributes().getNamedItem("src").getNodeValue();
-            if(src.startsWith("a")) {
-                try {
-                    int sourcePosition = Integer.parseInt(src.substring(1));
-                    microText.getTextSegments().get(sourcePosition-1).setClaim(false);
-                } catch (Error e) {
-                    System.err.println("XMLParser, String to Integer Parse Problem: " + e);
-                }
-            }
-
-
+            if(src.startsWith("a"))
+                microText.setIsClaimInTextSegment(src,false);
         }
+        return microText;
+    }
+
+    private MicroText addRelationsToMicroText(MicroText microText, Document doc) {
+        NodeList nListEdge = doc.getElementsByTagName("edge");
+        RelationFactory relationFactory = new RelationFactory();
+
+        for (int temp = 0; temp < nListEdge.getLength(); temp++) {
+            Node nNodeEdge = nListEdge.item(temp);
+            Relation relation = relationFactory.createRelation(nNodeEdge, microText);
+            microText.addRelationToItsSourceSegment(relation);
+        }
+        microText.connectRelationsWithTargets();
         return microText;
     }
 }

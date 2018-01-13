@@ -2,47 +2,54 @@ package Main;
 
 import Main.Enums.Language;
 
+import Main.Model.typegen.NullRelation;
 import edu.stanford.nlp.simple.Sentence;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by LuckyP on 02.12.17.
  */
-public abstract class TextSegment implements ISource, ITarget{
+public abstract class TextSegment implements ISource, ITarget {
 
     private MicroText microText;
     private String fileId;
-    private String sentenceId;
-    private int sentenceIndex;
+    private String segmentId;
+    private int segmentPositionIndex;
     private Language language;
     private File correspondentFile;
     private Sentence sentence;
     private Boolean isClaim;
+    private int SentenceScore;
 
     private Relation relation;
 
     public TextSegment() {
         //will be set to false by XMLParser, if it is not a Claim-text-element
         isClaim = true;
+        relation = new NullRelation();
     }
 
-    public TextSegment(String fileId, String sentenceId, Language language, File correspondentFile, Sentence sentence) {
+    public TextSegment(String fileId, String segmentId, Language language, File correspondentFile, Sentence sentence) {
         this.fileId = fileId;
-        this.sentenceId = sentenceId;
+        this.segmentId = segmentId;
         this.language = language;
         this.correspondentFile = correspondentFile;
         this.sentence = sentence;
     }
 
+    public abstract void writeToProOppFolder(String path);
+
     public void setFileId(String fileId) {
         this.fileId = fileId;
     }
 
-    public void setSentenceId(String sentenceId) {
-        this.sentenceId = sentenceId;
+    public void setTextSegmentId(String sentenceId) {
+        this.segmentId = sentenceId;
     }
 
     public void setLanguage(Language language) {
@@ -61,16 +68,16 @@ public abstract class TextSegment implements ISource, ITarget{
         this.microText = microText;
     }
 
-    public void setSentenceIndex(int sentenceIndex) {
-        this.sentenceIndex = sentenceIndex;
+    public void setSegmentPositionIndex(int sentenceIndex) {
+        this.segmentPositionIndex = sentenceIndex;
     }
 
     public String getFileId() {
         return fileId;
     }
 
-    public String getSentenceId() {
-        return sentenceId;
+    public String getSegmentId() {
+        return segmentId;
     }
 
     public Language getLanguage() {
@@ -96,7 +103,7 @@ public abstract class TextSegment implements ISource, ITarget{
     @Override
     public String toString() {
         return "\nSentence { \n" +
-                "\tsentenceId = '" + sentenceId + "'\n" +
+                "\tsegmentId = '" + segmentId + "'\n" +
                 "\tfileId = '" + fileId + "'\n" +
                 "\tLanguage = " + language + "\n" +
                 "\tcorrespondentFile = " + correspondentFile + "\n" +
@@ -110,20 +117,78 @@ public abstract class TextSegment implements ISource, ITarget{
     }
 
     public List<String> getLemmasFromPrecedingSegment() {
-        return microText.getLemmaUnigramsFromSentence(sentenceIndex-1);
+        return microText.getLemmaUnigramsFromSentence(segmentPositionIndex - 1);
     }
 
     public List<String> getLemmasFromSubsequentSegment() {
-        return microText.getLemmaUnigramsFromSentence(sentenceIndex+1);
+        return microText.getLemmaUnigramsFromSentence(segmentPositionIndex + 1);
     }
 
     public List<String> getLemmaBigrams() {
         List<String> bigrams = new ArrayList<>();
         List<String> unigrams = sentence.lemmas();
-        for (int i = 0; i < unigrams.size()-1; i++)
-            bigrams.add(unigrams.get(i) + " " + unigrams.get(i+1));
+        for (int i = 0; i < unigrams.size() - 1; i++)
+            bigrams.add(unigrams.get(i) + " " + unigrams.get(i + 1));
         return bigrams;
     }
 
     public abstract String getTyp();
+
+    public int getSentimentScore() {
+        String segmentSentiment = sentence.sentiment().toString();
+        if (segmentSentiment.equals("VERY_NEGATIVE")) {
+            return 0;
+        }
+        else if (segmentSentiment.equals("NEGATIVE")) {
+            return 1;
+        }
+        else if (segmentSentiment.equals("NEUTRAL")) {
+            return 2;
+        }
+        else if (segmentSentiment.equals("POSITIVE")) {
+            return 3;
+        }
+        else if (segmentSentiment.equals("VERY_POSITIVE")) {
+            return 4;
+        }
+        else return -1;
+
+    }
+
+    public void writeToFile(String path) {
+
+        try {
+            String fileName = fileId + "_" + segmentId + ".txt";
+            File file = new File (path+fileName);
+
+            PrintWriter out = new PrintWriter(file);
+            out.println(getSentence().text());
+
+            out.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean hasId(String segmentId) {
+        return this.segmentId.equals(segmentId);
+    }
+
+    public boolean hasRelationId(String relationId) {
+        return relation.getRelationId().equals(relationId);
+    }
+
+    public Relation getRelation() {
+        return relation;
+    }
+
+    public void setRelation(Relation relation) {
+        this.relation = relation;
+    }
+
+    public void connectWithTarget() {
+        ITarget target = microText.getTargetById(relation.getTargetId());
+        relation.setTarget(target);
+    }
 }

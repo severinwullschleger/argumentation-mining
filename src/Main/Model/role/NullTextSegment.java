@@ -40,4 +40,9 @@ public class NullTextSegment extends TextSegment implements INullTarget{
     public void writeToProOppFolder(String path) {
 
     }
+
+    @Override
+    public String getTyp() {
+        return "";
+    }
 }

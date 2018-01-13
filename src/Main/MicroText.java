@@ -2,6 +2,7 @@ package Main;
 
 import Main.Enums.Language;
 import Main.Enums.Stance;
+import Main.Model.role.NullTextSegment;
 import Main.Model.role.Opponent;
 import Main.Model.role.Proponent;
 
@@ -46,10 +47,6 @@ public class MicroText {
 
     public void setFileId(String fileId) {
         this.fileId = fileId;
-    }
-
-    public void setSentences(List<TextSegment> sentences) {
-        this.textSegments = sentences;
     }
 
     public void setLanguage(Language language) {
@@ -115,7 +112,6 @@ public class MicroText {
         return null;
     }
 
-
     public Stance getStance() {
         return stance;
     }
@@ -175,31 +171,71 @@ public class MicroText {
     public HashMap<String, List<String>> getAllLemmaUnigramsPerTextSentence() {
         HashMap unigramsPerSentence = new HashMap<String, List<String>>();
         for (TextSegment textSegment : textSegments)
-            unigramsPerSentence.put(textSegment.getSentenceId(), textSegment.getLemmaUnigrams());
+            unigramsPerSentence.put(textSegment.getSegmentId(), textSegment.getLemmaUnigrams());
         return unigramsPerSentence;
     }
 
     public HashMap<String, List<String>> getAllLemmaBigramsPerTextSentence() {
         HashMap bigramsPerSentence = new HashMap<String, List<String>>();
         for (TextSegment textSegment : textSegments)
-            bigramsPerSentence.put(textSegment.getSentenceId(), textSegment.getLemmaBigrams());
+            bigramsPerSentence.put(textSegment.getSegmentId(), textSegment.getLemmaBigrams());
         return bigramsPerSentence;
     }
 
+    public List<Integer> getSentimentValues(){
+        List<Integer> sentimentScores = new ArrayList<>();
+        for (TextSegment textSegment : textSegments) {
+            sentimentScores.add(textSegment.getSentimentScore());
+        }
+        return sentimentScores;
+    }
 
     public void printOpponentAndProponents() {
         System.out.println(getFileId() + "  has the following proponents: ");
         for (TextSegment proponent : getProponents()) {
-            System.out.print(proponent.getSentenceId() + " , ");
+            System.out.print(proponent.getSegmentId() + " , ");
         }
         System.out.println("\n");
 
         System.out.println(getFileId() + "  has the following opponents: ");
         for (TextSegment opponent : getOpponents()) {
-            System.out.print(opponent.getSentenceId() + " , ");
+            System.out.print(opponent.getSegmentId() + " , ");
         }
         System.out.println("\n");
     }
 
+    private TextSegment getTextSegmentsById(String segmentId) {
+        for (TextSegment textSegment : textSegments)
+            if (textSegment.hasId(segmentId))
+                return textSegment;
 
+        return new NullTextSegment();
+    }
+
+    public void setIsClaimInTextSegment(String segmentId, boolean isClaim) {
+        TextSegment segment = getTextSegmentsById(segmentId);
+        segment.setClaim(isClaim);
+    }
+
+    public void addRelationToItsSourceSegment(Relation relation) {
+        TextSegment sourceSegment = getTextSegmentsById(relation.getSourceId());
+        sourceSegment.setRelation(relation);
+        relation.setSourceSegment(sourceSegment);
+    }
+
+    public void connectRelationsWithTargets() {
+        for (TextSegment textSegment : textSegments) {
+            textSegment.connectWithTarget();
+        }
+    }
+
+    public ITarget getTargetById(String targetId) {
+        for (TextSegment textSegment : textSegments) {
+            if (textSegment.hasId(targetId))
+                return textSegment;
+            else if (textSegment.hasRelationId(targetId))
+                return textSegment.getRelation();
+        }
+        return new NullTextSegment();
+    }
 }

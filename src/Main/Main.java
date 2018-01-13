@@ -1,6 +1,7 @@
 package Main;
 
 import ConfigurationManager.ConfigurationManager;
+import InputOutput.FileWriter;
 import InputOutput.XMLParser;
 import Weka.ProponentOponentClassifier;
 import Weka.StanceClassifier;
@@ -13,9 +14,9 @@ import java.util.List;
 public class Main {
 
     public static void main(String args[]) {
-        XMLParser xmlParser = XMLParser.getInstance();
-
         final String DATASET_PATH = ConfigurationManager.getInstance().getFilePath();
+
+        XMLParser xmlParser = XMLParser.getInstance();
         List<MicroText> microTexts = xmlParser.walkXMLFiles(DATASET_PATH);
 
 //        StanceClassifier stanceClassifer = new StanceClassifier();
@@ -32,16 +33,3 @@ public class Main {
 //                , Paths.get(DATASET_PATH + "/result_classes/").toAbsolutePath().toString()  };
 //        weka.core.converters.TextDirectoryLoader.main(arguments);
 //        //copy paste from terminal and save as arff file.
-
-
-//    public static void main(String args[]) {
-//        final String DATASET_PATH = ConfigurationManager.getInstance().getFilePath();
-//        List<Corpus> corpuses = new ArrayList<>();
-//
-//        FileReader.walkDatasetDirectory(DATASET_PATH).forEach((fileId, textSentences) -> {
-//            Corpus currentCorpus = new Corpus(fileId, ConfigurationManager.SENTENCES_LANGUAGE);
-//            currentCorpus.addSentences(textSentences);
-//            corpuses.add(currentCorpus);
-//        });
-//        System.out.println(corpuses);
-//    }

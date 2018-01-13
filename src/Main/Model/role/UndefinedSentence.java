@@ -1,10 +1,12 @@
 package Main.Model.role;
 
+import InputOutput.FileWriter;
 import Main.Enums.Language;
 import Main.TextSegment;
 import edu.stanford.nlp.simple.Sentence;
 
 import java.io.File;
+import java.nio.file.Paths;
 
 /**
  * Created by LuckyP on 16.12.17.
@@ -18,8 +20,15 @@ public class UndefinedSentence extends TextSegment {
         super( fileId,  sentenceId,  sentencesLanguage,  file,  sentence);
     }
 
-    @Override
+
     public String getTyp() {
         return " ";
+    }
+
+    @Override
+    public void writeToProOppFolder(String path) {
+        String fullPath = Paths.get(path).toAbsolutePath().toString() + "/result_classes/textsegments/na/";
+        FileWriter.makeSureDirectoryExists(fullPath);
+        writeToFile(fullPath);
     }
 }

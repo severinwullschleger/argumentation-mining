@@ -3,12 +3,13 @@ package InputOutput;
 
 import Main.MicroText;
 import Main.Enums.Stance;
+import Main.TextSegment;
 
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.List;
 
-public abstract class FileWriter {
+public class FileWriter {
 
     public static void writeFile() {}
 
@@ -29,7 +30,15 @@ public abstract class FileWriter {
         }
     }
 
-    private static void makeSureDirectoryExists(String path) {
+    public static void writeTextSegmentToProOppFolder(List<MicroText> microTexts, String path) {
+
+        for (MicroText microText : microTexts) {
+            for (TextSegment textSegment : microText.getTextSegments())
+                textSegment.writeToProOppFolder(path);
+        }
+    }
+
+    public static void makeSureDirectoryExists(String path) {
         File dir = new File (path);
         if (!dir.exists()) {
             boolean b = dir.mkdirs();
