@@ -13,6 +13,6 @@ public class Opponent extends TextSegment {
 
     @Override
     public String getTyp() {
-        return "Oponent";
+        return "opp";
     }
 }

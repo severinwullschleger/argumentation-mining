@@ -24,14 +24,21 @@ public class ProponentOponentClassifier extends Weka.Classifier {
         ArrayList<String> propOpClassValues = new ArrayList<>(2);
         propOpClassValues.add("pro");
         propOpClassValues.add("opp");
-        Attribute propOpClassAttribute = new Attribute("proponentOpponent", propOpClassValues);
-
-        // Declare the feature vector (changed to ArrayList; FastVector depreciated)
-        ArrayList<Attribute> attributeVector = new ArrayList<>();
+        Attribute propOpClassAttribute = new Attribute("proOpp", propOpClassValues);
 
         // define different attribute sets
         HashMap lemmaUnigramAttributes = getAllLemmaUnigramsFromTextSegmentAsAttributes(textSegments);
         HashMap lemmaBigramAttributes = getAllLemmaBigramsFromTextSegmentAsAttributes(textSegments);
+
+        // Declare the feature vector (changed to ArrayList; FastVector depreciated)
+        ArrayList<Attribute> attributeVector = new ArrayList<>();
+        // add ClassAttribute
+        attributeVector.add(propOpClassAttribute);
+
+        // add different attribute sets
+        attributeVector.addAll(lemmaUnigramAttributes.values());
+        attributeVector.addAll(lemmaBigramAttributes.values());
+
 
         ArrayList<TextSegment> trainingTextSegments = splitCorpusTextSegment(textSegments, 10, false);
         ArrayList<TextSegment> testTextSegments = splitCorpusTextSegment(textSegments, 10, true);

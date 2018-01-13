@@ -12,6 +12,6 @@ public class Proponent extends TextSegment {
 
     @Override
     public String getTyp() {
-        return "Proponent";
+        return "pro";
     }
 }
