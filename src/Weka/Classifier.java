@@ -95,8 +95,17 @@ public abstract class Classifier {
 
 
     protected List<Instance> createDefaultInstances(ArrayList<MicroText> microTexts, ArrayList<Attribute> vector) {
-        List<Instance> set = new ArrayList<Instance>();
+        List<Instance> set = new ArrayList<>();
         for (MicroText microText : microTexts) {
+            Instance corpusInstance = createDefaultInstance(vector);
+            set.add(corpusInstance);
+        }
+        return set;
+    }
+
+    protected List<Instance> createDefaultInstances(int listSize, ArrayList<Attribute> vector) {
+        List<Instance> set = new ArrayList<>();
+        for (int i=0; i<listSize; i++) {
             Instance corpusInstance = createDefaultInstance(vector);
             set.add(corpusInstance);
         }
@@ -105,12 +114,12 @@ public abstract class Classifier {
 
     private Instance createDefaultInstance(ArrayList<Attribute> vector) {
         // Create the instance
-        Instance corpusInstance = new DenseInstance(vector.size());
+        Instance instance = new DenseInstance(vector.size());
         // add default values to attributes
-        for (int i = 1; i < corpusInstance.numAttributes(); i++) {
-            corpusInstance.setValue(vector.get(i), 0.0);
+        for (int i = 1; i < instance.numAttributes(); i++) {
+            instance.setValue(vector.get(i), 0.0);
         }
-        return corpusInstance;
+        return instance;
     }
 
     protected Instance setStringValue(Instance corpusInstance, String value, Attribute attribute) {
