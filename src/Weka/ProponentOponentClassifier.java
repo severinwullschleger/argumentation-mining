@@ -12,8 +12,7 @@ import java.util.*;
 public class ProponentOponentClassifier extends Weka.Classifier {
 
     public void run(List<MicroText> microTexts) {
-
-
+        
         //create list with all textsegments
         List<TextSegment> textSegments = new ArrayList<>();
         for(MicroText microText : microTexts) {
@@ -40,6 +39,7 @@ public class ProponentOponentClassifier extends Weka.Classifier {
         attributeVector.addAll(lemmaBigramAttributes.values());
 
 
+        // split textsegments into training and testing data
         ArrayList<TextSegment> trainingTextSegments = splitCorpusTextSegment(textSegments, 10, false);
         ArrayList<TextSegment> testTextSegments = splitCorpusTextSegment(textSegments, 10, true);
 
@@ -47,7 +47,6 @@ public class ProponentOponentClassifier extends Weka.Classifier {
         //Create training set
         Instances trainingSet = new Instances("trainingSet", attributeVector, trainingTextSegments.size()+1);
         trainingSet.setClass(propOpClassAttribute);
-
         // create and add instances to TRAINING set
         trainingSet.addAll(createDefaultInstancesTextSegment(trainingTextSegments, attributeVector));
         // set class value
@@ -55,13 +54,11 @@ public class ProponentOponentClassifier extends Weka.Classifier {
             setStringValue(trainingSet.get(i), trainingTextSegments.get(i).getTyp(), propOpClassAttribute);
             setStringValuesInCorpusInstance(trainingSet.get(i), trainingTextSegments.get(i).getLemmaUnigrams(),lemmaUnigramAttributes);
             setStringValuesInCorpusInstance(trainingSet.get(i), trainingTextSegments.get(i).getLemmaBigrams(),lemmaBigramAttributes);
-
         }
 
         // Create testing set
         Instances testingSet = new Instances("testingSet", attributeVector, testTextSegments.size()+1);
         testingSet.setClass(propOpClassAttribute);
-
         // create and add instances to TRAINING set
         testingSet.addAll(createDefaultInstancesTextSegment(testTextSegments, attributeVector));
         // set class value
@@ -69,7 +66,6 @@ public class ProponentOponentClassifier extends Weka.Classifier {
             setStringValue(testingSet.get(i), testTextSegments.get(i).getTyp(), propOpClassAttribute);
             setStringValuesInCorpusInstance(testingSet.get(i), testTextSegments.get(i).getLemmaUnigrams(),lemmaUnigramAttributes);
             setStringValuesInCorpusInstance(testingSet.get(i), testTextSegments.get(i).getLemmaBigrams(),lemmaBigramAttributes);
-
         }
 
         try {
