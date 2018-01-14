@@ -5,8 +5,11 @@ import InputOutput.FileWriter;
 import InputOutput.XMLParser;
 import Weka.ProponentOponentClassifier;
 import Weka.StanceClassifier;
+import Weka.TargetClassifier;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by LuckyP on 02.12.17.
@@ -21,8 +24,10 @@ public class Main {
 
 //        StanceClassifier stanceClassifer = new StanceClassifier();
 //        stanceClassifer.run(microTexts);
-        ProponentOponentClassifier proponentOponentClassifier = new ProponentOponentClassifier();
-        proponentOponentClassifier.run(microTexts);
+//        ProponentOponentClassifier proponentOponentClassifier = new ProponentOponentClassifier();
+//        proponentOponentClassifier.run(microTexts);
+        TargetClassifier targetClassifier = new TargetClassifier();
+        targetClassifier.run(microTexts);
     }
 }
 

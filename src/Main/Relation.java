@@ -1,7 +1,5 @@
 package Main;
 
-import Main.Model.role.NullTextSegment;
-
 public abstract class Relation implements ITarget{
 
     private String relationId = "";

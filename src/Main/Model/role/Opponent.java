@@ -14,7 +14,7 @@ public class Opponent extends TextSegment {
     public Opponent() {
     }
 
-    public String getTyp() {
+    public String getType() {
         return "opp";
     }
 

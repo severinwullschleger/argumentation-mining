@@ -8,7 +8,10 @@ import edu.stanford.nlp.simple.Sentence;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -132,7 +135,7 @@ public abstract class TextSegment implements ISource, ITarget {
         return bigrams;
     }
 
-    public abstract String getTyp();
+    public abstract String getType();
 
     public int getSentimentScore() {
         String segmentSentiment = sentence.sentiment().toString();
@@ -190,5 +193,9 @@ public abstract class TextSegment implements ISource, ITarget {
     public void connectWithTarget() {
         ITarget target = microText.getTargetById(relation.getTargetId());
         relation.setTarget(target);
+    }
+
+    public String getRelationTargetId() {
+        return relation.getTargetId();
     }
 }

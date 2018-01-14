@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class StanceClassifier extends Weka.Classifier{
+public class StanceClassifier extends MicroTextClassifier {
 
     public void run(List<MicroText> microTexts) {
 
@@ -29,7 +29,7 @@ public class StanceClassifier extends Weka.Classifier{
 
         // define different attribute sets
         HashMap lemmaUnigramAttributes = getAllLemmaUnigramsFromMicroTextAsAttributes(stanceTaggedMicroTexts);
-        HashMap lemmaBigramAttributes = getAllLemmaBigramsAsAttributes(stanceTaggedMicroTexts);
+        HashMap lemmaBigramAttributes = getAllLemmaBigramsFromMicroTextAsAttributes(stanceTaggedMicroTexts);
 
         List sentimentScoresAttributes = getAllSentimentValuesAsAttributes(stanceTaggedMicroTexts);
 
@@ -43,21 +43,21 @@ public class StanceClassifier extends Weka.Classifier{
 //        attributeVector.addAll(sentimentScoresAttributes);
 
 
-        ArrayList<MicroText> trainingMicroTexts = splitCorpuses(stanceTaggedMicroTexts, 10, false);
-        ArrayList<MicroText> testingMicroTexts = splitCorpuses(stanceTaggedMicroTexts, 10, true);
+        ArrayList<MicroText> trainingMicroTexts = splitMicroTextList(stanceTaggedMicroTexts, 10, false);
+        ArrayList<MicroText> testingMicroTexts = splitMicroTextList(stanceTaggedMicroTexts, 10, true);
 
         // Create training set
         Instances trainingSet = new Instances("trainingSet", attributeVector, trainingMicroTexts.size()+1);
         trainingSet.setClass(stanceClassAttribute);
         // create and add instances to TRAINING set
-        trainingSet.addAll(createDefaultInstances(trainingMicroTexts.size(), attributeVector));
+        trainingSet.addAll(createDefaultInstancesList(trainingMicroTexts.size(), attributeVector));
         for (int i = 0; i < trainingMicroTexts.size(); i++) {
             // set class value
             setStringValue(trainingSet.get(i), trainingMicroTexts.get(i).getStance().getStanceToString(), stanceClassAttribute);
             // add 1s for lemma unigrams
-            setStringValuesInCorpusInstance(trainingSet.get(i), trainingMicroTexts.get(i).getLemmaUnigrams(),lemmaUnigramAttributes);
+            setStringValuesToOne(trainingSet.get(i), trainingMicroTexts.get(i).getLemmaUnigrams(),lemmaUnigramAttributes);
             // add 1s for lemma bigrams
-            setStringValuesInCorpusInstance(trainingSet.get(i), trainingMicroTexts.get(i).getLemmaBigrams(),lemmaBigramAttributes);
+            setStringValuesToOne(trainingSet.get(i), trainingMicroTexts.get(i).getLemmaBigrams(),lemmaBigramAttributes);
             // add sentiment value??
             //TODO add sentiment
         }
@@ -67,14 +67,14 @@ public class StanceClassifier extends Weka.Classifier{
         Instances testingSet = new Instances("testingSet", attributeVector, testingMicroTexts.size()+1);
         testingSet.setClass(stanceClassAttribute);
         // create and add instances to TESTING set
-        testingSet.addAll(createDefaultInstances(testingMicroTexts.size(), attributeVector));
+        testingSet.addAll(createDefaultInstancesList(testingMicroTexts.size(), attributeVector));
         for (int i = 0; i < testingMicroTexts.size(); i++) {
             // set class value
             setStringValue(testingSet.get(i), testingMicroTexts.get(i).getStance().getStanceToString(), stanceClassAttribute);
             // add 1 for lemma unigrams
-            setStringValuesInCorpusInstance(testingSet.get(i), testingMicroTexts.get(i).getLemmaUnigrams(),lemmaUnigramAttributes);
+            setStringValuesToOne(testingSet.get(i), testingMicroTexts.get(i).getLemmaUnigrams(),lemmaUnigramAttributes);
             // add 1s for lemma bigrams
-            setStringValuesInCorpusInstance(testingSet.get(i), testingMicroTexts.get(i).getLemmaBigrams(),lemmaBigramAttributes);
+            setStringValuesToOne(testingSet.get(i), testingMicroTexts.get(i).getLemmaBigrams(),lemmaBigramAttributes);
             // add sentiment value??
             //TODO add sentiment
         }

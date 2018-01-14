@@ -42,7 +42,7 @@ public class NullTextSegment extends TextSegment implements INullTarget{
     }
 
     @Override
-    public String getTyp() {
+    public String getType() {
         return "";
     }
 }

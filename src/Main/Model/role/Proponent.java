@@ -13,7 +13,7 @@ public class Proponent extends TextSegment {
 
     }
 
-    public String getTyp() {
+    public String getType() {
         return "pro";
     }
 
