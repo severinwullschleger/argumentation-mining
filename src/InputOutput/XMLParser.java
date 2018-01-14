@@ -29,7 +29,7 @@ public class XMLParser {
         return instance;
     }
 
-    public  List<MicroText> walkXMLFiles(String DATASET_PATH) {
+    public  List<MicroText>  walkXMLFiles(String DATASET_PATH) {
         List<MicroText> microTexts = new ArrayList<>();
         File file = new File(DATASET_PATH);
         if (file.exists()) {

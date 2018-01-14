@@ -82,9 +82,20 @@ public class XMLWriter {
 
                 adu.setAttributeNode(attr);
                 adu.setAttributeNode(type);
-
-                System.out.println(textSegment.getRelation().toString());
             }
+
+            // EDGE
+            for (TextSegment textSegment : microText.getTextSegments()) {
+                Element adu = doc.createElement("edge");
+                rootElement.appendChild(adu);
+
+                Attr attr = doc.createAttribute("src");
+                attr.setValue(textSegment.getEdgeId());
+
+                adu.setAttributeNode(attr);
+            }
+
+
 
 
 
@@ -95,15 +106,15 @@ public class XMLWriter {
             DOMSource source = new DOMSource(doc);
 //            StreamResult result = new StreamResult(new File(FILE_NAME));
 
-
-            File file = new File(microText.getFileId() + ".xml");
+            final String FILE_NAME = microText.getFileId() + ".xml";
+            File file = new File(FILE_NAME);
 
             // Output to console for testing
             StreamResult result = new StreamResult(file);
 
             transformer.transform(source, result);
 
-            System.out.println("File saved!");
+            System.out.println(FILE_NAME +" has been saved!");
 
         } catch (ParserConfigurationException | TransformerException pce) {
             pce.printStackTrace();
