@@ -91,14 +91,24 @@ public class XMLWriter {
                 Element adu = doc.createElement("edge");
                 rootElement.appendChild(adu);
 
-                // when the source of a relation does not start with "a"
-                if (relation instanceof NullRelation) {
-                    System.out.println(relation.getRelationId());
-                }
-
                 Attr src = doc.createAttribute("src");
                 Attr relId = doc.createAttribute("id");
+
+                relId.setValue(relation.getRelationId());
+
+                TextSegment textSegment = relation.getSourceSegment();
+
+
+
+                // when the source of a relation does not start with "a"
+                if (relation instanceof NullRelation) {
+
+                }
+
+
+
                 adu.setAttributeNode(src);
+                adu.setAttributeNode(relId);
             }
 
 
