@@ -3,6 +3,7 @@ package Main;
 import ConfigurationManager.ConfigurationManager;
 import InputOutput.FileWriter;
 import InputOutput.XMLParser;
+import Weka.ProponentOponentClassifier;
 import Weka.StanceClassifier;
 import Weka.TargetClassifier;
 
@@ -23,10 +24,10 @@ public class Main {
 
 //        StanceClassifier stanceClassifer = new StanceClassifier();
 //        stanceClassifer.run(microTexts);
-//        ProponentOponentClassifier proponentOponentClassifier = new ProponentOponentClassifier();
-//        proponentOponentClassifier.run(microTexts);
-        TargetClassifier targetClassifier = new TargetClassifier();
-        targetClassifier.run(microTexts, 10);
+        ProponentOponentClassifier proponentOponentClassifier = new ProponentOponentClassifier();
+        proponentOponentClassifier.run(microTexts, 10);
+//        TargetClassifier targetClassifier = new TargetClassifier();
+//        targetClassifier.run(microTexts, 10);
     }
 }
 

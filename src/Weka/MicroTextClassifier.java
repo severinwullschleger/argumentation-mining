@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-public class MicroTextClassifier extends Classifier {
+public abstract class MicroTextClassifier extends Classifier {
 
     protected ArrayList<MicroText> splitMicroTextList(List<MicroText> microTexts, int takeEveryXCorpus, Boolean isTestData) {
         ArrayList<MicroText> partData = new ArrayList<>();
