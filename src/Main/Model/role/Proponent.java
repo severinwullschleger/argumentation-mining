@@ -13,6 +13,10 @@ public class Proponent extends TextSegment {
 
     }
 
+    public String getType() {
+        return "pro";
+    }
+
     @Override
     public void writeToProOppFolder(String path) {
         String fullPath = Paths.get(path).toAbsolutePath().toString() + "/result_classes/textsegments/pro/";

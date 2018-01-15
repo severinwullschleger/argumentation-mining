@@ -39,4 +39,12 @@ public class NullRelation extends Relation implements INullTarget{
         return "";
     }
 
+    public final String getWekaAttackOrSupport() {
+        return "";
+    }
+
+    @Override
+    public boolean isValidRelation() {
+        return false;
+    }
 }

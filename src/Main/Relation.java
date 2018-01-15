@@ -1,7 +1,5 @@
 package Main;
 
-import Main.Model.role.NullTextSegment;
-
 public abstract class Relation implements ITarget{
 
     private String relationId = "";
@@ -48,4 +46,8 @@ public abstract class Relation implements ITarget{
     public String getTargetId() {
         return targetId;
     }
+
+    public abstract String getWekaAttackOrSupport();
+
+    public abstract boolean isValidRelation();
 }

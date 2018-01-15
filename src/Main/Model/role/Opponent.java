@@ -14,6 +14,10 @@ public class Opponent extends TextSegment {
     public Opponent() {
     }
 
+    public String getType() {
+        return "opp";
+    }
+
     @Override
     public void writeToProOppFolder(String path) {
         String fullPath = Paths.get(path).toAbsolutePath().toString() + "/result_classes/textsegments/opp/";

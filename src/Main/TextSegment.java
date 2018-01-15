@@ -8,13 +8,16 @@ import edu.stanford.nlp.simple.Sentence;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by LuckyP on 02.12.17.
  */
-public abstract class TextSegment implements ISource, ITarget{
+public abstract class TextSegment implements ISource, ITarget {
 
     private MicroText microText;
     private String fileId;
@@ -94,7 +97,7 @@ public abstract class TextSegment implements ISource, ITarget{
         return sentence;
     }
 
-    public Boolean getClaim() {
+    public Boolean isClaim() {
         return isClaim;
     }
 
@@ -134,21 +137,23 @@ public abstract class TextSegment implements ISource, ITarget{
         return sentence.lemmas();
     }
 
-    public List<String> getLemmasFromPrecedingSentence() {
-        return microText.getLemmaUnigramsFromSentence(segmentPositionIndex -1);
+    public List<String> getLemmaUnigramsFromPrecedingSegment() {
+        return microText.getLemmaUnigramsFromSentence(segmentPositionIndex - 1);
     }
 
-    public List<String> getLemmasFromSubsequentSentence() {
-        return microText.getLemmaUnigramsFromSentence(segmentPositionIndex +1);
+    public List<String> getLemmaUnigramsFromSubsequentSegment() {
+        return microText.getLemmaUnigramsFromSentence(segmentPositionIndex + 1);
     }
 
     public List<String> getLemmaBigrams() {
         List<String> bigrams = new ArrayList<>();
         List<String> unigrams = sentence.lemmas();
-        for (int i = 0; i < unigrams.size()-1; i++)
-            bigrams.add(unigrams.get(i) + " " + unigrams.get(i+1));
+        for (int i = 0; i < unigrams.size() - 1; i++)
+            bigrams.add(unigrams.get(i) + " " + unigrams.get(i + 1));
         return bigrams;
     }
+
+    public abstract String getType();
 
     public int getSentimentScore() {
         String segmentSentiment = sentence.sentiment().toString();
@@ -171,7 +176,6 @@ public abstract class TextSegment implements ISource, ITarget{
 
     }
 
-
     public void writeToFile(String path) {
 
         try {
@@ -187,7 +191,6 @@ public abstract class TextSegment implements ISource, ITarget{
             e.printStackTrace();
         }
     }
-
 
     public boolean hasId(String segmentId) {
         return this.segmentId.equals(segmentId);
@@ -208,5 +211,17 @@ public abstract class TextSegment implements ISource, ITarget{
     public void connectWithTarget() {
         ITarget target = microText.getTargetById(relation.getTargetId());
         relation.setTarget(target);
+    }
+
+    public String getRelationTargetId() {
+        return relation.getTargetId();
+    }
+
+    public String getRelationsWekaAttackOrSupport() {
+        return relation.getWekaAttackOrSupport();
+    }
+
+    public boolean hasRelation() {
+        return relation.isValidRelation();
     }
 }

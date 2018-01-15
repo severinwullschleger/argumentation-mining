@@ -20,6 +20,11 @@ public class UndefinedSentence extends TextSegment {
         super( fileId,  sentenceId,  sentencesLanguage,  file,  sentence);
     }
 
+
+    public String getType() {
+        return " ";
+    }
+
     @Override
     public void writeToProOppFolder(String path) {
         String fullPath = Paths.get(path).toAbsolutePath().toString() + "/result_classes/textsegments/na/";

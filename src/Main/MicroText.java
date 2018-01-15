@@ -116,7 +116,6 @@ public class MicroText {
         return null;
     }
 
-
     public Stance getStance() {
         return stance;
     }
@@ -195,7 +194,6 @@ public class MicroText {
         return sentimentScores;
     }
 
-
     public void printOpponentAndProponents() {
         System.out.println(getFileId() + "  has the following proponents: ");
         for (TextSegment proponent : getProponents()) {
@@ -243,5 +241,9 @@ public class MicroText {
                 return textSegment.getRelation();
         }
         return new NullTextSegment();
+    }
+
+    public TextSegment getTextSegment(int i) {
+        return textSegments.get(i);
     }
 }

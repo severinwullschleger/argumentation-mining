@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class StanceClassifier extends Weka.Classifier{
+public class StanceClassifier extends MicroTextClassifier {
 
     public void run(List<MicroText> microTexts) {
 
@@ -28,8 +28,8 @@ public class StanceClassifier extends Weka.Classifier{
         Attribute stanceClassAttribute = new Attribute("stance", stanceClassValues);
 
         // define different attribute sets
-        HashMap lemmaUnigramAttributes = getAllLemmaUnigramsAsAttributes(stanceTaggedMicroTexts);
-        HashMap lemmaBigramAttributes = getAllLemmaBigramsAsAttributes(stanceTaggedMicroTexts);
+        HashMap lemmaUnigramAttributes = getAllLemmaUnigramsFromMicroTextAsAttributes(stanceTaggedMicroTexts);
+        HashMap lemmaBigramAttributes = getAllLemmaBigramsFromMicroTextAsAttributes(stanceTaggedMicroTexts);
 
         List sentimentScoresAttributes = getAllSentimentValuesAsAttributes(stanceTaggedMicroTexts);
 
@@ -39,60 +39,45 @@ public class StanceClassifier extends Weka.Classifier{
         attributeVector.add(stanceClassAttribute);
         // add different attribute sets
         attributeVector.addAll(lemmaUnigramAttributes.values());
-        //System.out.println(attributeVector.size());
-
         attributeVector.addAll(lemmaBigramAttributes.values());
-        System.out.println(lemmaBigramAttributes.values());
+//        attributeVector.addAll(sentimentScoresAttributes);
 
-        attributeVector.addAll(sentimentScoresAttributes);
-        System.out.println(attributeVector);
-        System.out.println(attributeVector.size());
-        ArrayList<MicroText> trainingMicroTexts = splitCorpuses(stanceTaggedMicroTexts, 10, false);
-        ArrayList<MicroText> testingMicroTexts = splitCorpuses(stanceTaggedMicroTexts, 10, true);
+
+        ArrayList<MicroText> trainingMicroTexts = splitMicroTextList(stanceTaggedMicroTexts, 10, false);
+        ArrayList<MicroText> testingMicroTexts = splitMicroTextList(stanceTaggedMicroTexts, 10, true);
+
         // Create training set
         Instances trainingSet = new Instances("trainingSet", attributeVector, trainingMicroTexts.size()+1);
         trainingSet.setClass(stanceClassAttribute);
+        // create and add instances to TRAINING set
+        trainingSet.addAll(createDefaultInstancesList(trainingMicroTexts.size(), attributeVector));
+        for (int i = 0; i < trainingMicroTexts.size(); i++) {
+            // set class value
+            setStringValue(trainingSet.get(i), trainingMicroTexts.get(i).getStance().getStanceToString(), stanceClassAttribute);
+            // add 1s for lemma unigrams
+            setStringValuesToOne(trainingSet.get(i), trainingMicroTexts.get(i).getLemmaUnigrams(),lemmaUnigramAttributes);
+            // add 1s for lemma bigrams
+            setStringValuesToOne(trainingSet.get(i), trainingMicroTexts.get(i).getLemmaBigrams(),lemmaBigramAttributes);
+            // add sentiment value??
+            //TODO add sentiment
+        }
+
+
         // Create testing set
         Instances testingSet = new Instances("testingSet", attributeVector, testingMicroTexts.size()+1);
         testingSet.setClass(stanceClassAttribute);
-
-        // create and add instances to TRAINING set
-        trainingSet.addAll(createDefaultInstances(trainingMicroTexts, attributeVector));
-        // set class value
-        for (int i = 0; i < trainingMicroTexts.size(); i++) {
-            setStringValue(trainingSet.get(i), trainingMicroTexts.get(i).getStance().getStanceToString(), stanceClassAttribute);
-        }
-        // add 1s for lemma unigrams
-        for (int i = 0; i < trainingMicroTexts.size(); i++) {
-            setStringValuesInCorpusInstance(trainingSet.get(i), trainingMicroTexts.get(i).getLemmaUnigrams(),lemmaUnigramAttributes);
-        }
-        // add 1s for lemma bigrams
-        for (int i = 0; i < trainingMicroTexts.size(); i++) {
-            setStringValuesInCorpusInstance(trainingSet.get(i), trainingMicroTexts.get(i).getLemmaBigrams(),lemmaBigramAttributes);
-        }
-        // add sentiment value??
-        for (int i = 0; i < trainingMicroTexts.size(); i++) {
-
-        }
-
-
         // create and add instances to TESTING set
-        testingSet.addAll(createDefaultInstances(testingMicroTexts, attributeVector));
-        // set class value
+        testingSet.addAll(createDefaultInstancesList(testingMicroTexts.size(), attributeVector));
         for (int i = 0; i < testingMicroTexts.size(); i++) {
+            // set class value
             setStringValue(testingSet.get(i), testingMicroTexts.get(i).getStance().getStanceToString(), stanceClassAttribute);
+            // add 1 for lemma unigrams
+            setStringValuesToOne(testingSet.get(i), testingMicroTexts.get(i).getLemmaUnigrams(),lemmaUnigramAttributes);
+            // add 1s for lemma bigrams
+            setStringValuesToOne(testingSet.get(i), testingMicroTexts.get(i).getLemmaBigrams(),lemmaBigramAttributes);
+            // add sentiment value??
+            //TODO add sentiment
         }
-        // add 1 for lemma unigrams
-        for (int i = 0; i < testingMicroTexts.size(); i++) {
-            setStringValuesInCorpusInstance(testingSet.get(i), testingMicroTexts.get(i).getLemmaUnigrams(),lemmaUnigramAttributes);
-        }
-        // add 1s for lemma bigrams
-        for (int i = 0; i < testingMicroTexts.size(); i++) {
-            setStringValuesInCorpusInstance(testingSet.get(i), testingMicroTexts.get(i).getLemmaBigrams(),lemmaBigramAttributes);
-        }
-
-        System.out.println(trainingSet);
-        //System.out.println(testingSet);
 
         try {
             // Create a naïve bayes classifier

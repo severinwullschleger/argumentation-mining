@@ -1,6 +1,0 @@
-(1. StanceClassifier)			pro or con
-2. IsClaimClassifier			true or false
-3. ProponentOpponentClassifier		pro or opp
-4. AttackSupportClassifier		att or sup
-5. TargetClassifier			*1, 2, 3, 4 oder 5*
-6. RebutUndercutClassifier		reb or und
