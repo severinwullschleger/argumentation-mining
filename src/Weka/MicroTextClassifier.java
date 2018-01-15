@@ -47,7 +47,7 @@ public class MicroTextClassifier extends Classifier {
         Set<String> sentenceIds = lemmaPerSentence.keySet();
         for (String sentenceId : sentenceIds) {
             List<String> strings = (List<String>) lemmaPerSentence.get(sentenceId);
-            addStringsAsAttributes(attributes, strings);
+            addStringListAsAttributes(attributes, strings);
         }
     }
 

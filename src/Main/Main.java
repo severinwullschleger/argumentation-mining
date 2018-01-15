@@ -3,7 +3,6 @@ package Main;
 import ConfigurationManager.ConfigurationManager;
 import InputOutput.FileWriter;
 import InputOutput.XMLParser;
-import Weka.ProponentOponentClassifier;
 import Weka.StanceClassifier;
 import Weka.TargetClassifier;
 
@@ -27,7 +26,7 @@ public class Main {
 //        ProponentOponentClassifier proponentOponentClassifier = new ProponentOponentClassifier();
 //        proponentOponentClassifier.run(microTexts);
         TargetClassifier targetClassifier = new TargetClassifier();
-        targetClassifier.run(microTexts);
+        targetClassifier.run(microTexts, 10);
     }
 }
 

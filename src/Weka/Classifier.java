@@ -12,7 +12,7 @@ import java.util.List;
 
 public abstract class Classifier {
 
-    protected void addStringsAsAttributes(HashMap attributes, List<String> strings) {
+    protected void addStringListAsAttributes(HashMap attributes, List<String> strings) {
         for (String s : strings)
             if (!attributes.containsKey(s))
                 attributes.put(s, new Attribute(s));

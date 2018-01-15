@@ -119,11 +119,11 @@ public abstract class TextSegment implements ISource, ITarget {
         return sentence.lemmas();
     }
 
-    public List<String> getLemmasFromPrecedingSegment() {
+    public List<String> getLemmaUnigramsFromPrecedingSegment() {
         return microText.getLemmaUnigramsFromSentence(segmentPositionIndex - 1);
     }
 
-    public List<String> getLemmasFromSubsequentSegment() {
+    public List<String> getLemmaUnigramsFromSubsequentSegment() {
         return microText.getLemmaUnigramsFromSentence(segmentPositionIndex + 1);
     }
 
