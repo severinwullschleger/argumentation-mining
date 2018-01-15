@@ -11,8 +11,8 @@ public class NullRelation extends Relation implements INullTarget{
     public NullRelation() {
     }
 
-    public NullRelation(String relationId) {
-        super(relationId);
+    public NullRelation(String relationId, String src, String trg) {
+        super(relationId, src, trg);
     }
 
     public TextSegment getSourceSegment() {
@@ -27,14 +27,6 @@ public class NullRelation extends Relation implements INullTarget{
     }
 
     public void setTarget(ITarget target) {
-    }
-
-    public String getSourceId() {
-        return "";
-    }
-
-    public String getTargetId() {
-        return "";
     }
 
     public final String getWekaAttackOrSupport() {
