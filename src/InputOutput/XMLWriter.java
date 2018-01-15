@@ -2,7 +2,6 @@ package InputOutput;
 
 import Main.MicroText;
 import Main.Model.role.Opponent;
-import Main.Model.typegen.NullRelation;
 import Main.Relation;
 import Main.RelationFactory;
 import Main.TextSegment;
@@ -64,7 +63,7 @@ public class XMLWriter {
                 Element edu = doc.createElement("edu");
                 rootElement.appendChild(edu);
 
-                Node cdata = doc.createCDATASection( textSegment.getSentence().text());
+                Node cdata = doc.createCDATASection(textSegment.getSentence().text());
                 edu.appendChild(cdata);
 
                 Attr attr = doc.createAttribute("id");
@@ -96,20 +95,20 @@ public class XMLWriter {
                 Attr src = doc.createAttribute("src");
                 Attr relId = doc.createAttribute("id");
                 Attr type = doc.createAttribute("type");
+                Attr trg = doc.createAttribute("trg");
 
+
+                src.setValue(relation.getSourceId());
                 relId.setValue(relation.getRelationId());
                 type.setValue(relationFactory.getRelationString(relation));
-
+                trg.setValue(relation.getTargetId());
 
 
                 adu.setAttributeNode(src);
                 adu.setAttributeNode(relId);
                 adu.setAttributeNode(type);
+                adu.setAttributeNode(trg);
             }
-
-
-
-
 
 
             // write the content into xml file
@@ -126,7 +125,7 @@ public class XMLWriter {
 
             transformer.transform(source, result);
 
-            System.out.println(FILE_NAME +" has been saved!");
+            System.out.println(FILE_NAME + " has been saved!");
 
         } catch (ParserConfigurationException | TransformerException pce) {
             pce.printStackTrace();
