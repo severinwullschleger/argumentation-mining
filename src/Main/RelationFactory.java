@@ -6,6 +6,7 @@ import Main.Model.type.UndefinedSupport;
 import Main.Model.type.Undercut;
 import Main.Model.typegen.NullRelation;
 import org.w3c.dom.Node;
+import weka.filters.unsupervised.attribute.Add;
 
 public class RelationFactory {
     public RelationFactory() {
@@ -30,6 +31,25 @@ public class RelationFactory {
                 return new Addition(relationId, src, trg);
 
         }
-        return new NullRelation(relationId);
+        return new NullRelation(relationId, src, trg);
+    }
+
+    public String getRelationString(Relation relation) {
+        if (relation instanceof UndefinedSupport) {
+            return "sup";
+        }
+        else if (relation instanceof Rebut) {
+            return "reb";
+        }
+        else if (relation instanceof Undercut) {
+            return "und";
+        }
+        else if (relation instanceof Addition) {
+            return "add";
+        }
+        // NullRelation
+        else {
+            return "seg";
+        }
     }
 }
