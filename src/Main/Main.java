@@ -28,8 +28,10 @@ public class Main {
 //        targetClassifier.run(microTexts, 10);
 //        IsClaimClassifier isClaimClassifier = new IsClaimClassifier();
 //        isClaimClassifier.run(microTexts, 10);
-        AttackSupportClassifier attackSupportClassifier = new AttackSupportClassifier();
-        attackSupportClassifier.run(microTexts, 10);
+//        AttackSupportClassifier attackSupportClassifier = new AttackSupportClassifier();
+//        attackSupportClassifier.run(microTexts, 10);
+        RebutUndercutClassifier rebutUndercutClassifier = new RebutUndercutClassifier();
+        rebutUndercutClassifier.run(microTexts, 10);
     }
 }
 

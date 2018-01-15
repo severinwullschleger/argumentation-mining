@@ -119,7 +119,7 @@ public class XMLParser {
 
         for (int temp = 0; temp < nListEdge.getLength(); temp++) {
             Node nNodeEdge = nListEdge.item(temp);
-            Relation relation = relationFactory.createRelation(nNodeEdge, microText);
+            Relation relation = relationFactory.createRelation(nNodeEdge);
             microText.addRelationToItsSourceSegment(relation);
         }
         microText.connectRelationsWithTargets();

@@ -7,4 +7,9 @@ public class UndefinedAttack extends Attack {
     public UndefinedAttack(String relationId, String src, String trg) {
         super(relationId, src, trg);
     }
+
+    @Override
+    public String getWekaRebutOrUndercut() {
+        return "undefinedAttack";
+    }
 }

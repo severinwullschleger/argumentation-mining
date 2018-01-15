@@ -23,6 +23,11 @@ public abstract class Support extends Relation {
     }
 
     @Override
+    public boolean isAttack() {
+        return false;
+    }
+
+    @Override
     public boolean isValidRelation() {
         return true;
     }

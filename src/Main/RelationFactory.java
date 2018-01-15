@@ -1,6 +1,6 @@
 package Main;
 
-import Main.Model.type.Addition;
+import Main.Model.typegen.Addition;
 import Main.Model.type.Rebut;
 import Main.Model.type.UndefinedSupport;
 import Main.Model.type.Undercut;
@@ -12,7 +12,7 @@ public class RelationFactory {
 
     }
 
-    public Relation createRelation(Node nNodeEdge, MicroText microText) {
+    public Relation createRelation(Node nNodeEdge) {
         //extract source, trg and type node
         String relationId = nNodeEdge.getAttributes().getNamedItem("id").getNodeValue();
         String src = nNodeEdge.getAttributes().getNamedItem("src").getNodeValue();

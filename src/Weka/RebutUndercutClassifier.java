@@ -7,7 +7,7 @@ import weka.core.Attribute;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AttackSupportClassifier extends TextSegmentClassifier {
+public class RebutUndercutClassifier extends TextSegmentClassifier {
 
     @Override
     protected List<TextSegment> createTextSegmentList(List<MicroText> microTexts) {
@@ -15,7 +15,7 @@ public class AttackSupportClassifier extends TextSegmentClassifier {
         for(MicroText microText : microTexts) {
             for(int i = 0; i < microText.getTextSegments().size(); i++) {
                 TextSegment textSegment = microText.getTextSegment(i);
-                if (textSegment.hasRelation())
+                if (textSegment.isAttack())
                     textSegments.add(textSegment);
             }
         }
@@ -25,14 +25,14 @@ public class AttackSupportClassifier extends TextSegmentClassifier {
     @Override
     protected Attribute defineClassAttribute() {
         ArrayList<String> attSupValues = new ArrayList<>(2);
-        attSupValues.add("att");
-        attSupValues.add("sup");
-        classAttribute = new Attribute("attSup", attSupValues);
+        attSupValues.add("reb");
+        attSupValues.add("und");
+        classAttribute = new Attribute("rebUnd", attSupValues);
         return classAttribute;
     }
 
     @Override
     protected String getClassValue(TextSegment textSegment) {
-        return textSegment.getWekaAttackOrSupport();
+        return textSegment.getWekaRebutOrUndercut();
     }
 }
