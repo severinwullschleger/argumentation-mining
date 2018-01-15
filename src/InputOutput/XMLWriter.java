@@ -118,6 +118,7 @@ public class XMLWriter {
             DOMSource source = new DOMSource(doc);
 //            StreamResult result = new StreamResult(new File(FILE_NAME));
 
+            FileWriter.makeSureDirectoryExists(ConfigurationManager.getInstance().getOutputXMLDir());
             final String FILE_NAME = ConfigurationManager.getInstance().getOutputXMLDir() + "/" + microText.getFileId() + ".xml";
             File file = new File(FILE_NAME);
 
