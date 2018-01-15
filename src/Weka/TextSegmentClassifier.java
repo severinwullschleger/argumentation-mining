@@ -97,6 +97,7 @@ public abstract class TextSegmentClassifier extends Classifier{
     }
 
     protected void splitTextSegmentsIntoTrainingAndTestSet(int testDataPercentage) {
+        Collections.shuffle(textSegments);
         trainingTextSegments = splitTextSegmentList(testDataPercentage, false);
         testTextSegments = splitTextSegmentList(testDataPercentage, true);
     }

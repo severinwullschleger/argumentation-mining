@@ -10,4 +10,9 @@ public class Undercut extends Attack {
     public Undercut(String relationId, String src, String trg) {
         super(relationId, src, trg);
     }
+
+    @Override
+    public String getWekaRebutOrUndercut() {
+        return "und";
+    }
 }

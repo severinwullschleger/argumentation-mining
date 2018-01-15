@@ -23,6 +23,11 @@ public abstract class Attack extends Relation{
     }
 
     @Override
+    public boolean isAttack() {
+        return true;
+    }
+
+    @Override
     public boolean isValidRelation() {
         return true;
     }

@@ -217,11 +217,20 @@ public abstract class TextSegment implements ISource, ITarget {
         return relation.getTargetId();
     }
 
-    public String getRelationsWekaAttackOrSupport() {
+    public String getWekaAttackOrSupport() {
         return relation.getWekaAttackOrSupport();
     }
 
     public boolean hasRelation() {
         return relation.isValidRelation();
     }
+
+    public String getWekaRebutOrUndercut() {
+        return relation.getWekaRebutOrUndercut();
+    }
+
+    public boolean isAttack() {
+        return relation.isAttack();
+    }
+
 }

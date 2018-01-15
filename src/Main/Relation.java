@@ -51,7 +51,10 @@ public abstract class Relation implements ITarget{
         return targetId;
     }
 
-    public abstract String getWekaAttackOrSupport();
-
     public abstract boolean isValidRelation();
+
+    public abstract String getWekaAttackOrSupport();
+    public abstract String getWekaRebutOrUndercut();
+
+    public abstract boolean isAttack();
 }

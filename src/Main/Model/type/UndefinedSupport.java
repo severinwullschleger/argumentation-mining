@@ -8,4 +8,9 @@ public class UndefinedSupport extends Support {
     public UndefinedSupport(String relationId, String src, String trg) {
         super(relationId, src, trg);
     }
+
+    @Override
+    public String getWekaRebutOrUndercut() {
+        return "undefinedSupport";
+    }
 }
