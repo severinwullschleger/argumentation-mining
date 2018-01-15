@@ -1,5 +1,6 @@
 package InputOutput;
 
+import ConfigurationManager.ConfigurationManager;
 import Main.MicroText;
 import Main.Model.role.Opponent;
 import Main.Relation;
@@ -117,7 +118,7 @@ public class XMLWriter {
             DOMSource source = new DOMSource(doc);
 //            StreamResult result = new StreamResult(new File(FILE_NAME));
 
-            final String FILE_NAME = microText.getFileId() + ".xml";
+            final String FILE_NAME = ConfigurationManager.getInstance().getOutputXMLDir() + "/" + microText.getFileId() + ".xml";
             File file = new File(FILE_NAME);
 
             // Output to console for testing

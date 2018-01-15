@@ -55,3 +55,4 @@ ArgumentationMiningTool.iml
 .idea/encodings.xml
 
 target
+generatedXMLFiles/*

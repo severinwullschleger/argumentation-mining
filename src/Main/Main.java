@@ -14,16 +14,18 @@ import java.util.Set;
  */
 public class Main {
 
+
+    private static List<MicroText> microTexts;
+
     public static void main(String args[]) {
         final String DATASET_PATH = ConfigurationManager.getInstance().getFilePath();
         XMLParser xmlParser = XMLParser.getInstance();
-        List<MicroText> microTexts = xmlParser.walkXMLFiles(DATASET_PATH);
+        microTexts = xmlParser.walkXMLFiles(DATASET_PATH);
 //        StanceClassifier stanceClassifer = new StanceClassifier();
 //        stanceClassifer.run(microTexts);
 //
-        XMLWriter xmlWriter = XMLWriter.getInstance();
 
-        xmlWriter.writeXMLFile(microTexts.get(0));
+
 //        FileWriter.writeTextSegmentToProOppFolder(microTexts, DATASET_PATH);
 //        StanceClassifier stanceClassifer = new StanceClassifier();
 //        stanceClassifer.run(microTexts);
@@ -37,6 +39,15 @@ public class Main {
 
 //        AttackSupportClassifier attackSupportClassifier = new AttackSupportClassifier();
 //        attackSupportClassifier.run(microTexts, 10);
+        generateXMLFiles();
+    }
+
+    /**
+     * Genearte XML File for ach MicroText which has been analysed with WEKA
+     */
+    public static void generateXMLFiles() {
+        XMLWriter xmlWriter = XMLWriter.getInstance();
+        microTexts.forEach(xmlWriter::writeXMLFile);
     }
 }
 
