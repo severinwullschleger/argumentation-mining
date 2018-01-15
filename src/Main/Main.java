@@ -19,12 +19,6 @@ public class Main {
         final String DATASET_PATH = ConfigurationManager.getInstance().getFilePath();
         XMLParser xmlParser = XMLParser.getInstance();
         microTexts = xmlParser.walkXMLFiles(DATASET_PATH);
-//        StanceClassifier stanceClassifer = new StanceClassifier();
-//        stanceClassifer.run(microTexts);
-//
-//        FileWriter.writeTextSegmentToProOppFolder(microTexts, DATASET_PATH);
-//        StanceClassifier stanceClassifer = new StanceClassifier();
-//        stanceClassifer.run(microTexts);
 
 //        ProponentOponentClassifier proponentOponentClassifier = new ProponentOponentClassifier();
 //        proponentOponentClassifier.run(microTexts, 10);
@@ -32,14 +26,13 @@ public class Main {
         isClaimClassifier.run(microTexts, 10);
 //        TargetClassifier targetClassifier = new TargetClassifier();
 //        targetClassifier.run(microTexts, 10);
-
-
 //        AttackSupportClassifier attackSupportClassifier = new AttackSupportClassifier();
 //        attackSupportClassifier.run(microTexts, 10);
-
-        //        RebutUndercutClassifier rebutUndercutClassifier = new RebutUndercutClassifier();
+//        RebutUndercutClassifier rebutUndercutClassifier = new RebutUndercutClassifier();
 //        rebutUndercutClassifier.run(microTexts, 10);
 
+//        StanceClassifier stanceClassifer = new StanceClassifier();
+//        stanceClassifer.run(microTexts);
 
         generateXMLFiles();
     }
