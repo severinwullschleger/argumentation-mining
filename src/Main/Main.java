@@ -3,9 +3,7 @@ package Main;
 import ConfigurationManager.ConfigurationManager;
 import InputOutput.FileWriter;
 import InputOutput.XMLParser;
-import Weka.ProponentOponentClassifier;
-import Weka.StanceClassifier;
-import Weka.TargetClassifier;
+import Weka.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,10 +22,14 @@ public class Main {
 
 //        StanceClassifier stanceClassifer = new StanceClassifier();
 //        stanceClassifer.run(microTexts);
-        ProponentOponentClassifier proponentOponentClassifier = new ProponentOponentClassifier();
-        proponentOponentClassifier.run(microTexts, 10);
+//        ProponentOponentClassifier proponentOponentClassifier = new ProponentOponentClassifier();
+//        proponentOponentClassifier.run(microTexts, 10);
 //        TargetClassifier targetClassifier = new TargetClassifier();
 //        targetClassifier.run(microTexts, 10);
+//        IsClaimClassifier isClaimClassifier = new IsClaimClassifier();
+//        isClaimClassifier.run(microTexts, 10);
+        AttackSupportClassifier attackSupportClassifier = new AttackSupportClassifier();
+        attackSupportClassifier.run(microTexts, 10);
     }
 }
 

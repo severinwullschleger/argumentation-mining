@@ -26,10 +26,10 @@ public class XMLParserTest {
     public void testIsClaimSetter() {
         List<TextSegment> textSegments = microTexts.get(0).getTextSegments();
 
-        Assert.assertFalse(textSegments.get(0).getClaim());
-        Assert.assertFalse(textSegments.get(1).getClaim());
-        Assert.assertFalse(textSegments.get(2).getClaim());
-        Assert.assertFalse(textSegments.get(3).getClaim());
-        Assert.assertTrue(textSegments.get(4).getClaim());
+        Assert.assertFalse(textSegments.get(0).isClaim());
+        Assert.assertFalse(textSegments.get(1).isClaim());
+        Assert.assertFalse(textSegments.get(2).isClaim());
+        Assert.assertFalse(textSegments.get(3).isClaim());
+        Assert.assertTrue(textSegments.get(4).isClaim());
     }
 }

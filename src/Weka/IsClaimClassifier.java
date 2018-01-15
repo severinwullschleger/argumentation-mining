@@ -1,11 +1,9 @@
 package Weka;
 
-import Main.MicroText;
 import Main.TextSegment;
 import weka.core.Attribute;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class IsClaimClassifier extends TextSegmentClassifier {
 
@@ -20,7 +18,7 @@ public class IsClaimClassifier extends TextSegmentClassifier {
 
     @Override
     protected String getClassValue(TextSegment textSegment) {
-        if (textSegment.getClaim())
+        if (textSegment.isClaim())
             return "yes";
         else
             return "no";

@@ -8,11 +8,13 @@ import weka.core.Attribute;
 import weka.core.Instances;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 public abstract class TextSegmentClassifier extends Classifier{
 
+    protected List<TextSegment> alltextSegments;
     protected List<TextSegment> textSegments;
     protected List<TextSegment> trainingTextSegments;
     protected List<TextSegment> testTextSegments;
@@ -31,6 +33,7 @@ public abstract class TextSegmentClassifier extends Classifier{
 
     public final void run(List<MicroText> microTexts, int testDataPercentage) {
 
+        createFullTextSegmentList(microTexts);
         createTextSegmentList(microTexts);
 
         defineClassAttribute();
@@ -45,12 +48,17 @@ public abstract class TextSegmentClassifier extends Classifier{
         evaluateModel();
     }
 
-    protected List<TextSegment> createTextSegmentList(List<MicroText> microTexts) {
+    private final List<TextSegment> createFullTextSegmentList(List<MicroText> microTexts) {
         //create list with all textsegments
-        textSegments = new ArrayList<>();
+        alltextSegments = new ArrayList<>();
         for(MicroText microText : microTexts) {
-            textSegments.addAll(microText.getTextSegments());
+            alltextSegments.addAll(microText.getTextSegments());
         }
+        return alltextSegments;
+    }
+
+    protected List<TextSegment> createTextSegmentList(List<MicroText> microTexts) {
+        textSegments = new ArrayList<>(alltextSegments);
         return textSegments;
     }
 
@@ -63,7 +71,7 @@ public abstract class TextSegmentClassifier extends Classifier{
 
     private HashMap getAllLemmaUnigramsAsAttributes() {
         HashMap attributes = new HashMap<String, Attribute>();
-        for (TextSegment textSegment : textSegments) {
+        for (TextSegment textSegment : alltextSegments) {
             addStringListAsAttributes(attributes, textSegment.getLemmaUnigrams());
         }
         return attributes;
@@ -71,7 +79,7 @@ public abstract class TextSegmentClassifier extends Classifier{
 
     private HashMap getAllLemmaBigramsAsAttributes() {
         HashMap attributes = new HashMap<String, Attribute>();
-        for (TextSegment textSegment : textSegments) {
+        for (TextSegment textSegment : alltextSegments) {
             addStringListAsAttributes(attributes, textSegment.getLemmaBigrams());
         }
         return attributes;

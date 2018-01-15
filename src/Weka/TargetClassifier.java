@@ -23,7 +23,7 @@ public class TargetClassifier extends TextSegmentClassifier {
 
     @Override
     protected String getClassValue(TextSegment textSegment) {
-        if (textSegment.getClaim())
+        if (textSegment.isClaim())
             return "0";
 
         ArrayList<String> validStrings = new ArrayList<>(5);

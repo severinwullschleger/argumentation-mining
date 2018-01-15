@@ -17,4 +17,13 @@ public abstract class Attack extends Relation{
     public Attack(String relationId, String src, String trg) {
         super(relationId, src, trg);
     }
+
+    public final String getWekaAttackOrSupport() {
+        return "att";
+    }
+
+    @Override
+    public boolean isValidRelation() {
+        return true;
+    }
 }

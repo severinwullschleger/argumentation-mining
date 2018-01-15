@@ -238,4 +238,8 @@ public class MicroText {
         }
         return new NullTextSegment();
     }
+
+    public TextSegment getTextSegment(int i) {
+        return textSegments.get(i);
+    }
 }

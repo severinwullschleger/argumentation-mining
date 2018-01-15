@@ -95,7 +95,7 @@ public abstract class TextSegment implements ISource, ITarget {
         return sentence;
     }
 
-    public Boolean getClaim() {
+    public Boolean isClaim() {
         return isClaim;
     }
 
@@ -197,5 +197,13 @@ public abstract class TextSegment implements ISource, ITarget {
 
     public String getRelationTargetId() {
         return relation.getTargetId();
+    }
+
+    public String getRelationsWekaAttackOrSupport() {
+        return relation.getWekaAttackOrSupport();
+    }
+
+    public boolean hasRelation() {
+        return relation.isValidRelation();
     }
 }
