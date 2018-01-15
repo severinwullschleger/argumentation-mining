@@ -34,7 +34,7 @@ public class Main {
 //        IsClaimClassifier isClaimClassifier = new IsClaimClassifier();
 //        isClaimClassifier.run(microTexts, 10);
 
-        
+
 //        AttackSupportClassifier attackSupportClassifier = new AttackSupportClassifier();
 //        attackSupportClassifier.run(microTexts, 10);
     }

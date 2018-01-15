@@ -23,10 +23,12 @@ public class MicroText {
     private List<TextSegment> textSegments;
     private Language language;
     private File correspondentFile;
+    private List<Relation> relations;
 
 
     public MicroText() {
         this.textSegments = new ArrayList<>();
+        this.relations = new ArrayList<>();
 
     }
 
@@ -241,6 +243,14 @@ public class MicroText {
                 return textSegment.getRelation();
         }
         return new NullTextSegment();
+    }
+
+    public List<Relation> getRelations() {
+        return relations;
+    }
+
+    public void setRelations(List<Relation> relations) {
+        this.relations = relations;
     }
 
     public TextSegment getTextSegment(int i) {

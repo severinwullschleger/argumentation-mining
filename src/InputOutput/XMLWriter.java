@@ -2,6 +2,8 @@ package InputOutput;
 
 import Main.MicroText;
 import Main.Model.role.Opponent;
+import Main.Model.typegen.NullRelation;
+import Main.Relation;
 import Main.TextSegment;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -85,14 +87,18 @@ public class XMLWriter {
             }
 
             // EDGE
-            for (TextSegment textSegment : microText.getTextSegments()) {
+            for (Relation relation : microText.getRelations()) {
                 Element adu = doc.createElement("edge");
                 rootElement.appendChild(adu);
 
-                Attr attr = doc.createAttribute("src");
-                attr.setValue(textSegment.getEdgeId());
+                // when the source of a relation does not start with "a"
+                if (relation instanceof NullRelation) {
+                    System.out.println(relation.getRelationId());
+                }
 
-                adu.setAttributeNode(attr);
+                Attr src = doc.createAttribute("src");
+                Attr relId = doc.createAttribute("id");
+                adu.setAttributeNode(src);
             }
 
 

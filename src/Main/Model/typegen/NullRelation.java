@@ -9,7 +9,10 @@ import Main.TextSegment;
 public class NullRelation extends Relation implements INullTarget{
 
     public NullRelation() {
+    }
 
+    public NullRelation(String relationId) {
+        super(relationId);
     }
 
     public TextSegment getSourceSegment() {
@@ -25,11 +28,6 @@ public class NullRelation extends Relation implements INullTarget{
 
     public void setTarget(ITarget target) {
     }
-
-    public String getRelationId() {
-        return "";
-    }
-
 
     public String getSourceId() {
         return "";

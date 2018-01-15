@@ -12,6 +12,10 @@ public abstract class Relation implements ITarget{
 
     }
 
+    public Relation(String relationId) {
+        this.relationId = relationId;
+    }
+
     public Relation(String relationId, String src, String trg) {
         this.relationId = relationId;
         this.sourceId = src;

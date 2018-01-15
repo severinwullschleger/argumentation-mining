@@ -20,7 +20,6 @@ public class RelationFactory {
         String type = nNodeEdge.getAttributes().getNamedItem("type").getNodeValue();
 
         if(src.startsWith("a")) {
-
             if (type.equals("sup"))
                 return new UndefinedSupport(relationId, src, trg);
             if (type.equals("reb"))
@@ -31,6 +30,6 @@ public class RelationFactory {
                 return new Addition(relationId, src, trg);
 
         }
-        return new NullRelation();
+        return new NullRelation(relationId);
     }
 }

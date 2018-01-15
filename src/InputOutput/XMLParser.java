@@ -124,6 +124,20 @@ public class XMLParser {
             Node nNodeEdge = nListEdge.item(temp);
             Relation relation = relationFactory.createRelation(nNodeEdge, microText);
             microText.addRelationToItsSourceSegment(relation);
+            microText.getRelations().add(relation);
+
+
+            /**
+             * Lucas tests
+             */
+            if (microText.getFileId().equals("micro_b001")) {
+                String relationId = nNodeEdge.getAttributes().getNamedItem("id").getNodeValue();
+                String src = nNodeEdge.getAttributes().getNamedItem("src").getNodeValue();
+                String trg = nNodeEdge.getAttributes().getNamedItem("trg").getNodeValue();
+                String type = nNodeEdge.getAttributes().getNamedItem("type").getNodeValue();
+//                System.out.println("relation id: " + relationId);
+//                System.out.println("relation id: " + relation.getRelationId());
+            }
         }
         microText.connectRelationsWithTargets();
         return microText;
