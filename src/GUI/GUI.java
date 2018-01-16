@@ -56,12 +56,10 @@ public class GUI {
                     rawTextPanel.setVisible(true);
                     textFilesPanel.setVisible(false);
                     txtFilesRadioButton.setSelected(false);
-                    testDataPercentagePanel.setVisible(true);
-                    runClassifierPanel.setVisible(true);
+                    setSubPanelVisible();
                 } else {
                     rawTextPanel.setVisible(false);
-                    testDataPercentagePanel.setVisible(false);
-                    runClassifierPanel.setVisible(false);
+                    setSubPanelsInvisible();
                 }
             }
         });
@@ -72,12 +70,10 @@ public class GUI {
                     rawTextPanel.setVisible(false);
                     textFilesPanel.setVisible(true);
                     rawTextRadioButton.setSelected(false);
-                    testDataPercentagePanel.setVisible(true);
-                    runClassifierPanel.setVisible(true);
+                    setSubPanelVisible();
                 } else {
                     textFilesPanel.setVisible(false);
-                    testDataPercentagePanel.setVisible(false);
-                    runClassifierPanel.setVisible(false);
+                    setSubPanelsInvisible();
                 }
             }
         });
@@ -208,6 +204,18 @@ public class GUI {
         });
     }
 
+    private void setSubPanelVisible() {
+        testDataPercentagePanel.setVisible(true);
+        runClassifierPanel.setVisible(true);
+        useClassifierPanel.setVisible(true);
+    }
+
+    private void setSubPanelsInvisible() {
+        testDataPercentagePanel.setVisible(false);
+        runClassifierPanel.setVisible(false);
+        useClassifierPanel.setVisible(false);
+    }
+
     public static void showNotification(List<String> notifications) {
         String str = "";
         for (String notif : notifications) {
@@ -240,8 +248,7 @@ public class GUI {
     private void initGUIElements() {
         rawTextPanel.setVisible(false);
         textFilesPanel.setVisible(false);
-        testDataPercentagePanel.setVisible(false);
-        runClassifierPanel.setVisible(false);
+        setSubPanelsInvisible();
         testDataPercentageSlider.setValue(10);
         testDataPercentageLabel.setText("Test Data Percentage: " + String.valueOf(testDataPercentageSlider.getValue()));
         correctInstancesLabel.setText("");
