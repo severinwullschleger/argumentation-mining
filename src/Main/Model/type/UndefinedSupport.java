@@ -20,4 +20,9 @@ public class UndefinedSupport extends Support {
     public String getWekaRebutOrUndercut() {
         return "undefinedSupport";
     }
+
+    @Override
+    public boolean isUndercut() {
+        return false;
+    }
 }

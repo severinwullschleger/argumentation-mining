@@ -27,4 +27,14 @@ public class Addition extends Relation {
     public boolean isAttack() {
         return false;    // alternatively:: return target.isAttack();
     }
+
+    @Override
+    public void setTargetId(int id) {
+        targetId = "c"+id;
+    }
+
+    @Override
+    public boolean isUndercut() {
+        return false;
+    }
 }

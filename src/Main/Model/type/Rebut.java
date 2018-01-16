@@ -20,4 +20,14 @@ public class Rebut extends Attack {
     public String getWekaRebutOrUndercut() {
         return "reb";
     }
+
+    @Override
+    public void setTargetId(int id) {
+        targetId = "a"+id;
+    }
+
+    @Override
+    public boolean isUndercut() {
+        return false;
+    }
 }
