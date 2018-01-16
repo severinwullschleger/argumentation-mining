@@ -2,6 +2,8 @@ package GUI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 /**
  * Created by LuckyP on 16.01.18.
@@ -9,6 +11,44 @@ import java.awt.*;
 public class GUI {
     private JLabel LToolTitle;
     private JPanel mainPanel;
+    private JRadioButton rawTextRadioButton;
+    private JRadioButton txtFilesRadioButton;
+    private JPanel rawTextPanel;
+    private JPanel textFilesPanel;
+
+
+    public GUI() {
+        rawTextPanel.setVisible(false);
+        textFilesPanel.setVisible(false);
+
+        rawTextRadioButton.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+
+                // if Raw Text Button has been selected show RawTextPanel
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    rawTextPanel.setVisible(true);
+                    textFilesPanel.setVisible(false);
+                    txtFilesRadioButton.setSelected(false);
+                } else {
+                    rawTextPanel.setVisible(false);
+                }
+            }
+        });
+        txtFilesRadioButton.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    rawTextPanel.setVisible(false);
+                    textFilesPanel.setVisible(true);
+                    rawTextRadioButton.setSelected(false);
+                }
+                else {
+                    textFilesPanel.setVisible(false);
+                }
+            }
+        });
+    }
 
     public static void startGUI() {
         JFrame frame = new JFrame("Argumentation Mining HS2017");
