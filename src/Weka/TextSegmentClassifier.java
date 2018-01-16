@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public abstract class TextSegmentClassifier extends Classifier{
+public abstract class TextSegmentClassifier extends Classifier {
 
     protected List<TextSegment> alltextSegments;
     protected List<TextSegment> textSegments;
@@ -31,6 +31,7 @@ public abstract class TextSegmentClassifier extends Classifier{
     protected weka.classifiers.Classifier cModel;
 
     protected abstract Attribute defineClassAttribute();
+
     protected abstract String getClassValue(TextSegment textSegment);
 
     public final void run(List<MicroText> microTexts, int testDataPercentage) {
@@ -53,7 +54,7 @@ public abstract class TextSegmentClassifier extends Classifier{
     private final List<TextSegment> createFullTextSegmentList(List<MicroText> microTexts) {
         //create list with all textsegments
         alltextSegments = new ArrayList<>();
-        for(MicroText microText : microTexts) {
+        for (MicroText microText : microTexts) {
             alltextSegments.addAll(microText.getTextSegments());
         }
         return alltextSegments;
@@ -111,8 +112,7 @@ public abstract class TextSegmentClassifier extends Classifier{
             if (isTestData) {
                 if (index % takeEveryXCorpus == 0)
                     partData.add(textSegments.get(index));
-            }
-            else {
+            } else {
                 if (index % takeEveryXCorpus != 0)
                     partData.add(textSegments.get(index));
             }
@@ -121,7 +121,7 @@ public abstract class TextSegmentClassifier extends Classifier{
     }
 
     private void createTrainingSet() {
-        trainingSet = new Instances("trainingSet", attributeVector, trainingTextSegments.size()+1);
+        trainingSet = new Instances("trainingSet", attributeVector, trainingTextSegments.size() + 1);
         trainingSet.setClass(classAttribute);
 
         trainingSet.addAll(createDefaultInstancesList(trainingTextSegments.size(), attributeVector));
@@ -130,7 +130,7 @@ public abstract class TextSegmentClassifier extends Classifier{
     }
 
     private void createTestingSet() {
-        testingSet = new Instances("testingSet", attributeVector, testTextSegments.size()+1);
+        testingSet = new Instances("testingSet", attributeVector, testTextSegments.size() + 1);
         testingSet.setClass(classAttribute);
 
         testingSet.addAll(createDefaultInstancesList(testTextSegments.size(), attributeVector));
@@ -161,7 +161,7 @@ public abstract class TextSegmentClassifier extends Classifier{
     protected void learnModel() {
         try {
             // Create a naïve bayes classifier
-            cModel = (weka.classifiers.Classifier)new NaiveBayes();
+            cModel = (weka.classifiers.Classifier) new NaiveBayes();
             cModel.buildClassifier(trainingSet);
         } catch (Exception e) {
             e.printStackTrace();
@@ -178,6 +178,7 @@ public abstract class TextSegmentClassifier extends Classifier{
             String strSummary = eTest.toSummaryString();
             System.out.println(strSummary);
 
+
             showResultOnGUI(strSummary);
 
         } catch (Exception e) {
@@ -186,6 +187,11 @@ public abstract class TextSegmentClassifier extends Classifier{
     }
 
     private void showResultOnGUI(String strSummary) {
+        String temp[] = strSummary.split("\n");
+        GUI.getGUI().correctInstancesLabel.setText(temp[0]);
+        GUI.getGUI().incorrectInstancesLabel.setText(temp[1]);
+        GUI.getGUI().runClassifierInfoLabel.setText("");
+
         List<String> notif = new ArrayList<>();
         notif.add(strSummary);
         GUI.showNotification(notif);
@@ -200,7 +206,7 @@ public abstract class TextSegmentClassifier extends Classifier{
 
     private List<Instance> createInstances(MicroText myMicroText) {
         List<Instance> instances = createDefaultInstancesList(myMicroText.getTextSegments().size(), attributeVector);
-        for(int i = 0; i < instances.size(); i++)
+        for (int i = 0; i < instances.size(); i++)
             addValuesToInstance(instances.get(i), myMicroText.getTextSegment(i));
         return instances;
     }
@@ -211,7 +217,7 @@ public abstract class TextSegmentClassifier extends Classifier{
     }
 
     private final void makeDecisionsFor(List<Instance> instances, MicroText myMicroText) {
-        for(int i = 0; i < instances.size(); i++) {
+        for (int i = 0; i < instances.size(); i++) {
             makeDecisionFor(instances.get(i), myMicroText.getTextSegment(i));
         }
     }

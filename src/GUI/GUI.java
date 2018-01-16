@@ -11,12 +11,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by LuckyP on 16.01.18.
  */
 public class GUI {
+    private static GUI gui;
+    public JLabel correctInstancesLabel;
+    public JLabel incorrectInstancesLabel;
+    public JLabel runClassifierInfoLabel;
     private JLabel LToolTitle;
     private JPanel mainPanel;
     private JRadioButton rawTextRadioButton;
@@ -33,7 +38,10 @@ public class GUI {
     private JLabel testDataPercentageLabel;
     private JButton runClassifierButton;
     private JPanel runClassifierPanel;
-    private static GUI gui;
+    private JPanel useClassifierPanel;
+    private JButton useClassifierButton;
+    private List<String> stringSentences;
+    private List<JTextField> jTextFields;
 
 
     public GUI() {
@@ -169,6 +177,9 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int testDataPercentage = testDataPercentageSlider.getValue();
+                List<String> notif = new ArrayList<>();
+                notif.add("Classifier has been started...");
+                showNotification(notif);
                 Main.runProponentOponentClassifier(testDataPercentage);
 
 
@@ -176,24 +187,33 @@ public class GUI {
         });
 
 
-    }
+        useClassifierButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (rawTextRadioButton.isSelected()) {
+                    if (sentencesAreWellFormed()) {
+                        List<String> sentences = new ArrayList<>();
+                        for (JTextField jTextField: jTextFields) {
+                            if (!jTextField.getText().equals("")) {
+                                sentences.add(jTextField.getText());
+                            }
+                        }
 
-    private void initGUIElements() {
-        rawTextPanel.setVisible(false);
-        textFilesPanel.setVisible(false);
-        testDataPercentagePanel.setVisible(false);
-        runClassifierPanel.setVisible(false);
-        testDataPercentageSlider.setValue(10);
-        testDataPercentageLabel.setText("Test Data Percentage: " + String.valueOf(testDataPercentageSlider.getValue()));
-    }
+                        Main.useClassifier(sentences);
+                    }
 
+                }
+
+            }
+        });
+    }
 
     public static void showNotification(List<String> notifications) {
-        String str = "You got the following notification: \n";
+        String str = "";
         for (String notif : notifications) {
-            str += "\t-\t" + notif + "\n";
+            str += notif + "\n";
         }
-        JOptionPane.showMessageDialog(new GUI().mainPanel, str);
+        JOptionPane.showMessageDialog(GUI.getGUI().mainPanel, str);
     }
 
     public static void startGUI() {
@@ -210,6 +230,36 @@ public class GUI {
 
     public static GUI getGUI() {
         return gui;
+    }
+
+    private boolean sentencesAreWellFormed() {
+        // TODO: check the formatting of the sentences
+        return true;
+    }
+
+    private void initGUIElements() {
+        rawTextPanel.setVisible(false);
+        textFilesPanel.setVisible(false);
+        testDataPercentagePanel.setVisible(false);
+        runClassifierPanel.setVisible(false);
+        testDataPercentageSlider.setValue(10);
+        testDataPercentageLabel.setText("Test Data Percentage: " + String.valueOf(testDataPercentageSlider.getValue()));
+        correctInstancesLabel.setText("");
+        incorrectInstancesLabel.setText("");
+        this.stringSentences = new ArrayList<>();
+        this.jTextFields = new ArrayList<>();
+
+
+        firstSentenceTextField.setText("");
+        secondSentenceTextField.setText("");
+        thirdSentenceTextField.setText("");
+        fourthSentenceTextField.setText("");
+        fifthSentenceTextField.setText("");
+        jTextFields.add(firstSentenceTextField);
+        jTextFields.add(secondSentenceTextField);
+        jTextFields.add(thirdSentenceTextField);
+        jTextFields.add(fourthSentenceTextField);
+        jTextFields.add(fifthSentenceTextField);
     }
 
 

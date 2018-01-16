@@ -40,20 +40,24 @@ public class Main {
 //        stanceClassifer.run(microTexts);
 
 
-//        String myString = "Adoption should be permitted,\n" +
-//                "because it prevents a life from evolving\n" +
-//                "and this is as bad as killing a living person.";
-//
-//        MicroTextFactory microTextFactory = new MicroTextFactory();
-//        // get plain Microtext from text entry
-//        MicroText myMicroText = microTextFactory.createMicroText(myString);
-//        System.out.println(myMicroText);
-//
-//        proponentOponentClassifier.useClassifier(myMicroText);
-//        System.out.println(myMicroText);
+//        useClassifier();
 
 
 //        generateXMLFiles();
+    }
+
+    public static MicroText useClassifier(List<String> stringSentences) {
+        String myString = "Adoption should be permitted,\n" +
+                "because it prevents a life from evolving\n" +
+                "and this is as bad as killing a living person.";
+
+        MicroTextFactory microTextFactory = new MicroTextFactory();
+        // get plain Microtext from text entry
+        MicroText myMicroText = microTextFactory.createMicroText(stringSentences);
+        System.out.println(myMicroText);
+
+        proponentOponentClassifier.useClassifier(myMicroText);
+        return myMicroText;
     }
 
     public static void runProponentOponentClassifier(int testDataPercentage) {
