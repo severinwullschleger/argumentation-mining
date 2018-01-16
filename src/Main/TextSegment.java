@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Created by LuckyP on 02.12.17.
@@ -176,6 +178,92 @@ public abstract class TextSegment implements ISource, ITarget {
             return 4;
         }
         else return -1;
+
+    }
+
+
+    public List<List<String>> getDiscourseMarkers() {
+        HashMap<String, String> discourseMarkers = new HashMap<>();
+        discourseMarkers.put("nevertheless", "concession");
+        discourseMarkers.put("nonetheless", "concession");
+        discourseMarkers.put("however", "concession");
+        discourseMarkers.put("still", "concession");
+        discourseMarkers.put("yet", "concession");
+        discourseMarkers.put("despite", "concession");
+        discourseMarkers.put("although", "concession");
+        discourseMarkers.put("even though", "concession");
+        discourseMarkers.put("but", "concession");
+        discourseMarkers.put("firstly", "ordering");
+        discourseMarkers.put("secondly", "ordering");
+        discourseMarkers.put("thirdly", "ordering");
+        discourseMarkers.put("in addition", "ordering");
+        discourseMarkers.put("in conclusion", "ordering");
+        discourseMarkers.put("moreover", "ordering");
+        discourseMarkers.put("on the one hand", "ordering");
+        discourseMarkers.put("on the other hand", "ordering");
+        discourseMarkers.put("to begin with", "ordering");
+        discourseMarkers.put("in sum", "ordering");
+        discourseMarkers.put("what is more", "ordering");
+        discourseMarkers.put("in the end", "ordering");
+        discourseMarkers.put("lastly", "ordering");
+        discourseMarkers.put("for a start", "ordering");
+        discourseMarkers.put("on top of that", "ordering");
+        discourseMarkers.put("whereas", "ordering");
+        discourseMarkers.put("furthermore", "ordering");
+        discourseMarkers.put("actually", "attitude");
+        discourseMarkers.put("I mean", "attitude");
+        discourseMarkers.put("frankly", "attitude");
+        discourseMarkers.put("admittedly", "attitude");
+        discourseMarkers.put("hopefully", "attitude");
+        discourseMarkers.put("amazingly", "attitude");
+        discourseMarkers.put("honestly", "attitude");
+        discourseMarkers.put("surprisingly", "attitude");
+        discourseMarkers.put("naturally", "attitude");
+        discourseMarkers.put("thankfully", "attitude");
+        discourseMarkers.put("basically", "attitude");
+        discourseMarkers.put("ideally", "attitude");
+        discourseMarkers.put("no doubt", "attitude");
+        discourseMarkers.put("to be honest", "attitude");
+        discourseMarkers.put("certainly", "attitude");
+        discourseMarkers.put("if you ask me", "attitude");
+        discourseMarkers.put("obviously", "attitude");
+        discourseMarkers.put("clearly", "attitude");
+        discourseMarkers.put("of course", "attitude");
+        discourseMarkers.put("understandably", "attitude");
+        discourseMarkers.put("confidentially", "attitude");
+        discourseMarkers.put("predictably", "attitude");
+        discourseMarkers.put("undoubtedly", "attitude");
+        discourseMarkers.put("definitely", "attitude");
+        discourseMarkers.put("really", "attitude");
+        discourseMarkers.put("unfortunately", "attitude");
+        discourseMarkers.put("essentially", "attitude");
+        discourseMarkers.put("in fact", "attitude");
+        discourseMarkers.put("sadly", "attitude");
+        discourseMarkers.put("fortunately", "attitude");
+        discourseMarkers.put("indeed", "attitude");
+        discourseMarkers.put("seriously", "attitude");
+        discourseMarkers.put("apparently", "attitude");
+        discourseMarkers.put("for example", "example");
+        discourseMarkers.put("for instance", "example");
+        discourseMarkers.put("in particular", "example");
+        discourseMarkers.put("consequently", "consequence");
+        discourseMarkers.put("therefore", "consequence");
+        discourseMarkers.put("this is why", "consequence");
+        discourseMarkers.put("that's why", "consequence");
+        discourseMarkers.put("that is why", "consequence");
+
+        Set<String> dms = discourseMarkers.keySet();
+        List<List<String>> dmsContained = new ArrayList<>();
+        for (String dm : dms) {
+            if (sentence.text().toLowerCase().contains(dm)) {
+                List<String> pair = new ArrayList<>();
+                pair.add(dm);
+                pair.add(discourseMarkers.get(dm));
+                dmsContained.add(pair);
+            }
+
+        }
+        return dmsContained;
 
     }
 

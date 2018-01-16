@@ -7,7 +7,7 @@ import Weka.AttackSupportClassifier;
 import Weka.IsClaimClassifier;
 import Weka.ProponentOponentClassifier;
 import weka.core.Instance;
-
+import Weka.StanceClassifier;
 import java.util.List;
 
 /**
@@ -34,8 +34,8 @@ public class Main {
 //        TargetClassifier targetClassifier = new TargetClassifier();
 //        targetClassifier.run(microTexts, 10);
 
-//        StanceClassifier stanceClassifer = new StanceClassifier();
-//        stanceClassifer.run(microTexts);
+     StanceClassifier stanceClassifier = new StanceClassifier();
+     stanceClassifier.run(microTexts);
 
         String myString = "Adoption should be permitted,\n" +
                 "because it prevents a life from evolving\n" +
