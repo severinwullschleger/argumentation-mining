@@ -41,7 +41,7 @@ public class TargetClassifier extends TextSegmentClassifier {
     }
 
     @Override
-    protected void handleDecisionDistribution(double[] fDistribution, TextSegment textSegment) {
+    protected void handleDecisionDistribution(double[] distribution, TextSegment textSegment) {
 
     }
 }

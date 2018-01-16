@@ -234,20 +234,25 @@ public abstract class TextSegmentClassifier extends Classifier{
             instance.setDataset(trainingSet);
     }
 
-    private final void makeDecisionsFor(List<Instance> instances, MicroText myMicroText) {
+    protected MicroText makeDecisionsFor(List<Instance> instances, MicroText myMicroText) {
+        List<double[]> distributions = new ArrayList<>();
         for(int i = 0; i < instances.size(); i++) {
-            makeDecisionFor(instances.get(i), myMicroText.getTextSegment(i));
+            double[] distribution = getDistributionFor(instances.get(i));
+            distributions.add(distribution);
+            handleDecisionDistribution(distribution, myMicroText.getTextSegment(i));
         }
+        return myMicroText;
     }
 
-    private void makeDecisionFor(Instance instance, TextSegment textSegment) {
+    protected final double[] getDistributionFor(Instance instance) {
         try {
             double[] fDistribution = cModel.distributionForInstance(instance);
-            handleDecisionDistribution(fDistribution, textSegment);
+            return fDistribution;
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
     }
 
-    protected abstract void handleDecisionDistribution(double[] fDistribution, TextSegment textSegment);
+    protected abstract void handleDecisionDistribution(double[] distribution, TextSegment textSegment);
 }
