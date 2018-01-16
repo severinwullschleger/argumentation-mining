@@ -9,7 +9,10 @@ import Main.TextSegment;
 public class NullRelation extends Relation implements INullTarget{
 
     public NullRelation() {
+    }
 
+    public NullRelation(String relationId, String src, String trg) {
+        super(relationId, src, trg);
     }
 
     public TextSegment getSourceSegment() {
@@ -26,17 +29,22 @@ public class NullRelation extends Relation implements INullTarget{
     public void setTarget(ITarget target) {
     }
 
-    public String getRelationId() {
+    public final String getWekaAttackOrSupport() {
         return "";
     }
 
-
-    public String getSourceId() {
+    @Override
+    public String getWekaRebutOrUndercut() {
         return "";
     }
 
-    public String getTargetId() {
-        return "";
+    @Override
+    public boolean isAttack() {
+        return false;
     }
 
+    @Override
+    public boolean isValidRelation() {
+        return false;
+    }
 }

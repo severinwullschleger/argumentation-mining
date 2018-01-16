@@ -63,6 +63,16 @@ public class WekaExample {
 
         // TODO testing set
 
+        // Specify that the instance belong to the training set
+        // in order to inherit from the set description
+
+//        iUse.setDataset(isTrainingSet);
+
+        // Get the likelihood of each classes
+        // fDistribution[0] is the probability of being “positive”
+        // fDistribution[1] is the probability of being “negative”
+//        double[] fDistribution = cModel.distributionForInstance(iUse);
+
     }
 
 

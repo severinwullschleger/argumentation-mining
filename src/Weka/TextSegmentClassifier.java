@@ -7,9 +7,11 @@ import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.evaluation.Evaluation;
 import weka.classifiers.trees.J48;
 import weka.core.Attribute;
+import weka.core.Instance;
 import weka.core.Instances;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,6 +19,7 @@ public abstract class TextSegmentClassifier extends Classifier{
     protected final String SENTIMENTSCORE = "sentimentScore";
 
 
+    protected List<TextSegment> alltextSegments;
     protected List<TextSegment> textSegments;
     protected List<TextSegment> trainingTextSegments;
     protected List<TextSegment> testTextSegments;
@@ -37,6 +40,7 @@ public abstract class TextSegmentClassifier extends Classifier{
     public final void run(List<MicroText> microTexts, int testDataPercentage) {
         stanfordNLP = new StanfordNLP();
 
+        createFullTextSegmentList(microTexts);
         createTextSegmentList(microTexts);
 
         defineClassAttribute();
@@ -51,12 +55,17 @@ public abstract class TextSegmentClassifier extends Classifier{
         evaluateModel();
     }
 
-    protected List<TextSegment> createTextSegmentList(List<MicroText> microTexts) {
+    private final List<TextSegment> createFullTextSegmentList(List<MicroText> microTexts) {
         //create list with all textsegments
-        textSegments = new ArrayList<>();
+        alltextSegments = new ArrayList<>();
         for(MicroText microText : microTexts) {
-            textSegments.addAll(microText.getTextSegments());
+            alltextSegments.addAll(microText.getTextSegments());
         }
+        return alltextSegments;
+    }
+
+    protected List<TextSegment> createTextSegmentList(List<MicroText> microTexts) {
+        textSegments = new ArrayList<>(alltextSegments);
         return textSegments;
     }
 
@@ -83,7 +92,7 @@ public abstract class TextSegmentClassifier extends Classifier{
 
     private HashMap getAllLemmaUnigramsAsAttributes() {
         HashMap attributes = new HashMap<String, Attribute>();
-        for (TextSegment textSegment : textSegments) {
+        for (TextSegment textSegment : alltextSegments) {
             addStringListAsAttributes(attributes, textSegment.getLemmaUnigrams());
         }
         return attributes;
@@ -91,7 +100,7 @@ public abstract class TextSegmentClassifier extends Classifier{
 
     private HashMap getAllLemmaBigramsAsAttributes() {
         HashMap attributes = new HashMap<String, Attribute>();
-        for (TextSegment textSegment : textSegments) {
+        for (TextSegment textSegment : alltextSegments) {
             addStringListAsAttributes(attributes, textSegment.getLemmaBigrams());
         }
         return attributes;
@@ -109,6 +118,7 @@ public abstract class TextSegmentClassifier extends Classifier{
     }
 
     protected void splitTextSegmentsIntoTrainingAndTestSet(int testDataPercentage) {
+        Collections.shuffle(textSegments);
         trainingTextSegments = splitTextSegmentList(testDataPercentage, false);
         testTextSegments = splitTextSegmentList(testDataPercentage, true);
     }
@@ -147,7 +157,7 @@ public abstract class TextSegmentClassifier extends Classifier{
         addValuesToInstances(testingSet, testTextSegments);
     }
 
-    protected void addValuesToInstances(Instances trainingSet, List<TextSegment> trainingTextSegments) {
+    protected final void addValuesToInstances(Instances trainingSet, List<TextSegment> trainingTextSegments) {
         for (int i = 0; i < trainingTextSegments.size(); i++) {
             //ClassValue
             setStringValue(trainingSet.get(i), getClassValue(trainingTextSegments.get(i)), classAttribute);
@@ -159,7 +169,24 @@ public abstract class TextSegmentClassifier extends Classifier{
 
             int sentimentScore = stanfordNLP.getSentimentScore(trainingTextSegments.get(i).toString());
             setNumericValue(trainingSet.get(i), sentimentScore, attributes.get(2), SENTIMENTSCORE);
+
+            addClassValueToInstance(trainingSet.get(i), trainingTextSegments.get(i));
+            addValuesToInstance(trainingSet.get(i), trainingTextSegments.get(i));
+
         }
+    }
+
+    protected final void addClassValueToInstance(Instance instance, TextSegment textSegment) {
+        setStringValue(instance, getClassValue(textSegment), classAttribute);
+    }
+
+    protected void addValuesToInstance(Instance instance, TextSegment textSegment) {
+        setStringValuesToOne(instance, textSegment.getLemmaUnigrams(), attributes.get(0));
+        setStringValuesToOne(instance, textSegment.getLemmaUnigramsFromPrecedingSegment(), attributes.get(0));
+        setStringValuesToOne(instance, textSegment.getLemmaUnigramsFromSubsequentSegment(), attributes.get(0));
+        setStringValuesToOne(instance, textSegment.getLemmaBigrams(), attributes.get(1));
+        // set additional Values
+        // ...
     }
 
     protected void learnModel() {
@@ -187,4 +214,40 @@ public abstract class TextSegmentClassifier extends Classifier{
             e.printStackTrace();
         }
     }
+
+    public final void useClassifier(MicroText myMicroText) {
+        List<Instance> instances = createInstances(myMicroText);
+        setDataSetFor(instances);
+        makeDecisionsFor(instances, myMicroText);
+
+    }
+
+    private List<Instance> createInstances(MicroText myMicroText) {
+        List<Instance> instances = createDefaultInstancesList(myMicroText.getTextSegments().size(), attributeVector);
+        for(int i = 0; i < instances.size(); i++)
+            addValuesToInstance(instances.get(i), myMicroText.getTextSegment(i));
+        return instances;
+    }
+
+    private final void setDataSetFor(List<Instance> instances) {
+        for (Instance instance : instances)
+            instance.setDataset(trainingSet);
+    }
+
+    private final void makeDecisionsFor(List<Instance> instances, MicroText myMicroText) {
+        for(int i = 0; i < instances.size(); i++) {
+            makeDecisionFor(instances.get(i), myMicroText.getTextSegment(i));
+        }
+    }
+
+    private void makeDecisionFor(Instance instance, TextSegment textSegment) {
+        try {
+            double[] fDistribution = cModel.distributionForInstance(instance);
+            handleDecisionDistribution(fDistribution, textSegment);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected abstract void handleDecisionDistribution(double[] fDistribution, TextSegment textSegment);
 }

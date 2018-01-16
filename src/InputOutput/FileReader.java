@@ -20,7 +20,7 @@ import edu.stanford.nlp.simple.*;
 /**
  * Created by LucasPelloni on 02.12.17.
  */
-public abstract class FileReader {
+public class FileReader {
 
     public static List<TextSegment> readFile(final String FILE_PATH) {
         List<TextSegment> textSegments = new ArrayList<>();

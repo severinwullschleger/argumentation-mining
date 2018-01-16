@@ -23,7 +23,7 @@ public class TargetClassifier extends TextSegmentClassifier {
 
     @Override
     protected String getClassValue(TextSegment textSegment) {
-        if (textSegment.getClaim())
+        if (textSegment.isClaim())
             return "0";
 
         ArrayList<String> validStrings = new ArrayList<>(5);
@@ -38,5 +38,10 @@ public class TargetClassifier extends TextSegmentClassifier {
             if (validStrings.contains(targetId.substring(1)))
                 return targetId.substring(1);
         return "5";
+    }
+
+    @Override
+    protected void handleDecisionDistribution(double[] fDistribution, TextSegment textSegment) {
+
     }
 }

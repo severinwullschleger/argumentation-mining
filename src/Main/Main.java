@@ -1,40 +1,63 @@
 package Main;
 
 import ConfigurationManager.ConfigurationManager;
-import InputOutput.FileWriter;
 import InputOutput.XMLParser;
+import InputOutput.XMLWriter;
 import Weka.ProponentOponentClassifier;
-import Weka.StanceClassifier;
-import Weka.TargetClassifier;
+import weka.core.Instance;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by LuckyP on 02.12.17.
  */
 public class Main {
 
+
+    private static List<MicroText> microTexts;
+
     public static void main(String args[]) {
         final String DATASET_PATH = ConfigurationManager.getInstance().getFilePath();
-
         XMLParser xmlParser = XMLParser.getInstance();
-        List<MicroText> microTexts = xmlParser.walkXMLFiles(DATASET_PATH);
+        microTexts = xmlParser.walkXMLFiles(DATASET_PATH);
+
+        ProponentOponentClassifier proponentOponentClassifier = new ProponentOponentClassifier();
+        proponentOponentClassifier.run(microTexts, 10);
+//        IsClaimClassifier isClaimClassifier = new IsClaimClassifier();
+//        isClaimClassifier.run(microTexts, 10);
+//        AttackSupportClassifier attackSupportClassifier = new AttackSupportClassifier();
+//        attackSupportClassifier.run(microTexts, 10);
+//        RebutUndercutClassifier rebutUndercutClassifier = new RebutUndercutClassifier();
+//        rebutUndercutClassifier.run(microTexts, 10);
+//        TargetClassifier targetClassifier = new TargetClassifier();
+//        targetClassifier.run(microTexts, 10);
 
 //        StanceClassifier stanceClassifer = new StanceClassifier();
 //        stanceClassifer.run(microTexts);
-        ProponentOponentClassifier proponentOponentClassifier = new ProponentOponentClassifier();
-        proponentOponentClassifier.run(microTexts, 10);
-//        TargetClassifier targetClassifier = new TargetClassifier();
-//        targetClassifier.run(microTexts, 10);
+
+        String myString = "Adoption should be permitted,\n" +
+                "because it prevents a life from evolving\n" +
+                "and this is as bad as killing a living person.";
+
+        MicroTextFactory microTextFactory = new MicroTextFactory();
+        // get plain Microtext from text entry
+        MicroText myMicroText = microTextFactory.createMicroText(myString);
+        System.out.println(myMicroText);
+        
+        proponentOponentClassifier.useClassifier(myMicroText);
+        System.out.println(myMicroText);
+
+
+
+
+//        generateXMLFiles();
+    }
+
+    /**
+     * Genearte XML File for ach MicroText which has been analysed with WEKA
+     */
+    private static void generateXMLFiles() {
+        XMLWriter xmlWriter = XMLWriter.getInstance();
+        microTexts.forEach(xmlWriter::writeXMLFile);
     }
 }
-
-//        FileWriter.writeToProConFolder(corpuses, DATASET_PATH);
-
-//        //create arff file from directories
-//        String[] arguments = { "-dir"
-//                , Paths.get(DATASET_PATH + "/result_classes/").toAbsolutePath().toString()  };
-//        weka.core.converters.TextDirectoryLoader.main(arguments);
-//        //copy paste from terminal and save as arff file.

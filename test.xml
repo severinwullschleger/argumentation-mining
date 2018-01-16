@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<arggraph>
+    <Staff id="1">
+        <firstname>yong</firstname>
+        <lastname>mook kim</lastname>
+        <nickname>mkyong</nickname>
+        <salary>100000</salary>
+    </Staff>
+</arggraph>

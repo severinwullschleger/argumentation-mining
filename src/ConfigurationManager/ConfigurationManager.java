@@ -99,4 +99,8 @@ public class ConfigurationManager {
         }
         return DATASET_PATH ;
     }
+
+    public String getOutputXMLDir() {
+        return this.properties.getProperty("output_xml_dir");
+    }
 }

@@ -23,10 +23,12 @@ public class MicroText {
     private List<TextSegment> textSegments;
     private Language language;
     private File correspondentFile;
+    private List<Relation> relations;
 
 
     public MicroText() {
         this.textSegments = new ArrayList<>();
+        this.relations = new ArrayList<>();
 
     }
 
@@ -68,6 +70,10 @@ public class MicroText {
 
     public void setTopicId(String topicId) {
         this.topicId = topicId;
+    }
+
+    public String getTopicId() {
+        return topicId;
     }
 
     public void setStance(Stance stance) {
@@ -237,5 +243,25 @@ public class MicroText {
                 return textSegment.getRelation();
         }
         return new NullTextSegment();
+    }
+
+    public List<Relation> getRelations() {
+        return relations;
+    }
+
+    public void setRelations(List<Relation> relations) {
+        this.relations = relations;
+    }
+
+    public TextSegment getTextSegment(int i) {
+        return textSegments.get(i);
+    }
+
+    public void addTextSegment(TextSegment textSegment) {
+        textSegments.add(textSegment);
+    }
+
+    public void replaceTextSegment(int i, TextSegment textSegment) {
+        textSegments.set(i, textSegment);
     }
 }

@@ -45,4 +45,5 @@ public class NullTextSegment extends TextSegment implements INullTarget{
     public String getType() {
         return "";
     }
+
 }

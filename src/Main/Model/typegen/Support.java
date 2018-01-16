@@ -17,4 +17,18 @@ public abstract class Support extends Relation {
     public Support(String relationId, String src, String trg) {
         super(relationId, src, trg);
     }
+
+    public final String getWekaAttackOrSupport() {
+        return "sup";
+    }
+
+    @Override
+    public boolean isAttack() {
+        return false;
+    }
+
+    @Override
+    public boolean isValidRelation() {
+        return true;
+    }
 }

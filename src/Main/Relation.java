@@ -12,6 +12,10 @@ public abstract class Relation implements ITarget{
 
     }
 
+    public Relation(String relationId) {
+        this.relationId = relationId;
+    }
+
     public Relation(String relationId, String src, String trg) {
         this.relationId = relationId;
         this.sourceId = src;
@@ -46,4 +50,11 @@ public abstract class Relation implements ITarget{
     public String getTargetId() {
         return targetId;
     }
+
+    public abstract boolean isValidRelation();
+
+    public abstract String getWekaAttackOrSupport();
+    public abstract String getWekaRebutOrUndercut();
+
+    public abstract boolean isAttack();
 }

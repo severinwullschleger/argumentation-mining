@@ -11,4 +11,9 @@ public class Rebut extends Attack {
     public Rebut(String relationId, String src, String trg) {
         super(relationId, src, trg);
     }
+
+    @Override
+    public String getWekaRebutOrUndercut() {
+        return "reb";
+    }
 }

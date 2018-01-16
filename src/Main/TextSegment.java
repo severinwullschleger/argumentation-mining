@@ -2,6 +2,7 @@ package Main;
 
 import Main.Enums.Language;
 
+import Main.Model.role.Proponent;
 import Main.Model.typegen.NullRelation;
 import edu.stanford.nlp.simple.Sentence;
 
@@ -28,6 +29,8 @@ public abstract class TextSegment implements ISource, ITarget {
     private Sentence sentence;
     private Boolean isClaim;
     private int SentenceScore;
+    private String edgeId;
+    private String typeStr;
 
     private Relation relation;
 
@@ -95,12 +98,28 @@ public abstract class TextSegment implements ISource, ITarget {
         return sentence;
     }
 
-    public Boolean getClaim() {
+    public Boolean isClaim() {
         return isClaim;
     }
 
     public void setClaim(Boolean claim) {
         isClaim = claim;
+    }
+
+    public String getEdgeId() {
+        return edgeId;
+    }
+
+    public void setEdgeId(String edgeId) {
+        this.edgeId = edgeId;
+    }
+
+    public String getTypeStr() {
+        return typeStr;
+    }
+
+    public void setTypeStr(String typeStr) {
+        this.typeStr = typeStr;
     }
 
     @Override
@@ -112,6 +131,7 @@ public abstract class TextSegment implements ISource, ITarget {
                 "\tcorrespondentFile = " + correspondentFile + "\n" +
                 "\tsentence = '" + sentence + "'\n" +
                 "\tisClaim = '" + isClaim + "'\n" +
+                "\tType = '" + getType() + "'\n" +
                 "}";
     }
 
@@ -197,5 +217,38 @@ public abstract class TextSegment implements ISource, ITarget {
 
     public String getRelationTargetId() {
         return relation.getTargetId();
+    }
+
+    public String getWekaAttackOrSupport() {
+        return relation.getWekaAttackOrSupport();
+    }
+
+    public boolean hasRelation() {
+        return relation.isValidRelation();
+    }
+
+    public String getWekaRebutOrUndercut() {
+        return relation.getWekaRebutOrUndercut();
+    }
+
+    public boolean isAttack() {
+        return relation.isAttack();
+    }
+
+    public void changeTypeTo(TextSegment textSegment) {
+        textSegment.setMicroText(microText);
+        textSegment.setFileId(fileId);
+        textSegment.setTextSegmentId(segmentId);
+        textSegment.setSegmentPositionIndex(segmentPositionIndex);
+        textSegment.setLanguage(language);
+        textSegment.setCorrespondentFile(correspondentFile);
+        textSegment.setSentence(sentence);
+        textSegment.setClaim(isClaim);
+        textSegment.setEdgeId(edgeId);
+        textSegment.setTypeStr(typeStr);
+        textSegment.setRelation(relation);
+
+        relation.setSourceSegment(textSegment);
+        microText.replaceTextSegment(segmentPositionIndex, textSegment);
     }
 }

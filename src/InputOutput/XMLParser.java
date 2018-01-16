@@ -29,7 +29,7 @@ public class XMLParser {
         return instance;
     }
 
-    public  List<MicroText> walkXMLFiles(String DATASET_PATH) {
+    public  List<MicroText>  walkXMLFiles(String DATASET_PATH) {
         List<MicroText> microTexts = new ArrayList<>();
         File file = new File(DATASET_PATH);
         if (file.exists()) {
@@ -87,7 +87,10 @@ public class XMLParser {
             TextSegment textSegment = textSegmentFactory.createTextSegment(nNodeA);
 
             textSegment.setFileId(microText.getFileId());
+
+            textSegment.setEdgeId(nNodeE.getAttributes().getNamedItem("id").getTextContent());
             textSegment.setTextSegmentId(nNodeA.getAttributes().getNamedItem("id").getTextContent());
+
             textSegment.setSentence(new Sentence(nNodeE.getTextContent()));
             textSegment.setLanguage(ConfigurationManager.SENTENCES_LANGUAGE);
             textSegment.setCorrespondentFile(inputFile);
@@ -119,8 +122,22 @@ public class XMLParser {
 
         for (int temp = 0; temp < nListEdge.getLength(); temp++) {
             Node nNodeEdge = nListEdge.item(temp);
-            Relation relation = relationFactory.createRelation(nNodeEdge, microText);
+            Relation relation = relationFactory.createRelation(nNodeEdge);
             microText.addRelationToItsSourceSegment(relation);
+            microText.getRelations().add(relation);
+
+
+            /**
+             * Lucas tests
+             */
+            if (microText.getFileId().equals("micro_b001")) {
+                String relationId = nNodeEdge.getAttributes().getNamedItem("id").getNodeValue();
+                String src = nNodeEdge.getAttributes().getNamedItem("src").getNodeValue();
+                String trg = nNodeEdge.getAttributes().getNamedItem("trg").getNodeValue();
+                String type = nNodeEdge.getAttributes().getNamedItem("type").getNodeValue();
+//                System.out.println("relation id: " + relationId);
+//                System.out.println("relation id: " + relation.getRelationId());
+            }
         }
         microText.connectRelationsWithTargets();
         return microText;
