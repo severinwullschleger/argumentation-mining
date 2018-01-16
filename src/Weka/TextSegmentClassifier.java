@@ -201,15 +201,8 @@ public abstract class TextSegmentClassifier extends Classifier{
             instance.setDataset(trainingSet);
     }
 
-    protected MicroText makeDecisionsFor(List<Instance> instances, MicroText myMicroText) {
-        List<double[]> distributions = new ArrayList<>();
-        for(int i = 0; i < instances.size(); i++) {
-            double[] distribution = getDistributionFor(instances.get(i));
-            distributions.add(distribution);
-            handleDecisionDistribution(distribution, myMicroText.getTextSegment(i));
-        }
-        return myMicroText;
-    }
+    protected abstract MicroText makeDecisionsFor(List<Instance> instances, MicroText myMicroText);
+    protected abstract void handleDecisionDistribution(double[] distribution, TextSegment textSegment);
 
     protected final double[] getDistributionFor(Instance instance) {
         try {
@@ -220,6 +213,4 @@ public abstract class TextSegmentClassifier extends Classifier{
             return null;
         }
     }
-
-    protected abstract void handleDecisionDistribution(double[] distribution, TextSegment textSegment);
 }

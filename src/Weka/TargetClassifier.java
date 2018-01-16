@@ -1,9 +1,12 @@
 package Weka;
 
+import Main.MicroText;
 import Main.TextSegment;
 import weka.core.Attribute;
+import weka.core.Instance;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TargetClassifier extends TextSegmentClassifier {
 
@@ -38,6 +41,11 @@ public class TargetClassifier extends TextSegmentClassifier {
             if (validStrings.contains(targetId.substring(1)))
                 return targetId.substring(1);
         return "5";
+    }
+
+    @Override
+    protected MicroText makeDecisionsFor(List<Instance> instances, MicroText myMicroText) {
+        return null;
     }
 
     @Override

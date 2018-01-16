@@ -5,7 +5,7 @@ public abstract class Relation implements ITarget{
     private String relationId = "";
     private String sourceId = "";
     protected TextSegment sourceSegment;
-    private String targetId = "";
+    protected String targetId = "";
     protected ITarget target;
 
     public Relation(){
@@ -20,6 +20,12 @@ public abstract class Relation implements ITarget{
         this.relationId = relationId;
         this.sourceId = src;
         this.targetId = trg;
+    }
+
+    public Relation(TextSegment textSegment) {
+        relationId = "c" + textSegment.getSegmentId().substring(1);
+        sourceId = textSegment.getSegmentId();
+        sourceSegment = textSegment;
     }
 
     public TextSegment getSourceSegment() {
