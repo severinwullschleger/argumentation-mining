@@ -51,13 +51,11 @@ public abstract class MicroTextClassifier extends Classifier {
         }
     }
 
-
-
-
-
-
-
-
+    protected void getAllDiscourseMarkersAsAttributes(List<MicroText> microTexts) {
+        for (MicroText microText : microTexts) {
+            System.out.println(microText.discourseMarkers());
+        }
+    }
 
     protected List getAllSentimentValuesAsAttributes(List<MicroText> microTexts) {
         HashMap attributesAsStrings = new HashMap<MicroText, List<String>>();
