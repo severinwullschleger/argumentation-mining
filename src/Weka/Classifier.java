@@ -45,7 +45,11 @@ public abstract class Classifier {
     protected Instance setStringValuesToOne(Instance instance, List<String> stringValues, HashMap attributes) {
         // change 0 to 1
         for (String s : stringValues) {
-            instance.setValue((Attribute)attributes.get(s), 1.0);
+            try {
+                instance.setValue((Attribute)attributes.get(s), 1.0);
+            } catch (NullPointerException e) {
+                System.err.println("The term '" + s + "' is not contained in the vector.");
+            }
         }
         return instance;
     }

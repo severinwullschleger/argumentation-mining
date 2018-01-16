@@ -39,4 +39,9 @@ public class TargetClassifier extends TextSegmentClassifier {
                 return targetId.substring(1);
         return "5";
     }
+
+    @Override
+    protected void handleDecisionDistribution(double[] fDistribution, TextSegment textSegment) {
+
+    }
 }

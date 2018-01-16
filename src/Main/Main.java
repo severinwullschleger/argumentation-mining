@@ -4,7 +4,7 @@ import ConfigurationManager.ConfigurationManager;
 import GUI.GUI;
 import InputOutput.XMLParser;
 import InputOutput.XMLWriter;
-import Weka.IsClaimClassifier;
+import Weka.ProponentOponentClassifier;
 
 import java.util.List;
 
@@ -21,22 +21,35 @@ public class Main {
         XMLParser xmlParser = XMLParser.getInstance();
         microTexts = xmlParser.walkXMLFiles(DATASET_PATH);
 
-//        ProponentOponentClassifier proponentOponentClassifier = new ProponentOponentClassifier();
-//        proponentOponentClassifier.run(microTexts, 10);
+        ProponentOponentClassifier proponentOponentClassifier = new ProponentOponentClassifier();
+        proponentOponentClassifier.run(microTexts, 10);
 //        IsClaimClassifier isClaimClassifier = new IsClaimClassifier();
 //        isClaimClassifier.run(microTexts, 10);
-//        TargetClassifier targetClassifier = new TargetClassifier();
-//        targetClassifier.run(microTexts, 10);
 //        AttackSupportClassifier attackSupportClassifier = new AttackSupportClassifier();
 //        attackSupportClassifier.run(microTexts, 10);
 //        RebutUndercutClassifier rebutUndercutClassifier = new RebutUndercutClassifier();
 //        rebutUndercutClassifier.run(microTexts, 10);
+//        TargetClassifier targetClassifier = new TargetClassifier();
+//        targetClassifier.run(microTexts, 10);
 
 //        StanceClassifier stanceClassifer = new StanceClassifier();
 //        stanceClassifer.run(microTexts);
+        GUI.startGUI();
+
+        String myString = "Adoption should be permitted,\n" +
+                "because it prevents a life from evolving\n" +
+                "and this is as bad as killing a living person.";
+
+        MicroTextFactory microTextFactory = new MicroTextFactory();
+        // get plain Microtext from text entry
+        MicroText myMicroText = microTextFactory.createMicroText(myString);
+        System.out.println(myMicroText);
+
+        proponentOponentClassifier.useClassifier(myMicroText);
+        System.out.println(myMicroText);
+
 
 //        generateXMLFiles();
-         GUI.startGUI();
     }
 
     /**

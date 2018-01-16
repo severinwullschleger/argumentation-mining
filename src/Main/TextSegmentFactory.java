@@ -1,12 +1,13 @@
 package Main;
 
+import ConfigurationManager.ConfigurationManager;
 import Main.Enums.ArgumentType;
 import Main.Enums.EnumsManager;
 import Main.Model.role.Opponent;
 import Main.Model.role.Proponent;
 import Main.Model.role.UndefinedSentence;
+import edu.stanford.nlp.simple.Sentence;
 import org.w3c.dom.Node;
-import org.w3c.dom.Text;
 
 public class TextSegmentFactory {
 
@@ -23,5 +24,11 @@ public class TextSegmentFactory {
         }
     }
 
-
+    public TextSegment createUndefinedTextSegment(String str, int id) {
+        UndefinedSentence undefinedSentence = new UndefinedSentence();
+        undefinedSentence.setTextSegmentId(String.valueOf(id));
+        undefinedSentence.setSentence(new Sentence(str));
+        undefinedSentence.setLanguage(ConfigurationManager.SENTENCES_LANGUAGE);
+        return undefinedSentence;
+    }
 }

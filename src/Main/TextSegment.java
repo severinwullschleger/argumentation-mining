@@ -2,6 +2,7 @@ package Main;
 
 import Main.Enums.Language;
 
+import Main.Model.role.Proponent;
 import Main.Model.typegen.NullRelation;
 import edu.stanford.nlp.simple.Sentence;
 
@@ -130,6 +131,7 @@ public abstract class TextSegment implements ISource, ITarget {
                 "\tcorrespondentFile = " + correspondentFile + "\n" +
                 "\tsentence = '" + sentence + "'\n" +
                 "\tisClaim = '" + isClaim + "'\n" +
+                "\tType = '" + getType() + "'\n" +
                 "}";
     }
 
@@ -233,4 +235,20 @@ public abstract class TextSegment implements ISource, ITarget {
         return relation.isAttack();
     }
 
+    public void changeTypeTo(TextSegment textSegment) {
+        textSegment.setMicroText(microText);
+        textSegment.setFileId(fileId);
+        textSegment.setTextSegmentId(segmentId);
+        textSegment.setSegmentPositionIndex(segmentPositionIndex);
+        textSegment.setLanguage(language);
+        textSegment.setCorrespondentFile(correspondentFile);
+        textSegment.setSentence(sentence);
+        textSegment.setClaim(isClaim);
+        textSegment.setEdgeId(edgeId);
+        textSegment.setTypeStr(typeStr);
+        textSegment.setRelation(relation);
+
+        relation.setSourceSegment(textSegment);
+        microText.replaceTextSegment(segmentPositionIndex, textSegment);
+    }
 }

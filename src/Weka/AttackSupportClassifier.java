@@ -23,6 +23,11 @@ public class AttackSupportClassifier extends TextSegmentClassifier {
     }
 
     @Override
+    protected void handleDecisionDistribution(double[] fDistribution, TextSegment textSegment) {
+
+    }
+
+    @Override
     protected Attribute defineClassAttribute() {
         ArrayList<String> attSupValues = new ArrayList<>(2);
         attSupValues.add("att");
