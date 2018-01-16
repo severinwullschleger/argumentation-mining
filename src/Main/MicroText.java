@@ -264,4 +264,13 @@ public class MicroText {
     public void replaceTextSegment(int i, TextSegment textSegment) {
         textSegments.set(i, textSegment);
     }
+
+    public void setClaimSegment(TextSegment textSegment) {
+        for (TextSegment t : textSegments) {
+            if (t.equals(textSegment))
+                t.setClaim(true);
+            else
+                t.setClaim(false);
+        }
+    }
 }
