@@ -32,12 +32,12 @@ public class GUI {
     private JPanel testDataPercentagePanel;
     private JLabel testDataPercentageLabel;
     private JButton runClassifierButton;
+    private JPanel runClassifierPanel;
+    private static GUI gui;
 
 
     public GUI() {
-        rawTextPanel.setVisible(false);
-        textFilesPanel.setVisible(false);
-        testDataPercentagePanel.setVisible(false);
+        initGUIElements();
 
         rawTextRadioButton.addItemListener(new ItemListener() {
             @Override
@@ -49,9 +49,11 @@ public class GUI {
                     textFilesPanel.setVisible(false);
                     txtFilesRadioButton.setSelected(false);
                     testDataPercentagePanel.setVisible(true);
+                    runClassifierPanel.setVisible(true);
                 } else {
                     rawTextPanel.setVisible(false);
                     testDataPercentagePanel.setVisible(false);
+                    runClassifierPanel.setVisible(false);
                 }
             }
         });
@@ -63,9 +65,11 @@ public class GUI {
                     textFilesPanel.setVisible(true);
                     rawTextRadioButton.setSelected(false);
                     testDataPercentagePanel.setVisible(true);
+                    runClassifierPanel.setVisible(true);
                 } else {
                     textFilesPanel.setVisible(false);
                     testDataPercentagePanel.setVisible(false);
+                    runClassifierPanel.setVisible(false);
                 }
             }
         });
@@ -174,6 +178,15 @@ public class GUI {
 
     }
 
+    private void initGUIElements() {
+        rawTextPanel.setVisible(false);
+        textFilesPanel.setVisible(false);
+        testDataPercentagePanel.setVisible(false);
+        runClassifierPanel.setVisible(false);
+        testDataPercentageSlider.setValue(10);
+        testDataPercentageLabel.setText("Test Data Percentage: " + String.valueOf(testDataPercentageSlider.getValue()));
+    }
+
 
     public static void showNotification(List<String> notifications) {
         String str = "You got the following notification: \n";
@@ -184,8 +197,9 @@ public class GUI {
     }
 
     public static void startGUI() {
+        gui = new GUI();
         JFrame frame = new JFrame("Argumentation Mining HS2017");
-        JScrollPane pane = new JScrollPane(new GUI().mainPanel);
+        JScrollPane pane = new JScrollPane(gui.mainPanel);
         frame.setContentPane(pane);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         Dimension dim = new Dimension();
@@ -193,4 +207,10 @@ public class GUI {
         frame.setSize(dim);
         frame.setVisible(true);
     }
+
+    public static GUI getGUI() {
+        return gui;
+    }
+
+
 }

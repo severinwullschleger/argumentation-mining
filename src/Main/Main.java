@@ -61,7 +61,7 @@ public class Main {
     }
 
     /**
-     * Genearte XML File for ach MicroText which has been analysed with WEKA
+     * Generate XML File for ach MicroText which has been analysed with WEKA
      */
     private static void generateXMLFiles() {
         XMLWriter xmlWriter = XMLWriter.getInstance();
