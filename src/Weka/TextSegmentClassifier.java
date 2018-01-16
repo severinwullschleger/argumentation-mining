@@ -74,7 +74,8 @@ public abstract class TextSegmentClassifier extends Classifier{
         // define different attribute sets
         attributes.add(getAllLemmaUnigramsAsAttributes());
         attributes.add(getAllLemmaBigramsAsAttributes());
-        attributes.add(generateSentimentScoreAttribute());
+        // add additional attributes
+//        attributes.add(generateSentimentScoreAttribute());
     }
 
     private HashMap generateSentimentScoreAttribute() {
@@ -174,16 +175,16 @@ public abstract class TextSegmentClassifier extends Classifier{
         setStringValuesToOne(instance, textSegment.getLemmaUnigramsFromSubsequentSegment(), attributes.get(0));
         setStringValuesToOne(instance, textSegment.getLemmaBigrams(), attributes.get(1));
         // set additional Values
-        int sentimentScore = stanfordNLP.getSentimentScore(textSegment.toString());
-        setNumericValue(instance, sentimentScore, attributes.get(2), SENTIMENTSCORE);
+//        int sentimentScore = stanfordNLP.getSentimentScore(textSegment.toString());
+//        setNumericValue(instance, sentimentScore, attributes.get(2), SENTIMENTSCORE);
 
     }
 
     protected void learnModel() {
         try {
             // Create a naïve bayes classifier
-            cModel = (weka.classifiers.Classifier)new NaiveBayes();
-//            cModel = (weka.classifiers.Classifier)new J48();
+//            cModel = (weka.classifiers.Classifier)new NaiveBayes();
+            cModel = (weka.classifiers.Classifier)new J48();
             cModel.buildClassifier(trainingSet);
         } catch (Exception e) {
             e.printStackTrace();
