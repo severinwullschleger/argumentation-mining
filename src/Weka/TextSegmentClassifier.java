@@ -3,7 +3,6 @@ package Weka;
 import Main.MicroText;
 import Main.TextSegment;
 import StandfordParserManager.StanfordNLP;
-import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.evaluation.Evaluation;
 import weka.classifiers.trees.J48;
 import weka.core.Attribute;
@@ -38,7 +37,7 @@ public abstract class TextSegmentClassifier extends Classifier{
     protected abstract String getClassValue(TextSegment textSegment);
 
     public final void run(List<MicroText> microTexts, int testDataPercentage) {
-        stanfordNLP = new StanfordNLP();
+        stanfordNLP = stanfordNLP.getInstance();
 
         createFullTextSegmentList(microTexts);
         createTextSegmentList(microTexts);
