@@ -186,7 +186,6 @@ public abstract class TextSegmentClassifier extends Classifier{
         List<Instance> instances = createInstances(myMicroText);
         setDataSetFor(instances);
         makeDecisionsFor(instances, myMicroText);
-
     }
 
     private List<Instance> createInstances(MicroText myMicroText) {

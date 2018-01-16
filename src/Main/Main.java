@@ -3,9 +3,7 @@ package Main;
 import ConfigurationManager.ConfigurationManager;
 import InputOutput.XMLParser;
 import InputOutput.XMLWriter;
-import Weka.AttackSupportClassifier;
-import Weka.IsClaimClassifier;
-import Weka.ProponentOponentClassifier;
+import Weka.*;
 import weka.core.Instance;
 
 import java.util.List;
@@ -29,10 +27,10 @@ public class Main {
         isClaimClassifier.run(microTexts, 10);
         AttackSupportClassifier attackSupportClassifier = new AttackSupportClassifier();
         attackSupportClassifier.run(microTexts, 10);
-//        RebutUndercutClassifier rebutUndercutClassifier = new RebutUndercutClassifier();
-//        rebutUndercutClassifier.run(microTexts, 10);
-//        TargetClassifier targetClassifier = new TargetClassifier();
-//        targetClassifier.run(microTexts, 10);
+        RebutUndercutClassifier rebutUndercutClassifier = new RebutUndercutClassifier();
+        rebutUndercutClassifier.run(microTexts, 10);
+        TargetClassifier targetClassifier = new TargetClassifier();
+        targetClassifier.run(microTexts, 10);
 
 //        StanceClassifier stanceClassifer = new StanceClassifier();
 //        stanceClassifer.run(microTexts);
@@ -48,6 +46,8 @@ public class Main {
         proponentOponentClassifier.useClassifier(myMicroText);
         isClaimClassifier.useClassifier(myMicroText);
         attackSupportClassifier.useClassifier(myMicroText);
+        rebutUndercutClassifier.useClassifier(myMicroText);
+        targetClassifier.useClassifier(myMicroText);
         System.out.println(myMicroText);
 
 
