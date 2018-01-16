@@ -15,14 +15,18 @@ public class Main {
 
 
     private static List<MicroText> microTexts;
+    private static ProponentOponentClassifier proponentOponentClassifier;
 
     public static void main(String args[]) {
+        proponentOponentClassifier = new ProponentOponentClassifier();
         final String DATASET_PATH = ConfigurationManager.getInstance().getFilePath();
         XMLParser xmlParser = XMLParser.getInstance();
         microTexts = xmlParser.walkXMLFiles(DATASET_PATH);
 
-        ProponentOponentClassifier proponentOponentClassifier = new ProponentOponentClassifier();
-        proponentOponentClassifier.run(microTexts, 10);
+        GUI.startGUI();
+
+
+
 //        IsClaimClassifier isClaimClassifier = new IsClaimClassifier();
 //        isClaimClassifier.run(microTexts, 10);
 //        AttackSupportClassifier attackSupportClassifier = new AttackSupportClassifier();
@@ -34,22 +38,26 @@ public class Main {
 
 //        StanceClassifier stanceClassifer = new StanceClassifier();
 //        stanceClassifer.run(microTexts);
-        GUI.startGUI();
 
-        String myString = "Adoption should be permitted,\n" +
-                "because it prevents a life from evolving\n" +
-                "and this is as bad as killing a living person.";
 
-        MicroTextFactory microTextFactory = new MicroTextFactory();
-        // get plain Microtext from text entry
-        MicroText myMicroText = microTextFactory.createMicroText(myString);
-        System.out.println(myMicroText);
-
-        proponentOponentClassifier.useClassifier(myMicroText);
-        System.out.println(myMicroText);
+//        String myString = "Adoption should be permitted,\n" +
+//                "because it prevents a life from evolving\n" +
+//                "and this is as bad as killing a living person.";
+//
+//        MicroTextFactory microTextFactory = new MicroTextFactory();
+//        // get plain Microtext from text entry
+//        MicroText myMicroText = microTextFactory.createMicroText(myString);
+//        System.out.println(myMicroText);
+//
+//        proponentOponentClassifier.useClassifier(myMicroText);
+//        System.out.println(myMicroText);
 
 
 //        generateXMLFiles();
+    }
+
+    public static void runProponentOponentClassifier(int testDataPercentage) {
+        proponentOponentClassifier.run(microTexts, testDataPercentage);
     }
 
     /**

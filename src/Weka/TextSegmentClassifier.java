@@ -1,5 +1,6 @@
 package Weka;
 
+import GUI.GUI;
 import Main.MicroText;
 import Main.TextSegment;
 import weka.classifiers.bayes.NaiveBayes;
@@ -177,9 +178,17 @@ public abstract class TextSegmentClassifier extends Classifier{
             String strSummary = eTest.toSummaryString();
             System.out.println(strSummary);
 
+            showResultOnGUI(strSummary);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void showResultOnGUI(String strSummary) {
+        List<String> notif = new ArrayList<>();
+        notif.add(strSummary);
+        GUI.showNotification(notif);
     }
 
     public final void useClassifier(MicroText myMicroText) {
