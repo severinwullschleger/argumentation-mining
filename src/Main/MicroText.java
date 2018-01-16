@@ -256,4 +256,12 @@ public class MicroText {
     public TextSegment getTextSegment(int i) {
         return textSegments.get(i);
     }
+
+    public void addTextSegment(TextSegment textSegment) {
+        textSegments.add(textSegment);
+    }
+
+    public void replaceTextSegment(int i, TextSegment textSegment) {
+        textSegments.set(i, textSegment);
+    }
 }

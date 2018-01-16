@@ -20,7 +20,6 @@ public class UndefinedSentence extends TextSegment {
         super( fileId,  sentenceId,  sentencesLanguage,  file,  sentence);
     }
 
-
     public String getType() {
         return " ";
     }

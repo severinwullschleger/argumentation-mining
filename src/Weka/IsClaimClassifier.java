@@ -23,4 +23,9 @@ public class IsClaimClassifier extends TextSegmentClassifier {
         else
             return "no";
     }
+
+    @Override
+    protected void handleDecisionDistribution(double[] fDistribution, TextSegment textSegment) {
+
+    }
 }

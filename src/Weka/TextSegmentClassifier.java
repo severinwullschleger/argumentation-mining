@@ -5,6 +5,7 @@ import Main.TextSegment;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.evaluation.Evaluation;
 import weka.core.Attribute;
+import weka.core.Instance;
 import weka.core.Instances;
 
 import java.util.ArrayList;
@@ -136,16 +137,24 @@ public abstract class TextSegmentClassifier extends Classifier{
         addValuesToInstances(testingSet, testTextSegments);
     }
 
-    protected void addValuesToInstances(Instances trainingSet, List<TextSegment> trainingTextSegments) {
+    protected final void addValuesToInstances(Instances trainingSet, List<TextSegment> trainingTextSegments) {
         for (int i = 0; i < trainingTextSegments.size(); i++) {
-            //ClassValue
-            setStringValue(trainingSet.get(i), getClassValue(trainingTextSegments.get(i)), classAttribute);
-            //Set other values
-            setStringValuesToOne(trainingSet.get(i), trainingTextSegments.get(i).getLemmaUnigrams(), attributes.get(0));
-            setStringValuesToOne(trainingSet.get(i), trainingTextSegments.get(i).getLemmaUnigramsFromPrecedingSegment(), attributes.get(0));
-            setStringValuesToOne(trainingSet.get(i), trainingTextSegments.get(i).getLemmaUnigramsFromSubsequentSegment(), attributes.get(0));
-            setStringValuesToOne(trainingSet.get(i), trainingTextSegments.get(i).getLemmaBigrams(), attributes.get(1));
+            addClassValueToInstance(trainingSet.get(i), trainingTextSegments.get(i));
+            addValuesToInstance(trainingSet.get(i), trainingTextSegments.get(i));
         }
+    }
+
+    protected final void addClassValueToInstance(Instance instance, TextSegment textSegment) {
+        setStringValue(instance, getClassValue(textSegment), classAttribute);
+    }
+
+    protected void addValuesToInstance(Instance instance, TextSegment textSegment) {
+        setStringValuesToOne(instance, textSegment.getLemmaUnigrams(), attributes.get(0));
+        setStringValuesToOne(instance, textSegment.getLemmaUnigramsFromPrecedingSegment(), attributes.get(0));
+        setStringValuesToOne(instance, textSegment.getLemmaUnigramsFromSubsequentSegment(), attributes.get(0));
+        setStringValuesToOne(instance, textSegment.getLemmaBigrams(), attributes.get(1));
+        // set additional Values
+        // ...
     }
 
     protected void learnModel() {
@@ -172,4 +181,40 @@ public abstract class TextSegmentClassifier extends Classifier{
             e.printStackTrace();
         }
     }
+
+    public final void useClassifier(MicroText myMicroText) {
+        List<Instance> instances = createInstances(myMicroText);
+        setDataSetFor(instances);
+        makeDecisionsFor(instances, myMicroText);
+
+    }
+
+    private List<Instance> createInstances(MicroText myMicroText) {
+        List<Instance> instances = createDefaultInstancesList(myMicroText.getTextSegments().size(), attributeVector);
+        for(int i = 0; i < instances.size(); i++)
+            addValuesToInstance(instances.get(i), myMicroText.getTextSegment(i));
+        return instances;
+    }
+
+    private final void setDataSetFor(List<Instance> instances) {
+        for (Instance instance : instances)
+            instance.setDataset(trainingSet);
+    }
+
+    private final void makeDecisionsFor(List<Instance> instances, MicroText myMicroText) {
+        for(int i = 0; i < instances.size(); i++) {
+            makeDecisionFor(instances.get(i), myMicroText.getTextSegment(i));
+        }
+    }
+
+    private void makeDecisionFor(Instance instance, TextSegment textSegment) {
+        try {
+            double[] fDistribution = cModel.distributionForInstance(instance);
+            handleDecisionDistribution(fDistribution, textSegment);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected abstract void handleDecisionDistribution(double[] fDistribution, TextSegment textSegment);
 }
