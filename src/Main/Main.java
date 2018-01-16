@@ -1,6 +1,7 @@
 package Main;
 
 import ConfigurationManager.ConfigurationManager;
+import GUI.GUI;
 import InputOutput.XMLParser;
 import InputOutput.XMLWriter;
 import Weka.IsClaimClassifier;
@@ -22,8 +23,8 @@ public class Main {
 
 //        ProponentOponentClassifier proponentOponentClassifier = new ProponentOponentClassifier();
 //        proponentOponentClassifier.run(microTexts, 10);
-        IsClaimClassifier isClaimClassifier = new IsClaimClassifier();
-        isClaimClassifier.run(microTexts, 10);
+//        IsClaimClassifier isClaimClassifier = new IsClaimClassifier();
+//        isClaimClassifier.run(microTexts, 10);
 //        TargetClassifier targetClassifier = new TargetClassifier();
 //        targetClassifier.run(microTexts, 10);
 //        AttackSupportClassifier attackSupportClassifier = new AttackSupportClassifier();
@@ -34,7 +35,8 @@ public class Main {
 //        StanceClassifier stanceClassifer = new StanceClassifier();
 //        stanceClassifer.run(microTexts);
 
-        generateXMLFiles();
+//        generateXMLFiles();
+         GUI.startGUI();
     }
 
     /**
