@@ -3,6 +3,7 @@ package Weka;
 import Main.MicroText;
 import Main.TextSegment;
 import weka.core.Attribute;
+import weka.core.Instance;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,11 @@ public class RebutUndercutClassifier extends TextSegmentClassifier {
             }
         }
         return textSegments;
+    }
+
+    @Override
+    protected MicroText makeDecisionsFor(List<Instance> instances, MicroText myMicroText) {
+        return null;
     }
 
     @Override

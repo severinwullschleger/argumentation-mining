@@ -132,6 +132,7 @@ public abstract class TextSegment implements ISource, ITarget {
                 "\tsentence = '" + sentence + "'\n" +
                 "\tisClaim = '" + isClaim + "'\n" +
                 "\tType = '" + getType() + "'\n" +
+                "\tRelation = '" + getWekaAttackOrSupport() + "'\n" +
                 "}";
     }
 

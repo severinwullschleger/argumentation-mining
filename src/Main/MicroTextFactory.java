@@ -10,13 +10,13 @@ public class MicroTextFactory {
 
         TextSegmentFactory tsf = new TextSegmentFactory();
         List<TextSegment> textSegmentList = new ArrayList<>();
-        int id = 0;
+        int i = 0;
         for (String str : strings) {
-            TextSegment textSegment = tsf.createUndefinedTextSegment(str, id);
-            textSegment.setSegmentPositionIndex(id);
+            TextSegment textSegment = tsf.createUndefinedTextSegment(str, i+1);
+            textSegment.setSegmentPositionIndex(i);
             textSegment.setMicroText(microText);
             textSegmentList.add(textSegment);
-            id++;
+            i++;
         }
         microText.setTextSegments(textSegmentList);
         return microText;
