@@ -206,7 +206,7 @@ public class GUI {
                             Main.useClassifier(sentences);
                         else {
                             List<String> errors = new ArrayList<>();
-                            errors.add("Please insert at least one sentence!");
+                            errors.add("Please insert at least one sentence! ");
                             showNotification(errors);
                         }
                     }
