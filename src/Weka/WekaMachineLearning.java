@@ -1,7 +1,6 @@
 package Weka;
 
-import Main.MicroText;
-
+import Main.*;
 import java.util.List;
 
 public class WekaMachineLearning {
@@ -26,7 +25,7 @@ public class WekaMachineLearning {
         attackSupportClassifier.run(microTexts, testDataPercentage);
         rebutUndercutClassifier.run(microTexts, testDataPercentage);
         targetClassifier.run(microTexts, testDataPercentage);
-        
+        Main.systemHasLearn = true;
 //        StanceClassifier stanceClassifer = new StanceClassifier();
 //        stanceClassifer.run(microTexts);
     }

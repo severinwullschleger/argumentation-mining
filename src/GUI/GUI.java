@@ -215,7 +215,9 @@ public class GUI {
                     }
                     else {
                         List<String> stringSentences = FileReader.readFileAsStrings(selectedFile.getPath());
-                        System.out.println(stringSentences);
+                        if (!stringSentences.isEmpty()) {
+                            Main.useClassifier(stringSentences);
+                        }
 
                     }
                 }
