@@ -11,7 +11,7 @@ public class MicroTextFactory {
         List<TextSegment> textSegmentList = new ArrayList<>();
         int id = 0;
         for (String str : stringSentences) {
-            TextSegment textSegment = tsf.createUndefinedTextSegment(str, id);
+            TextSegment textSegment = tsf.createUndefinedTextSegment(str, id+1);
             textSegment.setSegmentPositionIndex(id);
             textSegment.setMicroText(microText);
             textSegmentList.add(textSegment);

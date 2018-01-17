@@ -32,6 +32,9 @@ public class StanceClassifier extends MicroTextClassifier {
         HashMap lemmaBigramAttributes = getAllLemmaBigramsFromMicroTextAsAttributes(stanceTaggedMicroTexts);
 
         List sentimentScoresAttributes = getAllSentimentValuesAsAttributes(stanceTaggedMicroTexts);
+        getAllDiscourseMarkersAsAttributes(stanceTaggedMicroTexts);
+        getAllNegationMarkersAsAttributes(stanceTaggedMicroTexts);
+
 
         // Declare the feature vector (changed to ArrayList; FastVector depreciated)
         ArrayList<Attribute> attributeVector = new ArrayList<>();

@@ -47,4 +47,14 @@ public class NullRelation extends Relation implements INullTarget{
     public boolean isValidRelation() {
         return false;
     }
+
+    @Override
+    public void setTargetId(int id) {
+
+    }
+
+    @Override
+    public boolean isUndercut() {
+        return false;
+    }
 }

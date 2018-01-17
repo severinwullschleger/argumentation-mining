@@ -1,6 +1,7 @@
 package Main.Model.type;
 
 import Main.Model.typegen.Attack;
+import Main.TextSegment;
 
 /**
  * Created by LuckyP on 16.12.17.
@@ -11,8 +12,22 @@ public class Undercut extends Attack {
         super(relationId, src, trg);
     }
 
+    public Undercut(TextSegment textSegment) {
+        super(textSegment);
+    }
+
     @Override
     public String getWekaRebutOrUndercut() {
         return "und";
+    }
+
+    @Override
+    public void setTargetId(int id) {
+        targetId = "c"+id;
+    }
+
+    @Override
+    public boolean isUndercut() {
+        return true;
     }
 }

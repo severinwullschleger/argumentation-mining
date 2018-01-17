@@ -196,6 +196,23 @@ public class MicroText {
         return sentimentScores;
     }
 
+    public List<List<List<String>>> discourseMarkers() {
+        List<List<List<String>>> discourseMarkers = new ArrayList<>();
+        for (TextSegment textSegment : textSegments) {
+            //System.out.println(textSegment.getSentence().text());
+            discourseMarkers.add(textSegment.getDiscourseMarkers());
+        }
+        return discourseMarkers;
+    }
+
+    public List<Boolean> negationMarkers() {
+        List<Boolean> negationMarkers = new ArrayList<>();
+        for (TextSegment textSegment : textSegments) {
+            negationMarkers.add(textSegment.negationMarker());
+        }
+        return negationMarkers;
+    }
+
     public void printOpponentAndProponents() {
         System.out.println(getFileId() + "  has the following proponents: ");
         for (TextSegment proponent : getProponents()) {
@@ -263,5 +280,22 @@ public class MicroText {
 
     public void replaceTextSegment(int i, TextSegment textSegment) {
         textSegments.set(i, textSegment);
+    }
+
+    public void setClaimSegment(TextSegment textSegment) {
+        for (TextSegment t : textSegments) {
+            if (t.equals(textSegment))
+                t.setClaim(true);
+            else
+                t.setClaim(false);
+        }
+    }
+
+    public TextSegment getTextSegmentById(int id) {
+        for (TextSegment textSegment : textSegments) {
+            if (textSegment.getSegmentId().substring(1).equals(id))
+                return textSegment;
+        }
+        return new NullTextSegment();
     }
 }

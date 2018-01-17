@@ -53,4 +53,24 @@ public abstract class Classifier {
         }
         return instance;
     }
+
+    /**
+     * Sets the attribute of the given Instance to the value
+     * @param instance
+     * @param attributes
+     * @param value
+     * @param attributeName
+     * @return
+     */
+    protected Instance setNumericValue(Instance instance, int value, HashMap attributes, String attributeName) {
+
+        String valueText = String.valueOf(value);
+        instance.setValue((Attribute) attributes.get(attributeName), valueText);
+        return instance;
+    }
+
+    protected Instance setStringValue(Instance instance, String value, HashMap attributes, String attributeName) {
+        instance.setValue((Attribute) attributes.get(attributeName), value);
+        return instance;
+    }
 }

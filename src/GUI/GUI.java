@@ -176,7 +176,7 @@ public class GUI {
                 List<String> notif = new ArrayList<>();
                 notif.add("Classifier has been started...");
                 showNotification(notif);
-                Main.runProponentOponentClassifier(testDataPercentage);
+                Main.runClassifier(testDataPercentage);
 
 
             }

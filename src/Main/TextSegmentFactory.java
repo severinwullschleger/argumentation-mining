@@ -26,7 +26,7 @@ public class TextSegmentFactory {
 
     public TextSegment createUndefinedTextSegment(String str, int id) {
         UndefinedSentence undefinedSentence = new UndefinedSentence();
-        undefinedSentence.setTextSegmentId(String.valueOf(id));
+        undefinedSentence.setTextSegmentId("a"+String.valueOf(id));
         undefinedSentence.setSentence(new Sentence(str));
         undefinedSentence.setLanguage(ConfigurationManager.SENTENCES_LANGUAGE);
         return undefinedSentence;

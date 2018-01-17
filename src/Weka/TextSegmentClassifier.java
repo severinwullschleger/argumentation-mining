@@ -3,8 +3,11 @@ package Weka;
 import GUI.GUI;
 import Main.MicroText;
 import Main.TextSegment;
-import weka.classifiers.bayes.NaiveBayes;
+import StandfordParserManager.POSType;
+import StandfordParserManager.POSTypeDecider;
+import StandfordParserManager.StanfordNLP;
 import weka.classifiers.evaluation.Evaluation;
+import weka.classifiers.trees.J48;
 import weka.core.Attribute;
 import weka.core.Instance;
 import weka.core.Instances;
@@ -14,7 +17,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public abstract class TextSegmentClassifier extends Classifier {
+public abstract class TextSegmentClassifier extends Classifier{
+    protected final String SENTIMENTSCORE = "sentimentScore";
+    protected final String POSTYPE = "posType";
+
 
     protected List<TextSegment> alltextSegments;
     protected List<TextSegment> textSegments;
@@ -29,12 +35,14 @@ public abstract class TextSegmentClassifier extends Classifier {
     protected Instances testingSet;
 
     protected weka.classifiers.Classifier cModel;
+    protected StanfordNLP stanfordNLP;
 
     protected abstract Attribute defineClassAttribute();
 
     protected abstract String getClassValue(TextSegment textSegment);
 
     public final void run(List<MicroText> microTexts, int testDataPercentage) {
+        stanfordNLP = stanfordNLP.getInstance();
 
         createFullTextSegmentList(microTexts);
         createTextSegmentList(microTexts);
@@ -70,6 +78,36 @@ public abstract class TextSegmentClassifier extends Classifier {
         // define different attribute sets
         attributes.add(getAllLemmaUnigramsAsAttributes());
         attributes.add(getAllLemmaBigramsAsAttributes());
+        attributes.add(generatePOSTypeAttributeHash());
+      //attributes.add(generateSentimentScoreAttribute());
+    }
+
+    private HashMap generateSentimentScoreAttribute() {
+        HashMap hash = new HashMap<String, Attribute>();
+
+        ArrayList<String> sentimentScoreValues = new ArrayList<>(5);
+        sentimentScoreValues.add("0");
+        sentimentScoreValues.add("1");
+        sentimentScoreValues.add("2");
+        sentimentScoreValues.add("3");
+        sentimentScoreValues.add("4");
+        hash.put(SENTIMENTSCORE, new Attribute(SENTIMENTSCORE, sentimentScoreValues));
+        return hash;
+    }
+
+    private HashMap generatePOSTypeAttributeHash() {
+        HashMap hash = new HashMap<String, Attribute>();
+        hash.put(POSTYPE, generatePOSTypeAttribute());
+        return hash;
+    }
+
+    private Attribute generatePOSTypeAttribute() {
+        ArrayList<String> posTypeValues = new ArrayList<>(16);
+        for (POSType posType: POSType.values()) {
+            posTypeValues.add(posType.toString());
+        }
+        Attribute posTypeAttribute = new Attribute(POSTYPE, posTypeValues);
+        return posTypeAttribute;
     }
 
     private HashMap getAllLemmaUnigramsAsAttributes() {
@@ -140,6 +178,23 @@ public abstract class TextSegmentClassifier extends Classifier {
 
     protected final void addValuesToInstances(Instances trainingSet, List<TextSegment> trainingTextSegments) {
         for (int i = 0; i < trainingTextSegments.size(); i++) {
+            TextSegment textSegment = trainingTextSegments.get(i);
+            //ClassValue
+            setStringValue(trainingSet.get(i), getClassValue(trainingTextSegments.get(i)), classAttribute);
+            //Set Unigrams
+            setStringValuesToOne(trainingSet.get(i), textSegment.getLemmaUnigrams(), attributes.get(0));
+            setStringValuesToOne(trainingSet.get(i), textSegment.getLemmaUnigramsFromPrecedingSegment(), attributes.get(0));
+            setStringValuesToOne(trainingSet.get(i), textSegment.getLemmaUnigramsFromSubsequentSegment(), attributes.get(0));
+            //Set Bigrams
+            setStringValuesToOne(trainingSet.get(i), textSegment.getLemmaBigrams(), attributes.get(1));
+            //Set POStype
+            POSType postType = POSTypeDecider.getInstance().getPOSType(textSegment.getSentence().toString());
+            setStringValue(trainingSet.get(i), postType.toString(), attributes.get(2), POSTYPE);
+          
+            // Set sentimentScore
+//             int sentimentScore = stanfordNLP.getSentimentScore(textSegment.getSentence().toString());
+//             setNumericValue(trainingSet.get(i), sentimentScore, attributes.get(2), SENTIMENTSCORE);
+
             addClassValueToInstance(trainingSet.get(i), trainingTextSegments.get(i));
             addValuesToInstance(trainingSet.get(i), trainingTextSegments.get(i));
         }
@@ -155,13 +210,16 @@ public abstract class TextSegmentClassifier extends Classifier {
         setStringValuesToOne(instance, textSegment.getLemmaUnigramsFromSubsequentSegment(), attributes.get(0));
         setStringValuesToOne(instance, textSegment.getLemmaBigrams(), attributes.get(1));
         // set additional Values
-        // ...
+//        int sentimentScore = stanfordNLP.getSentimentScore(textSegment.toString());
+//        setNumericValue(instance, sentimentScore, attributes.get(2), SENTIMENTSCORE);
+
     }
 
     protected void learnModel() {
         try {
             // Create a naïve bayes classifier
-            cModel = (weka.classifiers.Classifier) new NaiveBayes();
+//            cModel = (weka.classifiers.Classifier)new NaiveBayes();
+            cModel = (weka.classifiers.Classifier)new J48();
             cModel.buildClassifier(trainingSet);
         } catch (Exception e) {
             e.printStackTrace();
@@ -201,7 +259,6 @@ public abstract class TextSegmentClassifier extends Classifier {
         List<Instance> instances = createInstances(myMicroText);
         setDataSetFor(instances);
         makeDecisionsFor(instances, myMicroText);
-
     }
 
     private List<Instance> createInstances(MicroText myMicroText) {
@@ -216,20 +273,16 @@ public abstract class TextSegmentClassifier extends Classifier {
             instance.setDataset(trainingSet);
     }
 
-    private final void makeDecisionsFor(List<Instance> instances, MicroText myMicroText) {
-        for (int i = 0; i < instances.size(); i++) {
-            makeDecisionFor(instances.get(i), myMicroText.getTextSegment(i));
-        }
-    }
+    protected abstract MicroText makeDecisionsFor(List<Instance> instances, MicroText myMicroText);
+    protected abstract void handleDecisionDistribution(double[] distribution, TextSegment textSegment);
 
-    private void makeDecisionFor(Instance instance, TextSegment textSegment) {
+    protected final double[] getDistributionFor(Instance instance) {
         try {
             double[] fDistribution = cModel.distributionForInstance(instance);
-            handleDecisionDistribution(fDistribution, textSegment);
+            return fDistribution;
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
     }
-
-    protected abstract void handleDecisionDistribution(double[] fDistribution, TextSegment textSegment);
 }

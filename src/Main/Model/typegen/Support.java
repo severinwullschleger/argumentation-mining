@@ -3,6 +3,7 @@ package Main.Model.typegen;
 
 import Main.Model.role.NullTextSegment;
 import Main.Relation;
+import Main.TextSegment;
 
 /**
  * Created by LuckyP on 16.12.17.
@@ -18,6 +19,10 @@ public abstract class Support extends Relation {
         super(relationId, src, trg);
     }
 
+    public Support(TextSegment textSegment) {
+        super(textSegment);
+    }
+
     public final String getWekaAttackOrSupport() {
         return "sup";
     }
@@ -30,5 +35,10 @@ public abstract class Support extends Relation {
     @Override
     public boolean isValidRelation() {
         return true;
+    }
+
+    @Override
+    public void setTargetId(int id) {
+        targetId = "a"+id;
     }
 }
