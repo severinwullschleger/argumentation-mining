@@ -7,6 +7,7 @@ import InputOutput.XMLWriter;
 import Weka.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -29,10 +30,19 @@ public class Main {
 
         GUI.startGUI();
 
+//        machineLearning.learn(microTexts, 10);
+//
+//        String myString = "Adoption should be permitted,\n" +
+//                "because it prevents a life from evolving\n" +
+//                "and this is as bad as killing a living person.";
+//        useClassifier(Arrays.asList(myString.split("\n")));
+
 //        useClassifier();
-
-
 //        generateXMLFiles();
+    }
+
+    public static void runClassifier(int testDataPercentage) {
+        machineLearning.learn(microTexts, testDataPercentage);
     }
 
     public static void useClassifier(List<String> stringSentences) {
@@ -54,10 +64,6 @@ public class Main {
             GUI.showNotification(errors);
         }
 
-    }
-
-    public static void runClassifier(int testDataPercentage) {
-        machineLearning.learn(microTexts, testDataPercentage);
     }
 
     /**

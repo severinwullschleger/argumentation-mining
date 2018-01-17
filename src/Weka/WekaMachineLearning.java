@@ -21,10 +21,10 @@ public class WekaMachineLearning {
 
     public void learn(List<MicroText> microTexts, int testDataPercentage) {
         proponentOponentClassifier.run(microTexts, testDataPercentage);
-//        isClaimClassifier.run(microTexts, testDataPercentage);
-//        attackSupportClassifier.run(microTexts, testDataPercentage);
-//        rebutUndercutClassifier.run(microTexts, testDataPercentage);
-//        targetClassifier.run(microTexts, testDataPercentage);
+        isClaimClassifier.run(microTexts, testDataPercentage);
+        attackSupportClassifier.run(microTexts, testDataPercentage);
+        rebutUndercutClassifier.run(microTexts, testDataPercentage);
+        targetClassifier.run(microTexts, testDataPercentage);
         Main.systemHasLearn = true;
 //        StanceClassifier stanceClassifer = new StanceClassifier();
 //        stanceClassifer.run(microTexts);
@@ -32,10 +32,10 @@ public class WekaMachineLearning {
 
     public MicroText decide(MicroText myMicroText) {
         proponentOponentClassifier.useClassifier(myMicroText);
-//        isClaimClassifier.useClassifier(myMicroText);
-//        attackSupportClassifier.useClassifier(myMicroText);
-//        rebutUndercutClassifier.useClassifier(myMicroText);
-//        targetClassifier.useClassifier(myMicroText);
+        isClaimClassifier.useClassifier(myMicroText);
+        attackSupportClassifier.useClassifier(myMicroText);
+        rebutUndercutClassifier.useClassifier(myMicroText);
+        targetClassifier.useClassifier(myMicroText);
 
         return myMicroText;
     }

@@ -6,6 +6,7 @@ import Main.TextSegment;
 import StandfordParserManager.POSType;
 import StandfordParserManager.POSTypeDecider;
 import StandfordParserManager.StanfordNLP;
+import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.evaluation.Evaluation;
 import weka.classifiers.trees.J48;
 import weka.core.Attribute;
@@ -78,8 +79,8 @@ public abstract class TextSegmentClassifier extends Classifier{
         // define different attribute sets
         attributes.add(getAllLemmaUnigramsAsAttributes());
         attributes.add(getAllLemmaBigramsAsAttributes());
-        attributes.add(generatePOSTypeAttributeHash());
-      //attributes.add(generateSentimentScoreAttribute());
+//        attributes.add(generatePOSTypeAttributeHash());
+//      attributes.add(generateSentimentScoreAttribute());
     }
 
     private HashMap generateSentimentScoreAttribute() {
@@ -178,23 +179,6 @@ public abstract class TextSegmentClassifier extends Classifier{
 
     protected final void addValuesToInstances(Instances trainingSet, List<TextSegment> trainingTextSegments) {
         for (int i = 0; i < trainingTextSegments.size(); i++) {
-            TextSegment textSegment = trainingTextSegments.get(i);
-            //ClassValue
-            setStringValue(trainingSet.get(i), getClassValue(trainingTextSegments.get(i)), classAttribute);
-            //Set Unigrams
-            setStringValuesToOne(trainingSet.get(i), textSegment.getLemmaUnigrams(), attributes.get(0));
-            setStringValuesToOne(trainingSet.get(i), textSegment.getLemmaUnigramsFromPrecedingSegment(), attributes.get(0));
-            setStringValuesToOne(trainingSet.get(i), textSegment.getLemmaUnigramsFromSubsequentSegment(), attributes.get(0));
-            //Set Bigrams
-            setStringValuesToOne(trainingSet.get(i), textSegment.getLemmaBigrams(), attributes.get(1));
-            //Set POStype
-            POSType postType = POSTypeDecider.getInstance().getPOSType(textSegment.getSentence().toString());
-            setStringValue(trainingSet.get(i), postType.toString(), attributes.get(2), POSTYPE);
-          
-            // Set sentimentScore
-//             int sentimentScore = stanfordNLP.getSentimentScore(textSegment.getSentence().toString());
-//             setNumericValue(trainingSet.get(i), sentimentScore, attributes.get(2), SENTIMENTSCORE);
-
             addClassValueToInstance(trainingSet.get(i), trainingTextSegments.get(i));
             addValuesToInstance(trainingSet.get(i), trainingTextSegments.get(i));
         }
@@ -205,21 +189,27 @@ public abstract class TextSegmentClassifier extends Classifier{
     }
 
     protected void addValuesToInstance(Instance instance, TextSegment textSegment) {
+        //Set Unigrams
         setStringValuesToOne(instance, textSegment.getLemmaUnigrams(), attributes.get(0));
         setStringValuesToOne(instance, textSegment.getLemmaUnigramsFromPrecedingSegment(), attributes.get(0));
         setStringValuesToOne(instance, textSegment.getLemmaUnigramsFromSubsequentSegment(), attributes.get(0));
+        //Set Bigrams
         setStringValuesToOne(instance, textSegment.getLemmaBigrams(), attributes.get(1));
-        // set additional Values
-//        int sentimentScore = stanfordNLP.getSentimentScore(textSegment.toString());
-//        setNumericValue(instance, sentimentScore, attributes.get(2), SENTIMENTSCORE);
 
+        // set additional Values
+//        //Set POStype
+//        POSType postType = POSTypeDecider.getInstance().getPOSType(textSegment.getSentence().toString());
+//        setStringValue(instance, postType.toString(), attributes.get(2), POSTYPE);
+//        //Set Sentimentscore
+//        int sentimentScore = stanfordNLP.getSentimentScore(textSegment.toString());
+//        setNumericValue(instance, sentimentScore, attributes.get(3), SENTIMENTSCORE);
     }
 
     protected void learnModel() {
         try {
             // Create a naïve bayes classifier
-//            cModel = (weka.classifiers.Classifier)new NaiveBayes();
-            cModel = (weka.classifiers.Classifier)new J48();
+            cModel = (weka.classifiers.Classifier)new NaiveBayes();
+//            cModel = (weka.classifiers.Classifier)new J48();
             cModel.buildClassifier(trainingSet);
         } catch (Exception e) {
             e.printStackTrace();
