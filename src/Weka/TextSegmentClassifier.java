@@ -264,6 +264,7 @@ public abstract class TextSegmentClassifier extends Classifier{
     }
 
     protected abstract MicroText makeDecisionsFor(List<Instance> instances, MicroText myMicroText);
+
     protected abstract void handleDecisionDistribution(double[] distribution, TextSegment textSegment);
 
     protected final double[] getDistributionFor(Instance instance) {

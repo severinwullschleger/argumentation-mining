@@ -68,7 +68,7 @@ public class XMLWriter {
                 edu.appendChild(cdata);
 
                 Attr attr = doc.createAttribute("id");
-                attr.setValue(textSegment.getEdgeId());
+                attr.setValue(textSegment.getSegmentId());
                 edu.setAttributeNode(attr);
             }
 
