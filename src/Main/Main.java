@@ -50,12 +50,10 @@ public class Main {
         String myString = "Adoption should be permitted,\n" +
                 "because it prevents a life from evolving\n" +
                 "and this is as bad as killing a living person.";
-
         MicroTextFactory microTextFactory = new MicroTextFactory();
         // get plain Microtext from text entry
         MicroText myMicroText = microTextFactory.createMicroText(stringSentences);
         System.out.println(myMicroText);
-
         proponentOponentClassifier.useClassifier(myMicroText);
         return myMicroText;
     }
