@@ -54,6 +54,13 @@ public abstract class MicroTextClassifier extends Classifier {
     protected void getAllDiscourseMarkersAsAttributes(List<MicroText> microTexts) {
         for (MicroText microText : microTexts) {
             System.out.println(microText.discourseMarkers());
+            //Todo: method stump, getting vectors in the right format
+        }
+    }
+
+    protected void getAllNegationMarkersAsAttributes(List<MicroText> microTexts) {
+        for (MicroText microText : microTexts) {
+            System.out.println(microText.negationMarkers());
         }
     }
 

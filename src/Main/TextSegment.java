@@ -10,12 +10,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by LuckyP on 02.12.17.
@@ -181,6 +176,16 @@ public abstract class TextSegment implements ISource, ITarget {
 
     }
 
+    public boolean negationMarker() {
+        List<String> negationMarkers = new ArrayList<>(Arrays.asList("not", "none", "nothing", "without", "instead", "no-one", "nobody", "neither", "nor", "deny", "denial", "refute", "refuse", "missing", "avoid", "avoidance", "exclude", "exclusion", "not", "none", "nothing", "without", "instead", "no-one", "nobody", "neither", "nor", "deny", "denial", "refute", "refuse", "missing", "avoid", "avoidance", "exclude", "exclusion", "under no circumstances", "never", "nowhere", "not at all", "by no means", "no", "aint", "ain't", "doesn't", "doesnt", "havent", "haven't", "hasnt", "hasn't", "shouldnt", "shouldn't ", "isnt", "isn't", "hardly", "lack", "wouldnt", "wouldn't", "doubt", "object", "under no circumstances", "never", "nowhere", "not at all", "by no means", "no", "aint", "ain't", "doesn't", "doesnt", "havent", "haven't", "hasnt", "hasn't", "shouldnt", "shouldn't ", "isnt", "isn't", "hardly", "lack", "wouldnt", "wouldn't", "doubt", "object"));
+        List<String> sentenceLemmas = sentence.lemmas();
+        if (!Collections.disjoint(sentenceLemmas, negationMarkers) ||  negationMarkers.stream().anyMatch(s -> sentence.text().contains(s))) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
     public List<List<String>> getDiscourseMarkers() {
         HashMap<String, String> discourseMarkers = new HashMap<>();
