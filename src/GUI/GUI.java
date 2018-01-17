@@ -189,31 +189,20 @@ public class GUI {
                 if (rawTextRadioButton.isSelected()) {
                     if (sentencesAreWellFormed()) {
                         List<String> sentences = new ArrayList<>();
-                        for (JTextField jTextField: jTextFields) {
+                        for (JTextField jTextField : jTextFields) {
                             if (!jTextField.getText().equals("")) {
-                                sentences.add(jTextField.getText());
+                                String sentence = jTextField.getText();
+                                sentences.add(sentence);
                             }
                         }
-
-                        Main.useClassifier(sentences);
+                        if (!sentences.isEmpty())
+                            Main.useClassifier(sentences);
                     }
 
                 }
 
             }
         });
-    }
-
-    private void setSubPanelVisible() {
-        testDataPercentagePanel.setVisible(true);
-        runClassifierPanel.setVisible(true);
-        useClassifierPanel.setVisible(true);
-    }
-
-    private void setSubPanelsInvisible() {
-        testDataPercentagePanel.setVisible(false);
-        runClassifierPanel.setVisible(false);
-        useClassifierPanel.setVisible(false);
     }
 
     public static void showNotification(List<String> notifications) {
@@ -238,6 +227,18 @@ public class GUI {
 
     public static GUI getGUI() {
         return gui;
+    }
+
+    private void setSubPanelVisible() {
+        testDataPercentagePanel.setVisible(true);
+        runClassifierPanel.setVisible(true);
+        useClassifierPanel.setVisible(true);
+    }
+
+    private void setSubPanelsInvisible() {
+        testDataPercentagePanel.setVisible(false);
+        runClassifierPanel.setVisible(false);
+        useClassifierPanel.setVisible(false);
     }
 
     private boolean sentencesAreWellFormed() {
