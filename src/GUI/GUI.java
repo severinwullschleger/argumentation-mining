@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,8 +41,11 @@ public class GUI {
     private JPanel runClassifierPanel;
     private JPanel useClassifierPanel;
     private JButton useClassifierButton;
+    private JButton selectTxtFileDir;
+    private JLabel selectedTxtFileLabel;
     private List<String> stringSentences;
     private List<JTextField> jTextFields;
+    private File selectedFile;
 
 
     public GUI() {
@@ -200,7 +204,24 @@ public class GUI {
                     }
 
                 }
+                else if (txtFilesRadioButton.isSelected()) {
+                    if (selectedFile == null){
+                        
+                    }
+                    else {
 
+                    }
+                }
+
+            }
+        });
+        selectTxtFileDir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                selectedFile = openFileChooser("Choose a directory containing your APK(s)", false);
+                if (selectedFile != null) {
+                    selectedTxtFileLabel.setText("Selected file: " + selectedFile.getName());
+                }
             }
         });
     }
@@ -211,6 +232,23 @@ public class GUI {
             str += notif + "\n";
         }
         JOptionPane.showMessageDialog(GUI.getGUI().mainPanel, str);
+    }
+
+    private static File openFileChooser(String dialogTitle, boolean onlyDirectories) {
+        JFileChooser jfc = new JFileChooser(System.getProperty("user.dir"));
+        if (onlyDirectories) {
+            jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        } else {
+            jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        }
+
+        jfc.setDialogTitle(dialogTitle);
+        int returnValue = jfc.showSaveDialog(null);
+
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            return jfc.getSelectedFile();
+        }
+        return null;
     }
 
     public static void startGUI() {

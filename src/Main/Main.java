@@ -60,7 +60,6 @@ public class Main {
                 "and this is as bad as killing a living person.";
         MicroTextFactory microTextFactory = new MicroTextFactory();
         // get plain Microtext from text entry
-
         MicroText myMicroText = microTextFactory.createMicroText(stringSentences);
 
         machineLearning.decide(myMicroText);
