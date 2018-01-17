@@ -1,6 +1,8 @@
 package GUI;
 
+import InputOutput.FileReader;
 import Main.Main;
+import Main.MicroText;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -12,10 +14,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
-import InputOutput.FileReader;
 import java.util.ArrayList;
 import java.util.List;
-import Main.TextSegment;
 
 /**
  * Created by LuckyP on 16.01.18.
@@ -46,9 +46,11 @@ public class GUI {
     private JButton selectTxtFileDir;
     private JLabel selectedTxtFileLabel;
     private JPanel radioButtonsPanel;
+    private JButton generateXMLButton;
     private List<String> stringSentences;
     private List<JTextField> jTextFields;
     private File selectedFile;
+    private MicroText microText;
 
 
     public GUI() {
@@ -193,6 +195,7 @@ public class GUI {
         useClassifierButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                List<String> errors = new ArrayList<>();
                 if (rawTextRadioButton.isSelected()) {
                     if (sentencesAreWellFormed()) {
                         List<String> sentences = new ArrayList<>();
@@ -202,23 +205,26 @@ public class GUI {
                                 sentences.add(sentence);
                             }
                         }
-                        if (!sentences.isEmpty())
-                            Main.useClassifier(sentences);
-                        else {
-                            List<String> errors = new ArrayList<>();
+                        if (!sentences.isEmpty()) {
+                            microText = Main.useClassifier(sentences);
+                            if (microText != null) {
+                                errors.add(microText.getFileId() + " has been generated!");
+                            }
+                            else {
+                                errors.add("some error occurred");
+                            }
+
+                        } else {
                             errors.add("Please insert at least one sentence! ");
                             showNotification(errors);
                         }
                     }
 
-                }
-                else if (txtFilesRadioButton.isSelected()) {
-                    if (selectedFile == null){
-                        List<String> errors = new ArrayList<>();
+                } else if (txtFilesRadioButton.isSelected()) {
+                    if (selectedFile == null) {
                         errors.add("Please selected a valid file before using the Classifier!");
                         showNotification(errors);
-                    }
-                    else {
+                    } else {
                         List<String> stringSentences = FileReader.readFileAsStrings(selectedFile.getPath());
                         if (!stringSentences.isEmpty()) {
                             Main.useClassifier(stringSentences);
@@ -229,6 +235,18 @@ public class GUI {
 
             }
         });
+
+        generateXMLButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (microText != null) {
+                    Main.generateXMLFromMicroText(microText);
+                } else {
+                    //TODO
+                }
+            }
+        });
+
         selectTxtFileDir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
