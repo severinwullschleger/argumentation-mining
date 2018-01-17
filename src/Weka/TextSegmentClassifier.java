@@ -76,8 +76,8 @@ public abstract class TextSegmentClassifier extends Classifier{
         // define different attribute sets
         attributes.add(getAllLemmaUnigramsAsAttributes());
         attributes.add(getAllLemmaBigramsAsAttributes());
-        attributes.add(generateSentimentScoreAttribute());
         attributes.add(generatePOSTypeAttributeHash());
+      //attributes.add(generateSentimentScoreAttribute());
     }
 
     private HashMap generateSentimentScoreAttribute() {
@@ -186,18 +186,16 @@ public abstract class TextSegmentClassifier extends Classifier{
             setStringValuesToOne(trainingSet.get(i), textSegment.getLemmaUnigramsFromSubsequentSegment(), attributes.get(0));
             //Set Bigrams
             setStringValuesToOne(trainingSet.get(i), textSegment.getLemmaBigrams(), attributes.get(1));
-            // Set sentimentScore
-            int sentimentScore = stanfordNLP.getSentimentScore(textSegment.getSentence().toString());
-            setNumericValue(trainingSet.get(i), sentimentScore, attributes.get(2), SENTIMENTSCORE);
             //Set POStype
             POSType postType = POSTypeDecider.getInstance().getPOSType(textSegment.getSentence().toString());
             setStringValue(trainingSet.get(i), postType.toString(), attributes.get(3), POSTYPE);
+          
+            // Set sentimentScore
+//             int sentimentScore = stanfordNLP.getSentimentScore(textSegment.getSentence().toString());
+//             setNumericValue(trainingSet.get(i), sentimentScore, attributes.get(2), SENTIMENTSCORE);
 
             addClassValueToInstance(trainingSet.get(i), trainingTextSegments.get(i));
             addValuesToInstance(trainingSet.get(i), trainingTextSegments.get(i));
-
-
-
         }
     }
 
@@ -211,7 +209,9 @@ public abstract class TextSegmentClassifier extends Classifier{
         setStringValuesToOne(instance, textSegment.getLemmaUnigramsFromSubsequentSegment(), attributes.get(0));
         setStringValuesToOne(instance, textSegment.getLemmaBigrams(), attributes.get(1));
         // set additional Values
-        // ...
+//        int sentimentScore = stanfordNLP.getSentimentScore(textSegment.toString());
+//        setNumericValue(instance, sentimentScore, attributes.get(2), SENTIMENTSCORE);
+
     }
 
     protected void learnModel() {
@@ -244,7 +244,6 @@ public abstract class TextSegmentClassifier extends Classifier{
         List<Instance> instances = createInstances(myMicroText);
         setDataSetFor(instances);
         makeDecisionsFor(instances, myMicroText);
-
     }
 
     private List<Instance> createInstances(MicroText myMicroText) {

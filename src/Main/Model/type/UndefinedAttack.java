@@ -21,4 +21,14 @@ public class UndefinedAttack extends Attack {
     public String getWekaRebutOrUndercut() {
         return "undefinedAttack";
     }
+
+    @Override
+    public void setTargetId(int id) {
+        targetId = "a"+id;
+    }
+
+    @Override
+    public boolean isUndercut() {
+        return false;
+    }
 }

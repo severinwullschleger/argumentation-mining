@@ -3,9 +3,7 @@ package Main;
 import ConfigurationManager.ConfigurationManager;
 import InputOutput.XMLParser;
 import InputOutput.XMLWriter;
-import Weka.AttackSupportClassifier;
-import Weka.IsClaimClassifier;
-import Weka.ProponentOponentClassifier;
+import Weka.*;
 import weka.core.Instance;
 import Weka.StanceClassifier;
 import java.util.List;
@@ -36,6 +34,10 @@ public class Main {
 
      StanceClassifier stanceClassifier = new StanceClassifier();
      stanceClassifier.run(microTexts);
+      
+        WekaMachineLearning machineLearning = new WekaMachineLearning();
+        machineLearning.learn(microTexts, 10);
+
 
         String myString = "Adoption should be permitted,\n" +
                 "because it prevents a life from evolving\n" +
@@ -45,13 +47,9 @@ public class Main {
         // get plain Microtext from text entry
         MicroText myMicroText = microTextFactory.createMicroText(myString);
 
-        proponentOponentClassifier.useClassifier(myMicroText);
-        isClaimClassifier.useClassifier(myMicroText);
-        attackSupportClassifier.useClassifier(myMicroText);
+        machineLearning.decide(myMicroText);
+
         System.out.println(myMicroText);
-
-
-
 
 //        generateXMLFiles();
     }

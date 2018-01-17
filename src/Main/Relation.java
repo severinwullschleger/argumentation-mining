@@ -63,4 +63,8 @@ public abstract class Relation implements ITarget{
     public abstract String getWekaRebutOrUndercut();
 
     public abstract boolean isAttack();
+
+    public abstract void setTargetId(int id);
+
+    public abstract boolean isUndercut();
 }

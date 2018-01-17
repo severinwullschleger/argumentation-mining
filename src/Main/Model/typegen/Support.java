@@ -36,4 +36,9 @@ public abstract class Support extends Relation {
     public boolean isValidRelation() {
         return true;
     }
+
+    @Override
+    public void setTargetId(int id) {
+        targetId = "a"+id;
+    }
 }

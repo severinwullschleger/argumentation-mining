@@ -12,8 +12,22 @@ public class Rebut extends Attack {
         super(relationId, src, trg);
     }
 
+    public Rebut(TextSegment textSegment) {
+        super(textSegment);
+    }
+
     @Override
     public String getWekaRebutOrUndercut() {
         return "reb";
+    }
+
+    @Override
+    public void setTargetId(int id) {
+        targetId = "a"+id;
+    }
+
+    @Override
+    public boolean isUndercut() {
+        return false;
     }
 }

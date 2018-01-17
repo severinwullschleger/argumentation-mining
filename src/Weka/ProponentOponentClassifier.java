@@ -40,8 +40,8 @@ public class ProponentOponentClassifier extends TextSegmentClassifier {
     @Override
     protected void handleDecisionDistribution(double[] distribution, TextSegment textSegment) {
         if (distribution[0] >= distribution[1])
-            textSegment.changeTypeTo(new Proponent());
+            textSegment.changeTo(new Proponent());
         else
-            textSegment.changeTypeTo(new Opponent());
+            textSegment.changeTo(new Opponent());
     }
 }

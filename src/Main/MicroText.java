@@ -290,4 +290,12 @@ public class MicroText {
                 t.setClaim(false);
         }
     }
+
+    public TextSegment getTextSegmentById(int id) {
+        for (TextSegment textSegment : textSegments) {
+            if (textSegment.getSegmentId().substring(1).equals(id))
+                return textSegment;
+        }
+        return new NullTextSegment();
+    }
 }

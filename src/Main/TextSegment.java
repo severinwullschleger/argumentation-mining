@@ -2,7 +2,7 @@ package Main;
 
 import Main.Enums.Language;
 
-import Main.Model.role.Proponent;
+import Main.Model.type.Rebut;
 import Main.Model.typegen.NullRelation;
 import edu.stanford.nlp.simple.Sentence;
 
@@ -11,6 +11,8 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by LuckyP on 02.12.17.
@@ -43,6 +45,10 @@ public abstract class TextSegment implements ISource, ITarget {
         this.language = language;
         this.correspondentFile = correspondentFile;
         this.sentence = sentence;
+    }
+
+    public MicroText getMicroText() {
+        return microText;
     }
 
     public abstract void writeToProOppFolder(String path);
@@ -129,7 +135,9 @@ public abstract class TextSegment implements ISource, ITarget {
                 "\tsentence = '" + sentence + "'\n" +
                 "\tisClaim = '" + isClaim + "'\n" +
                 "\tType = '" + getType() + "'\n" +
-                "\tRelation = '" + getWekaAttackOrSupport() + "'\n" +
+                "\tRelation1 = '" + getWekaAttackOrSupport() + "'\n" +
+                "\tRelation2 = '" + getWekaRebutOrUndercut() + "'\n" +
+                "\tTarget = '" + relation.getTargetId() + "'\n" +
                 "}";
     }
 
@@ -329,7 +337,7 @@ public abstract class TextSegment implements ISource, ITarget {
         return relation.isAttack();
     }
 
-    public void changeTypeTo(TextSegment textSegment) {
+    public void changeTo(TextSegment textSegment) {
         textSegment.setMicroText(microText);
         textSegment.setFileId(fileId);
         textSegment.setTextSegmentId(segmentId);
@@ -344,5 +352,14 @@ public abstract class TextSegment implements ISource, ITarget {
 
         relation.setSourceSegment(textSegment);
         microText.replaceTextSegment(segmentPositionIndex, textSegment);
+    }
+
+    public void addRelationTarget(int id) {
+        // claim has no relation to be undercutted
+        if (relation.isUndercut() && microText.getTextSegmentById(id).isClaim())
+            setRelation(new Rebut(this));
+
+        relation.setTargetId(id);
+        connectWithTarget();
     }
 }
