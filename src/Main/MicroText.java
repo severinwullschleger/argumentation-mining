@@ -23,13 +23,10 @@ public class MicroText {
     private List<TextSegment> textSegments;
     private Language language;
     private File correspondentFile;
-    private List<Relation> relations;
 
 
     public MicroText() {
         this.textSegments = new ArrayList<>();
-        this.relations = new ArrayList<>();
-
     }
 
     public MicroText(String fileId, List<TextSegment> sentences, Language language, List<String> preprocessedCorpus) {
@@ -263,11 +260,11 @@ public class MicroText {
     }
 
     public List<Relation> getRelations() {
+        List<Relation> relations = new ArrayList<>();
+        for(TextSegment textSegment : textSegments)
+            if (textSegment.hasRelation())
+                relations.add(textSegment.getRelation());
         return relations;
-    }
-
-    public void setRelations(List<Relation> relations) {
-        this.relations = relations;
     }
 
     public TextSegment getTextSegment(int i) {

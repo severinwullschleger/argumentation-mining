@@ -31,6 +31,8 @@ public class Main {
         GUI.startGUI();
 
 //        machineLearning.learn(microTexts, 10);
+//        StanceClassifier stanceClassifer = new StanceClassifier();
+//        stanceClassifer.run(microTexts, 10);
 //
 //        String myString = "Adoption should be permitted,\n" +
 //                "because it prevents a life from evolving\n" +
@@ -43,6 +45,7 @@ public class Main {
 
     public static void runClassifier(int testDataPercentage) {
         machineLearning.learn(microTexts, testDataPercentage);
+        systemHasLearn = true;
     }
 
     public static void useClassifier(List<String> stringSentences) {
