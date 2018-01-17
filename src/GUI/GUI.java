@@ -204,6 +204,11 @@ public class GUI {
                         }
                         if (!sentences.isEmpty())
                             Main.useClassifier(sentences);
+                        else {
+                            List<String> errors = new ArrayList<>();
+                            errors.add("Please insert at least one sentence!");
+                            showNotification(errors);
+                        }
                     }
 
                 }
