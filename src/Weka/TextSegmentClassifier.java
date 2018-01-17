@@ -2,8 +2,9 @@ package Weka;
 
 import Main.MicroText;
 import Main.TextSegment;
+import StandfordParserManager.POSType;
+import StandfordParserManager.POSTypeDecider;
 import StandfordParserManager.StanfordNLP;
-import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.evaluation.Evaluation;
 import weka.classifiers.trees.J48;
 import weka.core.Attribute;
@@ -17,6 +18,7 @@ import java.util.List;
 
 public abstract class TextSegmentClassifier extends Classifier{
     protected final String SENTIMENTSCORE = "sentimentScore";
+    protected final String POSTYPE = "posType";
 
 
     protected List<TextSegment> alltextSegments;
@@ -38,7 +40,7 @@ public abstract class TextSegmentClassifier extends Classifier{
     protected abstract String getClassValue(TextSegment textSegment);
 
     public final void run(List<MicroText> microTexts, int testDataPercentage) {
-        stanfordNLP = new StanfordNLP();
+        stanfordNLP = stanfordNLP.getInstance();
 
         createFullTextSegmentList(microTexts);
         createTextSegmentList(microTexts);
@@ -74,8 +76,8 @@ public abstract class TextSegmentClassifier extends Classifier{
         // define different attribute sets
         attributes.add(getAllLemmaUnigramsAsAttributes());
         attributes.add(getAllLemmaBigramsAsAttributes());
-        // add additional attributes
-//        attributes.add(generateSentimentScoreAttribute());
+        attributes.add(generatePOSTypeAttributeHash());
+      //attributes.add(generateSentimentScoreAttribute());
     }
 
     private HashMap generateSentimentScoreAttribute() {
@@ -89,6 +91,21 @@ public abstract class TextSegmentClassifier extends Classifier{
         sentimentScoreValues.add("4");
         hash.put(SENTIMENTSCORE, new Attribute(SENTIMENTSCORE, sentimentScoreValues));
         return hash;
+    }
+
+    private HashMap generatePOSTypeAttributeHash() {
+        HashMap hash = new HashMap<String, Attribute>();
+        hash.put(POSTYPE, generatePOSTypeAttribute());
+        return hash;
+    }
+
+    private Attribute generatePOSTypeAttribute() {
+        ArrayList<String> posTypeValues = new ArrayList<>(16);
+        for (POSType posType: POSType.values()) {
+            posTypeValues.add(posType.toString());
+        }
+        Attribute posTypeAttribute = new Attribute(POSTYPE, posTypeValues);
+        return posTypeAttribute;
     }
 
     private HashMap getAllLemmaUnigramsAsAttributes() {
@@ -160,6 +177,23 @@ public abstract class TextSegmentClassifier extends Classifier{
 
     protected final void addValuesToInstances(Instances trainingSet, List<TextSegment> trainingTextSegments) {
         for (int i = 0; i < trainingTextSegments.size(); i++) {
+            TextSegment textSegment = trainingTextSegments.get(i);
+            //ClassValue
+            setStringValue(trainingSet.get(i), getClassValue(trainingTextSegments.get(i)), classAttribute);
+            //Set Unigrams
+            setStringValuesToOne(trainingSet.get(i), textSegment.getLemmaUnigrams(), attributes.get(0));
+            setStringValuesToOne(trainingSet.get(i), textSegment.getLemmaUnigramsFromPrecedingSegment(), attributes.get(0));
+            setStringValuesToOne(trainingSet.get(i), textSegment.getLemmaUnigramsFromSubsequentSegment(), attributes.get(0));
+            //Set Bigrams
+            setStringValuesToOne(trainingSet.get(i), textSegment.getLemmaBigrams(), attributes.get(1));
+            //Set POStype
+            POSType postType = POSTypeDecider.getInstance().getPOSType(textSegment.getSentence().toString());
+            setStringValue(trainingSet.get(i), postType.toString(), attributes.get(3), POSTYPE);
+          
+            // Set sentimentScore
+//             int sentimentScore = stanfordNLP.getSentimentScore(textSegment.getSentence().toString());
+//             setNumericValue(trainingSet.get(i), sentimentScore, attributes.get(2), SENTIMENTSCORE);
+
             addClassValueToInstance(trainingSet.get(i), trainingTextSegments.get(i));
             addValuesToInstance(trainingSet.get(i), trainingTextSegments.get(i));
         }
