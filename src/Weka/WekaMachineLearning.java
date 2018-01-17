@@ -12,18 +12,21 @@ public class WekaMachineLearning {
     private RebutUndercutClassifier rebutUndercutClassifier;
     private TargetClassifier targetClassifier;
 
-    public void learn(List<MicroText> microTexts, int testDataPercentage) {
-        proponentOponentClassifier = new ProponentOponentClassifier();
-        proponentOponentClassifier.run(microTexts, testDataPercentage);
-        isClaimClassifier = new IsClaimClassifier();
-        isClaimClassifier.run(microTexts, testDataPercentage);
-        attackSupportClassifier = new AttackSupportClassifier();
-        attackSupportClassifier.run(microTexts, testDataPercentage);
-        rebutUndercutClassifier = new RebutUndercutClassifier();
-        rebutUndercutClassifier.run(microTexts, testDataPercentage);
-        targetClassifier = new TargetClassifier();
-        targetClassifier.run(microTexts, testDataPercentage);
+    public WekaMachineLearning() {
+        this.proponentOponentClassifier = new ProponentOponentClassifier();
+        this.isClaimClassifier = new IsClaimClassifier();
+        this.attackSupportClassifier = new AttackSupportClassifier();
+        this.rebutUndercutClassifier = new RebutUndercutClassifier();
+        this.targetClassifier = new TargetClassifier();
+    }
 
+    public void learn(List<MicroText> microTexts, int testDataPercentage) {
+        proponentOponentClassifier.run(microTexts, testDataPercentage);
+        isClaimClassifier.run(microTexts, testDataPercentage);
+        attackSupportClassifier.run(microTexts, testDataPercentage);
+        rebutUndercutClassifier.run(microTexts, testDataPercentage);
+        targetClassifier.run(microTexts, testDataPercentage);
+        
 //        StanceClassifier stanceClassifer = new StanceClassifier();
 //        stanceClassifer.run(microTexts);
     }
