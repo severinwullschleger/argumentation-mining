@@ -18,11 +18,13 @@ public class Main {
 
 
     private static List<MicroText> microTexts;
+    private static List<MicroText> generatedMicroTexts;
     private static WekaMachineLearning machineLearning;
     public static boolean systemHasLearn;
 
     public static void main(String args[]) {
         machineLearning = new WekaMachineLearning();
+        generatedMicroTexts = new ArrayList<>();
         systemHasLearn = false;
         final String DATASET_PATH = ConfigurationManager.getInstance().getFilePath();
         XMLParser xmlParser = XMLParser.getInstance();
@@ -32,7 +34,7 @@ public class Main {
 
 //        machineLearning.learn(microTexts, 10);
 //
-//        String myString = "Adoption should be permitted,\n" +
+//        String myString = "Abortion should be permitted,\n" +
 //                "because it prevents a life from evolving\n" +
 //                "and this is as bad as killing a living person.";
 //        useClassifier(Arrays.asList(myString.split("\n")));
@@ -45,15 +47,18 @@ public class Main {
         machineLearning.learn(microTexts, testDataPercentage);
     }
 
-    public static void useClassifier(List<String> stringSentences) {
+    public static MicroText useClassifier(List<String> stringSentences) {
+        MicroText myMicroText;
         if (systemHasLearn) {
             MicroTextFactory microTextFactory = new MicroTextFactory();
             // get plain Microtext from text entry
-            MicroText myMicroText = microTextFactory.createMicroText(stringSentences);
+            myMicroText = microTextFactory.createMicroText(stringSentences,1);
 
-            machineLearning.decide(myMicroText);
+            myMicroText = machineLearning.decide(myMicroText);
+            generatedMicroTexts.add(myMicroText);
 
             System.out.println(myMicroText);
+            return myMicroText;
         }
         else {
             List<String> errors = new ArrayList<>();
@@ -61,6 +66,12 @@ public class Main {
             GUI.showNotification(errors);
         }
 
+        return null;
+    }
+
+    public static void generateXMLFromMicroText(MicroText microText) {
+        XMLWriter xmlWriter = XMLWriter.getInstance();
+        xmlWriter.writeXMLFile(microText);
     }
 
     /**

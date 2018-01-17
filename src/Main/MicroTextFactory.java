@@ -1,21 +1,27 @@
 package Main;
 
 import ConfigurationManager.ConfigurationManager;
+import Main.Enums.EnumsManager;
 
-import javax.security.auth.login.Configuration;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MicroTextFactory {
-    public MicroText createMicroText(List <String> stringSentences) {
+    public MicroText createMicroText(List<String> stringSentences, int index) {
         MicroText microText = new MicroText();
         microText.setTopicId("m0");
+        microText.setLanguage(ConfigurationManager.SENTENCES_LANGUAGE);
+        File file = new File("generated_" + index);
+        microText.setCorrespondentFile(file);
+        // TODO: SEVI IS GAY
+        microText.setStance(EnumsManager.convertToStanceEnum(""));
 
         TextSegmentFactory tsf = new TextSegmentFactory();
         List<TextSegment> textSegmentList = new ArrayList<>();
         int id = 0;
         for (String str : stringSentences) {
-            TextSegment textSegment = tsf.createUndefinedTextSegment(str, id+1);
+            TextSegment textSegment = tsf.createUndefinedTextSegment(str, id + 1);
             textSegment.setSegmentPositionIndex(id);
             textSegment.setMicroText(microText);
             textSegmentList.add(textSegment);
