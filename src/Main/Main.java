@@ -16,11 +16,9 @@ public class Main {
 
 
     private static List<MicroText> microTexts;
-    private static ProponentOponentClassifier proponentOponentClassifier;
     private static WekaMachineLearning machineLearning;
 
     public static void main(String args[]) {
-        proponentOponentClassifier = new ProponentOponentClassifier();
         machineLearning = new WekaMachineLearning();
         final String DATASET_PATH = ConfigurationManager.getInstance().getFilePath();
         XMLParser xmlParser = XMLParser.getInstance();
