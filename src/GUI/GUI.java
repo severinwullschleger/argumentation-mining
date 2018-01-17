@@ -12,8 +12,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
+import InputOutput.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import Main.TextSegment;
 
 /**
  * Created by LuckyP on 16.01.18.
@@ -43,6 +45,7 @@ public class GUI {
     private JButton useClassifierButton;
     private JButton selectTxtFileDir;
     private JLabel selectedTxtFileLabel;
+    private JPanel radioButtonsPanel;
     private List<String> stringSentences;
     private List<JTextField> jTextFields;
     private File selectedFile;
@@ -206,9 +209,13 @@ public class GUI {
                 }
                 else if (txtFilesRadioButton.isSelected()) {
                     if (selectedFile == null){
-                        
+                        List<String> errors = new ArrayList<>();
+                        errors.add("Please selected a valid file before using the Classifier!");
+                        showNotification(errors);
                     }
                     else {
+                        List<String> stringSentences = FileReader.readFileAsStrings(selectedFile.getPath());
+                        System.out.println(stringSentences);
 
                     }
                 }
