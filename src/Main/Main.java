@@ -47,9 +47,6 @@ public class Main {
 
     public static void useClassifier(List<String> stringSentences) {
         if (systemHasLearn) {
-            String myString = "Adoption should be permitted,\n" +
-                    "because it prevents a life from evolving\n" +
-                    "and this is as bad as killing a living person.";
             MicroTextFactory microTextFactory = new MicroTextFactory();
             // get plain Microtext from text entry
             MicroText myMicroText = microTextFactory.createMicroText(stringSentences);
