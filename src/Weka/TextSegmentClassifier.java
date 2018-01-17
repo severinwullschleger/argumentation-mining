@@ -188,7 +188,7 @@ public abstract class TextSegmentClassifier extends Classifier{
             setStringValuesToOne(trainingSet.get(i), textSegment.getLemmaBigrams(), attributes.get(1));
             //Set POStype
             POSType postType = POSTypeDecider.getInstance().getPOSType(textSegment.getSentence().toString());
-            setStringValue(trainingSet.get(i), postType.toString(), attributes.get(3), POSTYPE);
+            setStringValue(trainingSet.get(i), postType.toString(), attributes.get(2), POSTYPE);
           
             // Set sentimentScore
 //             int sentimentScore = stanfordNLP.getSentimentScore(textSegment.getSentence().toString());
