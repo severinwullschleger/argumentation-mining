@@ -264,4 +264,8 @@ public abstract class TextSegment implements ISource, ITarget {
         relation.setTargetId(id);
         connectWithTarget();
     }
+
+    public int getIdNumber() {
+        return Integer.valueOf(segmentId.substring(1));
+    }
 }

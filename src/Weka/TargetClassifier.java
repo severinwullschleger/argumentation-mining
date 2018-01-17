@@ -79,7 +79,9 @@ public class TargetClassifier extends TextSegmentClassifier {
         Double maxPercentage = Collections.max(dist);
         int maxPercentageIndex = dist.indexOf(maxPercentage);
 
-        while (maxPercentageIndex >= 5 || maxPercentageIndex >= textSegment.getMicroText().getTextSegments().size()) {
+        while (maxPercentageIndex >= 5
+                || maxPercentageIndex >= textSegment.getMicroText().getTextSegments().size()
+                || textSegment.getIdNumber() == maxPercentageIndex+1) {
             dist.remove(maxPercentageIndex);
             maxPercentage = Collections.max(dist);
             maxPercentageIndex = dist.indexOf(maxPercentage);
