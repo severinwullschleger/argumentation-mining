@@ -68,4 +68,9 @@ public abstract class Classifier {
         instance.setValue((Attribute) attributes.get(attributeName), valueText);
         return instance;
     }
+
+    protected Instance setStringValue(Instance instance, String value, HashMap attributes, String attributeName) {
+        instance.setValue((Attribute) attributes.get(attributeName), value);
+        return instance;
+    }
 }

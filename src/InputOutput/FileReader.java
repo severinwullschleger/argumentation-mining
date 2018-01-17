@@ -47,6 +47,28 @@ public class FileReader {
         return textSegments;
     }
 
+    public static List<String> readFileAsStrings(final String FILE_PATH) {
+        List<String> stringSentences = new ArrayList<>();
+        File file = new File(FILE_PATH);
+        if (file.exists()) {
+            try (Stream<String> stream = Files.lines(Paths.get(FILE_PATH))) {
+                stream.forEach(text -> {
+                    List<Sentence> sentences = NLPManager.splitSentence(text);
+                    for (Sentence sentence: sentences){
+                        stringSentences.add(sentence.text());
+                    }
+
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            System.err.println("Please select a valid file");
+        }
+        return stringSentences;
+    }
+
     public static Map<String, List<TextSegment>> walkDatasetDirectory(final String DATASET_PATH) {
         Map<String, List<TextSegment>> corpusMap = new HashMap<>();
         File file = new File(DATASET_PATH);
