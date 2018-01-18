@@ -68,7 +68,8 @@ public class XMLWriter {
                 edu.appendChild(cdata);
 
                 Attr attr = doc.createAttribute("id");
-                attr.setValue(textSegment.getSegmentId());
+                String fancyWorkaround = "e" + textSegment.getSegmentId().substring(1);
+                attr.setValue(fancyWorkaround);
                 edu.setAttributeNode(attr);
             }
 
@@ -85,6 +86,32 @@ public class XMLWriter {
 
                 adu.setAttributeNode(attr);
                 adu.setAttributeNode(type);
+            }
+
+            for (TextSegment textSegment : microText.getTextSegments()) {
+                Element edge = doc.createElement("edge");
+                rootElement.appendChild(edge);
+
+
+                Attr src = doc.createAttribute("src");
+                Attr relId = doc.createAttribute("id");
+                Attr type = doc.createAttribute("type");
+                Attr trg = doc.createAttribute("trg");
+
+                String fancyWorkaround = "e" + textSegment.getSegmentId().substring(1);
+                src.setValue(fancyWorkaround);
+                type.setValue("seg");
+                trg.setValue(textSegment.getSegmentId());
+
+                int delta = microText.getRelations().size() + 1;
+                int relIlInt = Integer.valueOf(textSegment.getSegmentId().substring(1)) + delta;
+                relId.setValue("c" + String.valueOf(relIlInt));
+
+                edge.setAttributeNode(src);
+                edge.setAttributeNode(relId);
+                edge.setAttributeNode(type);
+                edge.setAttributeNode(trg);
+
             }
 
             // EDGE
