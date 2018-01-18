@@ -74,15 +74,14 @@ public class TargetClassifier extends TextSegmentClassifier {
     @Override
     protected void handleDecisionDistribution(double[] distribution, TextSegment textSegment) {
         Double[] doubleArray = ArrayUtils.toObject(distribution);
-        List<Double> dist = Arrays.asList(doubleArray);
+        List<Double> dist = Arrays.asList(doubleArray).subList(0,textSegment.getMicroText().getTextSegments().size());
 
         Double maxPercentage = Collections.max(dist);
         int maxPercentageIndex = dist.indexOf(maxPercentage);
 
         while (maxPercentageIndex >= 5
-                || maxPercentageIndex >= textSegment.getMicroText().getTextSegments().size()
                 || textSegment.getIdNumber() == maxPercentageIndex+1) {
-            dist.remove(maxPercentageIndex);
+            dist.set(maxPercentageIndex, 0.00);
             maxPercentage = Collections.max(dist);
             maxPercentageIndex = dist.indexOf(maxPercentage);
         }
