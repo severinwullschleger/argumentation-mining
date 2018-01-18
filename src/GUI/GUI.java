@@ -227,7 +227,7 @@ public class GUI {
                     } else {
                         List<String> stringSentences = FileReader.readFileAsStrings(selectedFile.getPath());
                         if (!stringSentences.isEmpty()) {
-                            Main.useClassifier(stringSentences);
+                            microText = Main.useClassifier(stringSentences);
                         }
 
                     }
