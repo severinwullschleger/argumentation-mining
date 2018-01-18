@@ -13,7 +13,7 @@ public class MicroTextFactory {
         MicroText microText = new MicroText();
         microText.setTopicId("m0");
         microText.setLanguage(ConfigurationManager.SENTENCES_LANGUAGE);
-        File file = new File("test " + index);
+        File file = new File("test_" + index);
         microText.setCorrespondentFile(file);
         microText.setFileId(file.getName());
         // TODO: SEVI IS GAY
