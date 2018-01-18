@@ -1,6 +1,9 @@
 package Weka;
 
-import Main.*;
+import GUI.GUI;
+import Main.MicroText;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class WekaMachineLearning {
@@ -20,11 +23,15 @@ public class WekaMachineLearning {
     }
 
     public void learn(List<MicroText> microTexts, int testDataPercentage) {
-        proponentOponentClassifier.run(microTexts, testDataPercentage);
-        isClaimClassifier.run(microTexts, testDataPercentage);
-        attackSupportClassifier.run(microTexts, testDataPercentage);
-        rebutUndercutClassifier.run(microTexts, testDataPercentage);
-        targetClassifier.run(microTexts, testDataPercentage);
+        proponentOponentClassifier.run(microTexts, testDataPercentage, "Proponent-Opponent Classifier");
+        isClaimClassifier.run(microTexts, testDataPercentage, "Is-Claim Classifier");
+        attackSupportClassifier.run(microTexts, testDataPercentage, "Attack Support Classifier");
+        rebutUndercutClassifier.run(microTexts, testDataPercentage, "Rebut Undercut Classifier");
+        targetClassifier.run(microTexts, testDataPercentage, "Target Classifier");
+        List<String> notif = new ArrayList<>();
+        notif.add("The Learning process has been completed");
+        GUI.getGUI().runClassifierInfoLabel.setText("");
+        GUI.showNotification(notif);
 //        StanceClassifier stanceClassifer = new StanceClassifier();
 //        stanceClassifer.run(microTexts);
     }

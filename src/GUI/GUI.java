@@ -22,8 +22,8 @@ import java.util.List;
  */
 public class GUI {
     private static GUI gui;
-    public JLabel correctInstancesLabel;
-    public JLabel incorrectInstancesLabel;
+    public JLabel propOppClassifierLabel;
+    public JLabel isClaimClassifierLabel;
     public JLabel runClassifierInfoLabel;
     private JLabel LToolTitle;
     private JPanel mainPanel;
@@ -47,6 +47,10 @@ public class GUI {
     private JLabel selectedTxtFileLabel;
     private JPanel radioButtonsPanel;
     private JButton generateXMLButton;
+    public JLabel attackSupportClassifierLabel;
+    public JLabel rebutUndercutClassifierLabel;
+    public JLabel targetClassifierLabel;
+    public JTextField textField1;
     private List<String> stringSentences;
     private List<JTextField> jTextFields;
     private File selectedFile;
@@ -256,6 +260,8 @@ public class GUI {
                 }
             }
         });
+
+
     }
 
     public static void showNotification(List<String> notifications) {
@@ -322,8 +328,8 @@ public class GUI {
         setSubPanelsInvisible();
         testDataPercentageSlider.setValue(10);
         testDataPercentageLabel.setText("Test Data Percentage: " + String.valueOf(testDataPercentageSlider.getValue()));
-        correctInstancesLabel.setText("");
-        incorrectInstancesLabel.setText("");
+        propOppClassifierLabel.setText("");
+        isClaimClassifierLabel.setText("");
         this.stringSentences = new ArrayList<>();
         this.jTextFields = new ArrayList<>();
 

@@ -4,11 +4,9 @@ import GUI.GUI;
 import Main.MicroText;
 import Main.TextSegment;
 import StandfordParserManager.POSType;
-import StandfordParserManager.POSTypeDecider;
 import StandfordParserManager.StanfordNLP;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.evaluation.Evaluation;
-import weka.classifiers.trees.J48;
 import weka.core.Attribute;
 import weka.core.Instance;
 import weka.core.Instances;
@@ -18,7 +16,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public abstract class TextSegmentClassifier extends Classifier{
+public abstract class TextSegmentClassifier extends Classifier {
     protected final String SENTIMENTSCORE = "sentimentScore";
     protected final String POSTYPE = "posType";
 
@@ -42,7 +40,7 @@ public abstract class TextSegmentClassifier extends Classifier{
 
     protected abstract String getClassValue(TextSegment textSegment);
 
-    public final void run(List<MicroText> microTexts, int testDataPercentage) {
+    public final void run(List<MicroText> microTexts, int testDataPercentage, String classifier) {
         stanfordNLP = stanfordNLP.getInstance();
 
         createFullTextSegmentList(microTexts);
@@ -57,7 +55,7 @@ public abstract class TextSegmentClassifier extends Classifier{
         createTestingSet();
 
         learnModel();
-        evaluateModel();
+        evaluateModel(classifier);
     }
 
     private final List<TextSegment> createFullTextSegmentList(List<MicroText> microTexts) {
@@ -104,7 +102,7 @@ public abstract class TextSegmentClassifier extends Classifier{
 
     private Attribute generatePOSTypeAttribute() {
         ArrayList<String> posTypeValues = new ArrayList<>(16);
-        for (POSType posType: POSType.values()) {
+        for (POSType posType : POSType.values()) {
             posTypeValues.add(posType.toString());
         }
         Attribute posTypeAttribute = new Attribute(POSTYPE, posTypeValues);
@@ -208,7 +206,7 @@ public abstract class TextSegmentClassifier extends Classifier{
     protected void learnModel() {
         try {
             // Create a naïve bayes classifier
-            cModel = (weka.classifiers.Classifier)new NaiveBayes();
+            cModel = (weka.classifiers.Classifier) new NaiveBayes();
 //            cModel = (weka.classifiers.Classifier)new J48();
             cModel.buildClassifier(trainingSet);
         } catch (Exception e) {
@@ -216,7 +214,7 @@ public abstract class TextSegmentClassifier extends Classifier{
         }
     }
 
-    protected void evaluateModel() {
+    protected void evaluateModel(String classifier) {
         try {
             // Test the model
             Evaluation eTest = new Evaluation(testingSet);
@@ -227,20 +225,39 @@ public abstract class TextSegmentClassifier extends Classifier{
             System.out.println(strSummary);
 
 
-            showResultOnGUI(strSummary);
+            showResultOnGUI(strSummary, classifier);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void showResultOnGUI(String strSummary) {
+    private void showResultOnGUI(String strSummary, String classifier) {
         String temp[] = strSummary.split("\n");
-        GUI.getGUI().correctInstancesLabel.setText(temp[0]);
-        GUI.getGUI().incorrectInstancesLabel.setText(temp[1]);
-        GUI.getGUI().runClassifierInfoLabel.setText("");
+
+//        switch (classifier) {
+//            case "Proponent-Opponent Classifier":
+//                GUI.getGUI().propOppClassifierLabel.setText("Proponent-Opponent Classifier: " + strSummary);
+//                break;
+//            case "Is-Claim Classifier":
+//                GUI.getGUI().isClaimClassifierLabel.setText("Is-Claim Classifier: " + strSummary);
+//                break;
+//            case "Attack Support Classifier":
+//                GUI.getGUI().attackSupportClassifierLabel.setText("Attack Support Classifier: " + strSummary);
+//                break;
+//            case "Rebut Undercut Classifier":
+//                GUI.getGUI().rebutUndercutClassifierLabel.setText("Rebut Undercut Classifier: " + strSummary);
+//                break;
+//            case "Target Classifier":
+//                GUI.getGUI().targetClassifierLabel.setText("Target Classifier: " + strSummary);
+//                break;
+//        }
+
+
+
 
         List<String> notif = new ArrayList<>();
+        notif.add("The " + classifier + " showed the following results:");
         notif.add(strSummary);
         GUI.showNotification(notif);
     }

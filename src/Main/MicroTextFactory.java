@@ -1,6 +1,7 @@
 package Main;
 
 import ConfigurationManager.ConfigurationManager;
+import GUI.GUI;
 import Main.Enums.EnumsManager;
 
 import java.io.File;
@@ -12,7 +13,7 @@ public class MicroTextFactory {
         MicroText microText = new MicroText();
         microText.setTopicId("m0");
         microText.setLanguage(ConfigurationManager.SENTENCES_LANGUAGE);
-        File file = new File("generated_" + index);
+        File file = new File( GUI.getGUI().textField1.getText());
         microText.setCorrespondentFile(file);
         microText.setFileId(file.getName());
         // TODO: SEVI IS GAY

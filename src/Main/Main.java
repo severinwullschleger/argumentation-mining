@@ -4,10 +4,9 @@ import ConfigurationManager.ConfigurationManager;
 import GUI.GUI;
 import InputOutput.XMLParser;
 import InputOutput.XMLWriter;
-import Weka.*;
+import Weka.WekaMachineLearning;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -17,10 +16,10 @@ import java.util.List;
 public class Main {
 
 
+    public static boolean systemHasLearn;
     private static List<MicroText> microTexts;
     private static List<MicroText> generatedMicroTexts;
     private static WekaMachineLearning machineLearning;
-    public static boolean systemHasLearn;
 
     public static void main(String args[]) {
         machineLearning = new WekaMachineLearning();
@@ -55,15 +54,17 @@ public class Main {
         if (systemHasLearn) {
             MicroTextFactory microTextFactory = new MicroTextFactory();
             // get plain Microtext from text entry
-            myMicroText = microTextFactory.createMicroText(stringSentences,1);
+            myMicroText = microTextFactory.createMicroText(stringSentences, 1);
 
             myMicroText = machineLearning.decide(myMicroText);
             generatedMicroTexts.add(myMicroText);
 
             System.out.println(myMicroText);
+            List<String> notif = new ArrayList<>();
+            notif.add("The MicroText " + myMicroText.getFileId() + " has been successfully generated!");
+            GUI.showNotification(notif);
             return myMicroText;
-        }
-        else {
+        } else {
             List<String> errors = new ArrayList<>();
             errors.add("In order to use our Classifier you have firstly to run it!");
             GUI.showNotification(errors);
