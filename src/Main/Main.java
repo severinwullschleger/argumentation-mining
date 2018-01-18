@@ -20,10 +20,12 @@ public class Main {
     private static List<MicroText> microTexts;
     private static List<MicroText> generatedMicroTexts;
     private static WekaMachineLearning machineLearning;
+    private static int index;
 
     public static void main(String args[]) {
         machineLearning = new WekaMachineLearning();
         generatedMicroTexts = new ArrayList<>();
+        index = 1;
         systemHasLearn = false;
         final String DATASET_PATH = ConfigurationManager.getInstance().getFilePath();
         XMLParser xmlParser = XMLParser.getInstance();
@@ -54,7 +56,8 @@ public class Main {
         if (systemHasLearn) {
             MicroTextFactory microTextFactory = new MicroTextFactory();
             // get plain Microtext from text entry
-            myMicroText = microTextFactory.createMicroText(stringSentences, 1);
+            index++;
+            myMicroText = microTextFactory.createMicroText(stringSentences, index);
 
             myMicroText = machineLearning.decide(myMicroText);
             generatedMicroTexts.add(myMicroText);
