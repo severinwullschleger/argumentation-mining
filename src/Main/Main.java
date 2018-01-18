@@ -75,6 +75,9 @@ public class Main {
     public static void generateXMLFromMicroText(MicroText microText) {
         XMLWriter xmlWriter = XMLWriter.getInstance();
         xmlWriter.writeXMLFile(microText);
+        List<String> notif = new ArrayList<>();
+        notif.add(microText.getFileId() + " has been successfully saved!");
+        GUI.showNotification(notif);
     }
 
     /**

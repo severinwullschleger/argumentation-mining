@@ -14,6 +14,7 @@ public class MicroTextFactory {
         microText.setLanguage(ConfigurationManager.SENTENCES_LANGUAGE);
         File file = new File("generated_" + index);
         microText.setCorrespondentFile(file);
+        microText.setFileId(file.getName());
         // TODO: SEVI IS GAY
         microText.setStance(EnumsManager.convertToStanceEnum(""));
 

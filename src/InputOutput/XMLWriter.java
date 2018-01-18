@@ -102,7 +102,6 @@ public class XMLWriter {
                 src.setValue(fancyWorkaround);
                 type.setValue("seg");
                 trg.setValue(textSegment.getSegmentId());
-
                 int delta = microText.getRelations().size() + 1;
                 int relIlInt = Integer.valueOf(textSegment.getSegmentId().substring(1)) + delta;
                 relId.setValue("c" + String.valueOf(relIlInt));
